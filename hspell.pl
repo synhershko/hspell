@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# Copyright (C) 2002 Nadav Har'El and Dan Kenigsberg
+# Copyright (C) 2002-2003 Nadav Har'El and Dan Kenigsberg
 use Carp;
 use strict;
 use Getopt::Std;
@@ -11,17 +11,21 @@ use IO::File;
 # -c: correct (suggests corrections)
 # -s: severity (sorts wrong words in order of number of appearances).
 # -n: notes (gives longer notes explaining selected spelling errors).
+# -a: for use in pipe (a la ispell's -a).
 my %opts;
-if(!getopts('vcsn', \%opts)){
-	print STDERR "Usage: $0 [-vcns] [file...]\n";
+if(!getopts('vcsnad:Bm', \%opts)){
+	print STDERR "Usage: $0 [-acnsv] [file...]\n";
 	exit(1);
 }
-
+if (exists($opts{d}) || exists($opts{B}) || exists($opts{m})) {
+	print STDERR "Warning: ispell options -d, -B and -m".
+		     "are ignored by hspell.\n";
+}
 my $verbose=exists($opts{v});
 my $correct=exists($opts{c});
 my $severity=exists($opts{s});
 my $shownotes=exists($opts{n});
-
+my $interpipe=exists($opts{a});
 
 my $strict_smichut=0;
 
@@ -181,7 +185,8 @@ sub check_word {
 			   substr($word,$plen,1) eq 'å' &&
 			   substr($prefix,-1,1) ne 'å'){
 				if(substr($word,$plen+1,1) eq 'å'){
-					if(exists ($dictionary{substr($word,$plen+1)})){
+					if(substr($word,$plen+2,1) ne 'å' &&
+					   exists ($dictionary{substr($word,$plen+1)})){
 						if($verbose){
 							print "found $word: prefix '$prefix' doubled 'å' stem $dictionary{substr($word,$plen+1)}\n";
 						}
@@ -500,9 +505,14 @@ sub _aux_ig {
 
 
 # spell-check the input files
-my $res;
+print "@(#) International Ispell Version 3.1.20 (but really Hspell 0.3alpha)\n" if $interpipe;
+$| = 1 if $interpipe;
+my ($res, $line, $offset);
 while(<>){
 	chomp;
+	$line = $_;
+	next if $interpipe && m/^[#!~^%-+&*]/; #ignore ispell command lines
+	$offset = -1;
 	# convert a literal "&#1470;" (HTML makaf) into -
 	s/&#1470;/-/go;
 	my @array;
@@ -524,6 +534,7 @@ while(<>){
 		} else {
 			$word=shift(@array);
 		}
+		$offset=index($line,$word,$offset+1) if $interpipe;
 		# convert two single quotes ('') into one double quote (").
 		# For TeX junkies.
 		$word =~ s/''/"/go;
@@ -553,12 +564,16 @@ while(<>){
 		}
 		if($res==0){
 			#$wrongwords{$word}=1
-			$wrongwords{$word}++
+			$wrongwords{$word}++;
+			print "? $word 0 $offset: ".trycorrect($word)."\n" if $interpipe;
 		} elsif($res>1){
 			$warnwords{substr($word,$res-2)}=1;
 		}
 	}
+	print "\n" if $interpipe;
 }
+
+exit 0 if $interpipe;
 
 my $word;
 # list wrong words.

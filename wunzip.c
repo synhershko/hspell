@@ -36,4 +36,5 @@ main(int argc, char **argv)
 	/* output last word */
 	sbuf[slen]='\0';
 	puts(sbuf);
+	return 0;
 }

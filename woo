@@ -909,7 +909,9 @@ _cond_debug(8);
     if ($w->{guf} eq $at || $w->{guf} eq $hi) {
       #cond #9 - is it niqtal?
 _cond_debug(9);
-      if ($w->{binyan} eq $niqtal && $w->{l} eq 'ה') {
+      if ($w->_nakey_lh && ($w->{binyan} eq $niqtal|| 
+	  ($w->{binyan}eq $hiqtil || $w->{binyan}eq$huqtal) && 
+		$w->{archaic_sf} ) ) { # last two lines for (*)
         $m =~ s/ה$/ית/;
 	return $m;
       } #else continue to case #11
@@ -938,7 +940,7 @@ _cond_debug(9);
 
     return $m if ($guf eq $ani || $guf eq $ata || $guf eq $hu);
 
-    my $archaic_sf = ($guf eq $at || $guf eq $hi) &&
+    $w->{archaic_sf} = ($guf eq $at || $guf eq $hi) &&
 			${$w->{opts}}{"בינונית_ארכאית"};
     # cond #2 - does m ends with e (nake_lh)
     if ($w->_nakey_lh) {
@@ -960,15 +962,15 @@ _cond_debug(9);
           $m = $w->_present_cond8($m);
 	} else {
 	  #cond #7 - is the last vowel i? check (***)
-	  if ($w->{binyan} eq $hiqtil && !$archaic_sf) {
+	  if ($w->{binyan} eq $hiqtil && !$w->{archaic_sf}) {
 	    #jump to cond #8
             $m = $w->_present_cond8($m);
 	  } else {
 	    #cond #12 - is it single female? (and not archaic signle female***)
-	    if ($w->{binyan}eq$hiqtil || !$archaic_sf &&
+	    if ($w->{binyan}eq$hiqtil || !$w->{archaic_sf} &&
 		($w->{guf} eq $at || $w->{guf} eq $hi)) {
 	      #for check (***)
-	      $m =~ s/י(?=.$)// if $w->{binyan} eq $hiqtil && $archaic_sf;
+	      $m =~ s/י(?=.$)// if $w->{binyan} eq$hiqtil && $w->{archaic_sf};
 	      #cond #13 - is the final consonant xet &ayin or he mapuqa
 	      if ($m =~ m/(ח|ע)$/ || 
 		  ($m =~ m/ה$/ && ${$w->{opts}}{"שמור_מפיק"})) {
@@ -1046,7 +1048,7 @@ _cond_debug(9);
       $w->infinitive_conj unless $w->{infinitive};
       $m = $w->{infinitive};
       $m =~ s/^ל//;
-      $m = $m.'ות' if $m !~ m/ות$/o;
+      $m = $m.'ות' unless $m =~ m/ות$/o && $w->{l} eq 'ה';
       return $m;
     }
 
@@ -1069,7 +1071,7 @@ _cond_debug(9);
 
     if ($w->_nakey_lh) {
       $m =~ s/l/י/o if $w->{binyan} =~ m/^($qal|$hiqtil|$qitel)$/o;
-      $m =~ s/l//o if $w->{binyan} =~ m/^($niqtal|$hitqatel)$/o;
+#      $m =~ s/l//o if $w->{binyan} =~ m/^($niqtal|$hitqatel)$/o;
     }
 
     # nakey ayin waw
