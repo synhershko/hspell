@@ -20,9 +20,17 @@ SHARE = $(PREFIX)/share/hspell
 LIBEXEC = $(PREFIX)/lib/hspell
 MAN1 = $(PREFIX)/man/man1
 
+all: cfrontend
 
-################################################
-all: out.nouns out.verbs out.nouns-shemp hspell.pl_full \
+####################################################################
+# This is for the old Perl front-end. Use "make hspell_pl" to compile
+# it and "make install_pl" or "make install_pl_compressed" to install it.
+# This front-end is depracated and will be removed in the future.
+#
+# See the cfrontend and install_cfrontend targets below for the new
+# front-end.
+####################################################################
+hspell_pl: out.nouns out.verbs out.nouns-shemp hspell.pl_full \
      hspell.pl_wzip wunzip wordlist.wgz
 
 out.nouns: wolig.pl wolig.dat
@@ -33,7 +41,7 @@ out.nouns-shemp: wolig.pl shemp.dat
 
 # SEDCMD is left here as a non-user-friendly option to choose whether you want
 # over a 150,000 more rare verb forms or not. The default here is not, but the
-# RPM spec builds both forms (it even plays tricks and builds out.verbs only
+# RPM spec builds both forms (it can even play tricks and builds out.verbs only
 # once without any sed and then does the sed itself).
 
 #SEDCMD=s/\+//
@@ -66,12 +74,12 @@ out.nouns-all: wolig.pl wolig.dat shemp.dat
 
 DICTS= out.nouns out.verbs out.nouns-shemp milot extrawords biza-verbs biza-nouns
 wordlist.wgz: $(DICTS) wzip
-	grep -h "^[à-úLB]" $(DICTS) | tr -d '-' | sort -u | ./wzip | gzip -9 \
-		> wordlist.wgz
+	grep -h "^[à-úLB]" $(DICTS) | tr -d '-' | awk '{print $$1}' \
+             | sort -u | ./wzip | gzip -9 > wordlist.wgz
 
 ################################################
 
-install: $(DICTS) likelyerrors spellinghints hspell.pl_full
+install_pl: $(DICTS) likelyerrors spellinghints hspell.pl_full
 	test -d $(DESTDIR)/$(BIN) || mkdir -m 755 -p $(DESTDIR)/$(BIN)
 	cp hspell.pl_full $(DESTDIR)/$(BIN)/hspell
 	chmod 755 $(DESTDIR)/$(BIN)/hspell
@@ -87,7 +95,7 @@ install: $(DICTS) likelyerrors spellinghints hspell.pl_full
 # This will create a much smaller installation (60K instead of 1MB) but the
 # -v option (for viewing the reasons for words' *correctness*) will not work
 # properly.
-install_compressed: wordlist.wgz likelyerrors spellinghints wunzip \
+install_pl_compressed: wordlist.wgz likelyerrors spellinghints wunzip \
 	            hspell.pl_wzip
 	test -d $(DESTDIR)/$(BIN) || mkdir -m 755 -p $(DESTDIR)/$(BIN)
 	cp hspell.pl_wzip $(DESTDIR)/$(BIN)/hspell
@@ -106,26 +114,58 @@ install_compressed: wordlist.wgz likelyerrors spellinghints wunzip \
 
 clean:
 	rm -f out.nouns out.verbs out.nouns-shemp hspell.pl_full \
-	      hspell.pl_wzip wunzip wordlist.wgz shemp.dat
+	      hspell.pl_wzip wunzip wordlist.wgz shemp.dat \
+              c/corlist.o c/dict_radix.o c/find_sizes.o c/gimatria.o \
+	      c/hspell.o c/tclHash.o c/hebrew.wgz c/hebrew.wgz.sizes \
+	      c/hebrew.wgz.prefixes c/dout.nouns.shemp.gz c/shemp.dat \
+	      c/dout.nouns.wolig.gz c/dout.verbs.gz c/hspell c/find_sizes
+
+################################################
+# for the C front-end
+cfrontend:
+	(cd c; $(MAKE) EXTRACFLAGS='-DDICTIONARY_BASE=\"$(DESTDIR)/$(SHARE)/hebrew.wgz\"')
+
+install: install_cfrontend
+CHSPELL=hspell
+install_cfrontend: cfrontend
+	test -d $(DESTDIR)/$(BIN) || mkdir -m 755 -p $(DESTDIR)/$(BIN)
+	strip c/hspell
+	cp c/hspell $(DESTDIR)/$(BIN)/$(CHSPELL)
+	chmod 755 $(DESTDIR)/$(BIN)/$(CHSPELL)
+	cp multispell $(DESTDIR)/$(BIN)/multispell
+	chmod 755 $(DESTDIR)/$(BIN)/multispell
+	test -d $(DESTDIR)/$(SHARE) || mkdir -m 755 -p $(DESTDIR)/$(SHARE)
+	cp c/hebrew.wgz c/hebrew.wgz.prefixes c/hebrew.wgz.sizes $(DESTDIR)/$(SHARE)/
+	(cd $(DESTDIR)/$(SHARE); chmod 644 hebrew.wgz hebrew.wgz.prefixes hebrew.wgz.sizes)
+	-rm -f $(DESTDIR)/$(BIN)/hspell-i
+	-ln -s $(CHSPELL) $(DESTDIR)/$(BIN)/hspell-i
+	test -d $(DESTDIR)/$(MAN1) || mkdir -m 755 -p $(DESTDIR)/$(MAN1)
+	cp hspell.1 $(DESTDIR)/$(MAN1)/
+	chmod 644 $(DESTDIR)/$(MAN1)/hspell.1
 
 ################################################
 # for creating an hspell distribution tar
 PACKAGE = hspell
-VERSION = 0.5
+VERSION = 0.6
 DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	Makefile stats wunzip.c wzip \
 	hspell.pl hspell.1 \
 	wolig.pl wolig.dat biza-nouns milot extrawords \
 	woo woo.dat biza-verbs \
 	likelyerrors spellinghints \
-	hspell.spec
+	hspell.spec \
+	c/Makefile c/README c/corlist.c c/corlist.h c/dict_radix.c \
+	c/dict_radix.h c/find_sizes.c c/gimatria.c c/gimatria.h c/hspell.c \
+	c/pmerge c/PrefixBits.pl c/genprefixes.pl \
+	c/hash.h c/tclHash.c c/tclHash.h \
+	multispell
 
 DISTDIR = $(PACKAGE)-$(VERSION)
 
 distdir:
 	rm -rf ./$(DISTDIR)
 	mkdir -m 755 $(DISTDIR)
-	cp -a $(DISTFILES) $(DISTDIR)
+	cp -a --parents $(DISTFILES) $(DISTDIR)
 # Note that Oron Peled suggested a more eleborate version that makes hard
 # links instead of copies:
 #	for file in $(DISTFILES); do \

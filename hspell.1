@@ -1,12 +1,12 @@
 '\" t
-.\" Copyright (c) 2001, Nadav Har'El
-.TH hspell 1 "8 May 2003" "Hspell 0.5" "Ivrix"
+.\" Copyright (c) 2001-2003, Nadav Har'El and Dan Kenigsberg
+.TH hspell 1 "5 August 2003" "Hspell 0.6" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker
 .SH SYNOPSIS
 .B hspell
 [
-.B \-vcnsa
+.B \-vVcnlsa
 ]
 .BI [\| file\|.\|.\|. \|]
 .SH DESCRIPTION
@@ -16,7 +16,7 @@ tries to find incorrectly spelled Hebrew words in its input files.
 Like the traditional Unix spell(1),
 .B hspell
 outputs the sorted list of incorrect words, and does not (yet) have a more
-friendly interface for making these corrections for you. However, unlike
+friendly interface for making corrections for you. However, unlike
 spell(1),
 .B hspell
 can suggest possible corrections for some spelling errors - such suggestions
@@ -46,6 +46,20 @@ If no input file is given,
 reads from its standard input.
 .SH OPTIONS
 .TP
+.B \-v
+If the
+.B \-v
+option is given,
+.B hspell
+prints emacs-oriented version information and exits.
+.TP
+.B \-V
+With the
+.B \-V
+option,
+.B hspell
+prints true and human-oriented version information and exits.
+.TP
 .B \-c 
 If the
 .B \-c
@@ -65,17 +79,21 @@ correct). It is recommend to combine the two options,
 .B \-cn
 for maximal correction help from
 .BR hspell .
-.TP
-.B \-v
+
 The
-.B \-v
-(verbose) option will explain for each
+.B \-n
+option is temporarily unavailable in release 0.6.
+.TP
+.B \-l
+The
+.B \-l
+(linguistic information) option will explain for each
 .I correct
 word why it was
 recognized (show the basic noun, verb, etc., that this inflection relates to).
-NOTE: In this version, this option will not work correctly if
-.BR hspell 's
-dictionaries were installed in compressed form.
+
+In release 0.6, this option will only show a correct split of the
+given word into prefix + word.
 .TP
 .B \-s
 Normally, the words deemed spelling mistakes are shown in alphabetical order.
@@ -98,21 +116,19 @@ option,
 tries to emulate (as little as possible of) 
 .B ispell's
 pipe interface. This allows
-.B lyx
+.B Lyx, Emacs, Geresh
+and
+.B KDE
 to use
 .B hspell
-as an external spell-checker, if the lines
-.B "\\\\spell_command hspell-i"
-and
-.B "\\\\use_pspell false"
-appear in ~/.lyx/lyxrc.
+as an external spell-checker.
 .TP
-.B \-d \-B and \-m
-These three options are passed to 
+.B \-d \-B, \-m, \-T, \-C, \-S, \-P, \-p, \-w, and \-W
+These options are passed to 
 .B hspell 
 by
 .B lyx
-and are cordially ignored.
+or other applications, and are cordially ignored.
 .\".SH EXAMPLES
 .\".TP 3
 .\"1.
@@ -135,7 +151,9 @@ spelling decisions are relatively unknown to the general public.
 
 Users of Hspell (and all Hebrew writers, for that matter) are encouraged to 
 read the Academia's official niqqud-less spelling rules (which are printed at
-the end of most modern Hebrew dictionaries), and to refer to Hebrew
+the end of most modern Hebrew dictionaries, and an abridged version is
+available in http://hebrew-academy.huji.ac.il/decision4.html). Users are
+also encouraged to refer to Hebrew
 dictionaries which use the niqqud-less spelling (such as Millon Ha-hove or
 Rav Milim).
 
@@ -143,7 +161,8 @@ Future releases might include an option for alternative spelling standards.
 .SH "BEHIND THE SCENES"
 The
 .B hspell
-program itself is a relatively-simple Perl script, but the real
+program itself is mostly a simple (but efficient) program
+that checks input words against a long list of valid words. The real
 "brains" behind it are the word lists (dictionary) provided by the Hspell project.
 
 In order for this dictionary to be completely free of other people's copyright
@@ -176,6 +195,12 @@ Hspell project's README file for more ideas for the future.
 These files, if they exist, should contain a list of Hebrew words that
 .B hspell
 will also accept as correct words.
+
+Note that only these words
+.I exactly
+will be added -
+they are not inflected, and prefixes are not automatically allowed.
+
 .TP
 /usr/local/share/hspell/*
 The standard Hebrew word lists used by
@@ -186,7 +211,7 @@ Currently always 0.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 0.5 (May 8, 2003)
+described by this manual page is 0.6 (August 5, 2003)
 .SH "COPYRIGHT"
 Copyright (C) 2000-2003, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
@@ -243,18 +268,13 @@ is being worked on, and
 .BR hspell 's
 vocabulary will grow from release to release.
 .PP
-.B hspell
-currently allows any of Hebrew's particles (prefixes like he, bet, vav, etc.)
-to precede any of the correct words. In some cases this makes absurd words
-accepted as correct (e.g., preceding the imperative form of a verb by he,
-or lamed before a conjugated verb), and it is even stranger when
-.B hspell
-offers such monstrosities as corrections.
-
-Kinuyim Khavurim (possesive suffixes) are recognized for nouns and infinitives,
-but not yet for other verb forms.
+Version 0.6 features a redesigned front-end, which is unfortunately missing
+a few features that existed in previous versions. See individual notes on 0.6
+above, or the
+.B WHATSNEW
+file in the distribution.
 
 For GUI-lovers,
 .BR hspell 's
-user interface is an abomination. In the future, a better C version will be
-written that will also be able to interface with other programs.
+user interface is an abomination. As more and more applications learn to
+interface with hspell, this will no longer be an issue.
