@@ -5,8 +5,12 @@
 use Carp;
 use FileHandle;
 
+my $detailed_output=0;
+my $detail_prefix;
+
 sub outword {
   my $word = shift;
+  my $details = shift;
 
   # "*" sign used to signify non-existant word that should not be output.
   # It will allow us to more-easily drop words without huge if()s.
@@ -85,6 +89,10 @@ sub outword {
   # For example, compare אריה (lion) and ארייה (her lion).
   $word =~ s/h/ה/go;
 
+  if($detailed_output && defined($details)){
+    $word =~ s/-$//;  # smichut is already known by the details...
+    $word .= " ".$detail_prefix.$details;
+  }
   print $word."\n";
 }
 
@@ -162,6 +170,10 @@ my $infile;
 if($#ARGV < 0){
 	$infile="wolig.dat";
 } else {
+	if($ARGV[0] eq "-d"){
+		$detailed_output=!$detailed_output;
+		shift @ARGV;
+	}
 	$infile=$ARGV[0];
 }
 
@@ -200,6 +212,30 @@ while(<$fh>){
     my $plural_im = $opts{"ים"} || ($plural_implicit && !$plural_ot && !$plural_iot);
     my $plural_iim = $opts{"יים"};
 
+    # Find gender for detailed output. This has nothing to do with word
+    # inflection, it's just an added value of wolig.pl...
+    if($detailed_output){
+      my $gender;
+      if($opts{"זכר"}){
+        if($opts{"נקבה"}){
+   	  $gender="ז,נ";
+	} else {
+	  $gender="ז";
+	}
+      } elsif($opts{"נקבה"}){
+        $gender="נ"
+      } elsif($opts{"סגול_ה"}){
+        $gender="ז";
+      } elsif((substr($word,-1,1) eq "ה") && !$opts{"אבד_ו"}){
+        $gender="נ";
+      } elsif(substr($word,-1,1) eq "ת" && !$opts{"ים"}){
+        $gender="נ";
+      } else {
+        $gender="ז";
+      }
+      $detail_prefix="$gender,";
+    }
+
     # preprocess the word the user has given, converting certain ktiv male
     # constructs into markers (w, y) that we can better work with later (see
     # comments in inword() about what it does).
@@ -207,9 +243,9 @@ while(<$fh>){
 
     # related singular noun forms
     if(exists $opts{"נפרד"}){
-      outword $opts{"נפרד"};  # explicit override of the nifrad
+      outword $opts{"נפרד"}, "ע,יחיד";  # explicit override of the nifrad
     } elsif(!$opts{"אין_יחיד"}){
-      outword $word; # the singular noun itself
+      outword $word, "ע,יחיד"; # the singular noun itself
     }
     if($opts{"אבד_י"}){
       # in words like עיפרון and היריון the first yud (coming from chirik
@@ -239,19 +275,19 @@ while(<$fh>){
 	$smichut=substr($smichut,0,-1);
 	# And add the extra third-person masuline possesive (just like the
 	# סגול_ה case, but we don't bother to check for the סגול_ה flag here).
-	outword $smichut."יהו";
+	outword $smichut."יהו", "ע,יחיד,של/הוא";
       }
-      outword $smichut."י-"; # smichut
-      outword $smichut."י"; # possessives (kinu'im)
-      outword $smichut."ינו";
-      outword $smichut."יך";
-      outword $smichut."יך";
-      outword $smichut."יכם";
-      outword $smichut."יכן";
-      outword $smichut."יו";
-      outword $smichut."יה";
-      outword $smichut."יהן";
-      outword $smichut."יהם";
+      outword $smichut."י-",  "ע,יחיד,סמיכות"; # smichut
+      outword $smichut."י",   "ע,יחיד,של/אני"; # possessives (kinu'im)
+      outword $smichut."ינו", "ע,יחיד,של/אנחנו";
+      outword $smichut."יך",  "ע,יחיד,של/אתה";
+      outword $smichut."יך",  "ע,יחיד,של/את";
+      outword $smichut."יכם", "ע,יחיד,של/אתם";
+      outword $smichut."יכן", "ע,יחיד,של/אתן";
+      outword $smichut."יו",  "ע,יחיד,של/הוא";
+      outword $smichut."יה",  "ע,יחיד,של/היא";
+      outword $smichut."יהן", "ע,יחיד,של/הן";
+      outword $smichut."יהם", "ע,יחיד,של/הם";
     } else {
       if(!$opts{"סגול_ה"}){ # replace final ה by ת, unless סגול_ה option
         if(substr($smichut,-1,1) eq "ה" && !$opts{"סגול_ה"}){
@@ -259,9 +295,9 @@ while(<$fh>){
         }
       }
       if(exists($opts{"נסמך"})){
-        outword $opts{"נסמך"}."-";
+        outword $opts{"נסמך"}."-", "ע,יחיד,סמיכות";
       } else {
-        outword $smichut."-"; # smichut
+        outword $smichut."-", "ע,יחיד,סמיכות"; # smichut
       }
       if($opts{"מיוחד_שן"}){
       	# academia's ktiv male rules indicate that the inflections of שן
@@ -292,32 +328,22 @@ while(<$fh>){
 	# we don't need to print it again).
 	if(substr($smichut,-1,1) eq "ה"){
 	  $smichut=substr($smichut,0,-1);
-	} else {
-# NOTE: THIS WAS A MISTAKE: see correction to case 226 at the end of [1]!!!
-# שייה is quite normal, after all...
-	  # סגול ה not ending with ה? This is basically for words like שה,
-	  # inputted as "שי" (see wolig.dat). According to [1, case 226],
-	  # the "ah" inflection is not valid in this case, and instead we
-	  # have a special "ha" (no vowel before it). Eek... Why couldn't they
-	  # just allow the normal ah or eha in this case, like the masc. ehו??
-#          outword $smichut."ha";
-#	  $no_ah=1;
 	}
-        outword $smichut."ehו";
+        outword $smichut."ehו", "ע,יחיד,של/הוא";
 	# TODO: maybe add the "eha" inflection? But it won't generate anything
 	# different from the ah below...
         #outword $smichut."eha" unless $no_ah;
       }
-      outword $smichut."י"; # possessives (kinu'im)
-      outword $smichut."eנו";
-      outword $smichut."ך"; # (masculine)
-      outword $smichut."eך";
-      outword $smichut."כם";
-      outword $smichut."כן";
-      outword $smichut."ו";
-      outword $smichut."ah";#   unless $no_ah;
-      outword $smichut."aן";
-      outword $smichut."aם";
+      outword $smichut."י",   "ע,יחיד,של/אני"; # possessives (kinu'im)
+      outword $smichut."eנו", "ע,יחיד,של/אנחנו";
+      outword $smichut."ך",   "ע,יחיד,של/אתה";
+      outword $smichut."eך",  "ע,יחיד,של/את";
+      outword $smichut."כם",  "ע,יחיד,של/אתם";
+      outword $smichut."כן",  "ע,יחיד,של/אתן";
+      outword $smichut."ו",   "ע,יחיד,של/הוא";
+      outword $smichut."ah",  "ע,יחיד,של/היא";
+      outword $smichut."aן",  "ע,יחיד,של/הן";
+      outword $smichut."aם",  "ע,יחיד,של/הם";
     }
     # related plural noun forms
     # note: don't combine the $plural_.. ifs, nor use elsif, because some
@@ -337,23 +363,23 @@ while(<$fh>){
 	# option in wolig.dat).
 	$xword =~ s/ו//o;
       }
-      outword $xword."ים";
+      outword $xword."ים", "ע,רבים";
       $smichut=$xword;
       my $smichut_orig=$xword_orig;
-      outword $smichut_orig."י-"; # smichut
+      outword $smichut_orig."י-", "ע,רבים,סמיכות"; # smichut
       # (We write patach followed by a consonant yud as "y", and later this will
       # give us the chance to automatically double it as necessary by the
       # Academia's ktiv male rules)
-      outword $smichut."y"; # possessives (kinu'im)
-      outword $smichut."ינו";
-      outword $smichut."יך";
-      outword $smichut."yך";
-      outword $smichut_orig."יכם";
-      outword $smichut_orig."יכן";
-      outword $smichut."יו";
-      outword $smichut."יה";
-      outword $smichut_orig."יהן";
-      outword $smichut_orig."יהם";
+      outword $smichut."y",        "ע,רבים,של/אני"; # possessives (kinu'im)
+      outword $smichut."ינו",      "ע,רבים,של/אנחנו";
+      outword $smichut."יך",       "ע,רבים,של/אתה";
+      outword $smichut."yך",       "ע,רבים,של/את";
+      outword $smichut_orig."יכם", "ע,רבים,של/אתם";
+      outword $smichut_orig."יכן", "ע,רבים,של/אתן";
+      outword $smichut."יו",       "ע,רבים,של/הוא";
+      outword $smichut."יה",       "ע,רבים,של/היא";
+      outword $smichut_orig."יהן", "ע,רבים,של/הן";
+      outword $smichut_orig."יהם", "ע,רבים,של/הם";
     }
     if($plural_iim){
       # I currently decided that in Hebrew, unlike Arabic, only specific
@@ -366,20 +392,20 @@ while(<$fh>){
 	$xword=substr($xword,0,-1)."ת";
       }
       my $xword_orig=$xword;
-      outword $xword."yם";
+      outword $xword."yם", "ע,רבים";
       $smichut=$xword;
       my $smichut_orig=$xword_orig;
-      outword $smichut_orig."י-"; # smichut
-      outword $smichut."y"; # possessives (kinu'im)
-      outword $smichut."ינו";
-      outword $smichut."יך";
-      outword $smichut."yך";
-      outword $smichut_orig."יכם";
-      outword $smichut_orig."יכן";
-      outword $smichut."יו";
-      outword $smichut."יה";
-      outword $smichut_orig."יהן";
-      outword $smichut_orig."יהם";
+      outword $smichut_orig."י-", "ע,רבים,סמיכות"; # smichut
+      outword $smichut."y",        "ע,רבים,של/אני"; # possessives (kinu'im)
+      outword $smichut."ינו",      "ע,רבים,של/אנחנו";
+      outword $smichut."יך",       "ע,רבים,של/אתה";
+      outword $smichut."yך",       "ע,רבים,של/את";
+      outword $smichut_orig."יכם", "ע,רבים,של/אתם";
+      outword $smichut_orig."יכן", "ע,רבים,של/אתן";
+      outword $smichut."יו",       "ע,רבים,של/הוא";
+      outword $smichut."יה",       "ע,רבים,של/היא";
+      outword $smichut_orig."יהן", "ע,רבים,של/הן";
+      outword $smichut_orig."יהם", "ע,רבים,של/הם";
     }
     if($plural_ot){
       my $xword=$word;
@@ -399,23 +425,23 @@ while(<$fh>){
 	# See for example גורן, דופן.
 	my $tmp = $xword;
 	$tmp =~ s/ו//o;
-      	outword $tmp."ות";
+      	outword $tmp."ות",    "ע,רבים";
       } else {
-        outword $xword."ות";
+        outword $xword."ות",  "ע,רבים";
       }
       
       $smichut=$xword."ות";
-      outword $smichut."-"; # smichut
-      outword $smichut."y"; # possessives (kinu'im)
-      outword $smichut."ינו";
-      outword $smichut."יך";
-      outword $smichut."yך";
-      outword $smichut."יכם";
-      outword $smichut."יכן";
-      outword $smichut."יו";
-      outword $smichut."יה";
-      outword $smichut."יהן";
-      outword $smichut."יהם";
+      outword $smichut."-",   "ע,רבים,סמיכות"; # smichut
+      outword $smichut."y",   "ע,רבים,של/אני"; # possessives (kinu'im)
+      outword $smichut."ינו", "ע,רבים,של/אנחנו";
+      outword $smichut."יך",  "ע,רבים,של/אתה";
+      outword $smichut."yך",  "ע,רבים,של/את";
+      outword $smichut."יכם", "ע,רבים,של/אתם";
+      outword $smichut."יכן", "ע,רבים,של/אתן";
+      outword $smichut."יו",  "ע,רבים,של/הוא";
+      outword $smichut."יה",  "ע,רבים,של/היא";
+      outword $smichut."יהן", "ע,רבים,של/הן";
+      outword $smichut."יהם", "ע,רבים,של/הם";
     }
     if($plural_iot){
       my $xword=$word;
@@ -426,19 +452,19 @@ while(<$fh>){
 	  $xword=substr($xword,0,-1);
 	}
       }
-      outword $xword."יות";
+      outword $xword."יות",   "ע,רבים";
       $smichut=$xword."יות";
-      outword $smichut."-"; # smichut
-      outword $smichut."y"; # possessives (kinu'im)
-      outword $smichut."ינו";
-      outword $smichut."יך";
-      outword $smichut."yך";
-      outword $smichut."יכם";
-      outword $smichut."יכן";
-      outword $smichut."יו";
-      outword $smichut."יה";
-      outword $smichut."יהן";
-      outword $smichut."יהם";
+      outword $smichut."-",   "ע,רבים,סמיכות"; # smichut
+      outword $smichut."y",   "ע,רבים,של/אני"; # possessives (kinu'im)
+      outword $smichut."ינו", "ע,רבים,של/אנחנו";
+      outword $smichut."יך",  "ע,רבים,של/אתה";
+      outword $smichut."yך",  "ע,רבים,של/את";
+      outword $smichut."יכם", "ע,רבים,של/אתם";
+      outword $smichut."יכן", "ע,רבים,של/אתן";
+      outword $smichut."יו",  "ע,רבים,של/הוא";
+      outword $smichut."יה",  "ע,רבים,של/היא";
+      outword $smichut."יהן", "ע,רבים,של/הן";
+      outword $smichut."יהם", "ע,רבים,של/הם";
     }
     if($plural_xot){
       my $xword=$word;
@@ -449,50 +475,65 @@ while(<$fh>){
 	  $xword=substr($xword,0,-1);
 	}
       }
-      outword $xword."אות";
+      outword $xword."אות",   "ע,רבים";
       $smichut=$xword."אות";
-      outword $smichut."-"; # smichut
-      outword $smichut."y"; # possessives (kinu'im)
-      outword $smichut."ינו";
-      outword $smichut."יך";
-      outword $smichut."yך";
-      outword $smichut."יכם";
-      outword $smichut."יכן";
-      outword $smichut."יו";
-      outword $smichut."יה";
-      outword $smichut."יהן";
-      outword $smichut."יהם";
+      outword $smichut."-",   "ע,רבים,סמיכות"; # smichut
+      outword $smichut."y",   "ע,רבים,של/אני"; # possessives (kinu'im)
+      outword $smichut."ינו", "ע,רבים,של/אנחנו";
+      outword $smichut."יך",  "ע,רבים,של/אתה";
+      outword $smichut."yך",  "ע,רבים,של/את";
+      outword $smichut."יכם", "ע,רבים,של/אתם";
+      outword $smichut."יכן", "ע,רבים,של/אתן";
+      outword $smichut."יו",  "ע,רבים,של/הוא";
+      outword $smichut."יה",  "ע,רבים,של/היא";
+      outword $smichut."יהן", "ע,רבים,של/הן";
+      outword $smichut."יהם", "ע,רבים,של/הם";
     }
     if($plural_bizarre){
       # User specified plural for bizarre cases; For example, the plural of
       # צל is צללים, the plural of בת is בנות.
       # We take the fully formed plural from the user, and may need to take
-      # of the ending to guess the smichut and possesives.
+      # of the ending to guess the smichut and possesives (letting the user
+      # override the smichut forms too).
       my $plural=$opts{"רבים"};
-      outword $plural;
+      outword $plural, "ע,רבים";
+      # Overriding the plural nishmach with the נסמכים option: David Yalin,
+      # In his book דקדוק הלשון העברית (1942) explains in page 207 how some
+      # of the kinuyim are known as "kinuyey hanifrad" and some "kinuyey
+      # hanishmach" because when the nismach and nifrad differ, they follow
+      # different ones. This is important for words like תיש, and in fact
+      # the אבד_ו option does basically the same thing.
+      my $smichut_orig;
       if(substr($plural,-2,2) eq "ות"){
-        $smichut=$plural;
-        outword $smichut."-"; # smichut
+	$smichut_orig= exists($opts{"נסמכים"}) ? $opts{"נסמכים"} : $plural;
+	# as David Yalin explains (ibid.): "צריך להעיר כי בשמות שסימן הריבוי
+	# שלהם הוא -ות נוטים כל כינויי הרבים אחרי צורת הסמיכות".
+        $smichut=$smichut_orig;
+        outword $smichut_orig."-", "ע,רבים,סמיכות"; # smichut
       } elsif(substr($plural,-2,2) eq "ים" || substr($plural,-2,2) eq "ין"){
         $smichut=substr($plural,0,-2);
-        outword $smichut."י-"; # smichut
+	# the removal of the final yod from נסמכים is a bit silly... maybe
+	# we should have had a מקור_נסמכים option and ask it without yod.
+	$smichut_orig= exists($opts{"נסמכים"}) ?
+		substr($opts{"נסמכים"},0,-1) : $smichut;
+        outword $smichut_orig."י-", "ע,רבים,סמיכות"; # smichut
       } else {
         die "Plural given for $word is of unrecognized form: $plural.";
       }
-      outword $smichut."y"; # possessives (kinu'im)
-      outword $smichut."ינו";
-      outword $smichut."יך";
-      outword $smichut."yך";
-      outword $smichut."יכם";
-      outword $smichut."יכן";
-      outword $smichut."יו";
-      outword $smichut."יה";
-      outword $smichut."יהן";
-      outword $smichut."יהם";
+      outword $smichut."y",        "ע,רבים,של/אני"; # possessives (kinu'im)
+      outword $smichut."ינו",      "ע,רבים,של/אנחנו";
+      outword $smichut."יך",       "ע,רבים,של/אתה";
+      outword $smichut."yך",       "ע,רבים,של/את";
+      outword $smichut_orig."יכם", "ע,רבים,של/אתם";
+      outword $smichut_orig."יכן", "ע,רבים,של/אתן";
+      outword $smichut."יו",       "ע,רבים,של/הוא";
+      outword $smichut."יה",       "ע,רבים,של/היא";
+      outword $smichut_orig."יהן", "ע,רבים,של/הן";
+      outword $smichut_orig."יהם", "ע,רבים,של/הם";
     }
   } elsif($opts{"ת"}){
     ############################# adjective ##################################
-
+    $detail_prefix="";
     # preprocess the word the user has given, converting certain ktiv male
     # constructs into markers (w, y) that we can better work with later (see
     # comments in inword() about what it does).
@@ -525,31 +566,36 @@ while(<$fh>){
       # instead of seperately in extrawords, so that the country list can be
       # organized nicely at one place.
       if(exists($opts{"ארץ"})){
-        outword $opts{"ארץ"} if($opts{"ארץ"} ne "") # country name
+        outword $opts{"ארץ"}, "ע,פרטי,נ" if($opts{"ארץ"} ne "") # country name
       } elsif(substr($word,-3,3) eq "אiי"){
-        outword substr($word,0,-3)."ה";  # country name
+        outword substr($word,0,-3)."ה", "ע,פרטי,נ";  # country name
       } else {
         $country = $word;
         $country =~ s/i?י$//; $country =~ s/מ$/ם/; $country =~ s/נ$/ן/;
 	$country =~ s/כ$/ך/; $country =~ s/פ$/ף/; $country =~ s/צ$/ץ/;
-        outword $country; # country name
+        outword $country, "ע,פרטי,נ"; # country name
       }
-      outword $word."ם"; # plural (people of that nationality)
+      outword $word."ם", "ע,רבים,ז"; # plural (people of that nationality)
       $opts{"נקבה_ת"}=1; # for enabling ת plural. adding ה plural is optional.
     }
 
-    outword $word; # masculin, singular
-    outword $word."-"; # smichut (exactly the same as nifrad)
+    if(!exists($opts{"יחיד"})){
+      outword $word,     "ת,יחיד,ז"; # masculin, singular
+      outword $word."-", "ת,יחיד,ז,סמיכות"; # smichut (same as nifrad)
+    } else {
+      outword $opts{"יחיד"},     "ת,יחיד,ז"; # masculin, singular
+      outword $opts{"יחיד"}."-", "ת,יחיד,ז,סמיכות"; # smichut (same as nifrad)
+    }
     if($opts{"ם"}){
       # special case for adjectives like רשאי. Unlike the noun case where we
       # turn this option automatically for words ending with אי, here such a
       # default would not be useful because a lot of nouns ending with ה or א
       # correspond to adjectives ending with אי that this rule doesn't fit.
-      outword $xword."ם"; # masculin, plural
-      outword $xword."-"; # smichut
+      outword $xword."ם",  "ת,רבים,ז"; # masculin, plural
+      outword $xword."-",  "ת,רבים,ז,סמיכות"; # smichut
     } else {
-      outword $xword."ים"; # masculin, plural
-      outword $xword."י-"; # smichut
+      outword $xword."ים", "ת,רבים,ז"; # masculin, plural
+      outword $xword."י-", "ת,רבים,ז,סמיכות"; # smichut
     }
     # feminine, singular:
     if($opts{"נקבה_ית"}){
@@ -568,22 +614,22 @@ while(<$fh>){
         # This is a rare case, where an adjective ending with ה gets a ת
 	# feminine form, and an extra yud needs to be added. For example
 	# מופלה, מופלית.
-        outword $xword."ית";
-        outword $xword."ית-"; # smichut (exactly the same as nifrad)
+        outword $xword."ית",  "ת,יחיד,נ";
+        outword $xword."ית-", "ת,יחיד,נ,סמיכות"; # smichut (same as nifrad)
       } else {
         # note: we don't bother adding the vowel "e" before the ת because that
         # would only make a difference before a yud - and interestingly when
         # there *is* a yud, the vowel is dropped anyway!
-        outword $xword."ת";
-        outword $xword."ת-"; # smichut (exactly the same as nifrad)
+        outword $xword."ת",   "ת,יחיד,נ";
+        outword $xword."ת-",  "ת,יחיד,נ,סמיכות"; # smichut (same as nifrad)
       }
     }
     if($nekeva_h){
-      outword $xword."aה";
-      outword $xword."aת-"; # smichut
+      outword $xword."aה",  "ת,יחיד,נ";
+      outword $xword."aת-", "ת,יחיד,נ,סמיכות"; # smichut
     }
-    outword $xword."ות"; # feminine, plural
-    outword $xword."ות-"; # smichut (exactly the same as nifrad)
+    outword $xword."ות",  "ת,רבים,נ"; # feminine, plural
+    outword $xword."ות-", "ת,רבים,נ,סמיכות"; # smichut (same as nifrad)
   } else {
     die "word '".$word."' was not specified as noun, adjective or verb.";
   }

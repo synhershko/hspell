@@ -5,7 +5,7 @@ use strict;
 use Getopt::Long;
 use IO::File;
 
-my $VERSION="0.4";
+my $VERSION="0.5";
 
 # process command line options:
 # -v: verbose (shows derivation of accepted words)
@@ -42,7 +42,7 @@ if(!GetOptions('correct|c'  => \$opts{c},
 	       		      "Har'El and Dan Kenigsberg\n"; exit(0)},
                'help|h'     => sub {help(); exit(0)},
 )){
-	print STDERR "Usage: $0 [-acinsv] [file...]\n";
+	&help();
 	exit(1);
 }
 
@@ -89,7 +89,7 @@ foreach $dict (@dictionaries) {
 	# contain those useless (when !$strict_smichut) smichut characters).
 	if(!$verbose && !$strict_smichut){
 		while(<$F>){
-			if(/^[א-תL]/o){
+			if(/^[א-תA-Z]/o){
 				chomp;
 				s/-$//o;
 				$dictionary{$_}=1;
@@ -105,7 +105,10 @@ foreach $dict (@dictionaries) {
 				s/-//o if(!$strict_smichut);
 				if($verbose){
 					# tell the user where the word was found...
-					$save=$_ if($save eq "");
+					if($save eq ""){
+						$save=$_;
+						$save =~ s/^L/ל/o;
+					}
 					my $s;
 					if($save eq "xxx"){
 						$s=$dict;
@@ -528,8 +531,9 @@ sub _aux_ig {
   my $n = shift;
   my ($gim, $val) = ("", 0);
   my %int2gim = (1=>'א',2=>'ב',3=>'ג',4=>'ד',5=>'ה',6=>'ו',7=>'ז',8=>'ח',
-      9=>'ט',10=>'י',15=>'טו',16=>'טז',20=>'כ',30=>'ל',40=>'מ',50=>'נ',
-      60=>'ס',70=>'ע', 80=>'פ',90=>'צ',100=>'ק',200=>'ר',300=>'ש',400=>'ת');
+      9=>'ט',10=>'י',15=>'טו',16=>'טז',17=>'יז',18=>'יח',19=>'יט',20=>'כ',
+      30=>'ל',40=>'מ',50=>'נ',60=>'ס',70=>'ע', 80=>'פ',90=>'צ',100=>'ק',
+      200=>'ר',300=>'ש',400=>'ת');
   my @vals = sort { $b <=> $a } keys %int2gim;
 
   if ($n >= 1000) {
@@ -561,7 +565,8 @@ if ($interpipe) {
 $| = 1 if $interpipe;
 my ($res, $line, $offset);
 while(<>){
-	if ($interpipe && m/^[#!~^%-+&*]/) { #ispell command lines
+	#if ($interpipe && m/^[#!~^%-+&*]/) { #ispell command lines
+	if ($interpipe && m/^[#!~@%\-+&*]/) { #ispell command lines
 		print ISPELL if $slave;
 		next;
 	}

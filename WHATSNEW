@@ -1,3 +1,32 @@
+Release 0.5: (May 8, 2003)
+ * Some incorrect words purged or fixed, and many more words added: about
+   2,000 base words added.
+
+ * Objective Kinuim are now allowed on all forms of verbs. Because this adds
+   as many as 150,000 correct but rarely-used (in modern texts) inflections,
+   a compile-time option is present for enabling or disabling these forms.
+   The default in this version is *not* to enable them, but this may be changed
+   in the future. 
+   Also, precompiled RPMs of both types are available (thanks to Tzafrir Cohen).
+   In order to build the source rpm you must --define in the command-line either
+   'fat 0' or 'fat 1'. Can anyone tell me how can I set a default for that?
+
+ * Infinitives now allow בכלמ prefixes, not just ל: לשבור, בשבור, כשבור, משבור.
+ 
+ * Added a "-d" option to the word-list generators, which prints derivation
+   explanation for all inflections, and also gender information for all nouns. 
+   This feature is not presently used for spell-checking.
+
+ * Bug fixes: B-words were ignored unless "-v" was used; gimatria checking
+   failed to recognize numbers ending in 17-19; 
+
+ * fixed "ispell -a"'s handling of "^..." lines that prevented Hspell from
+   working properly with KDE (thanks to Meni Livne).
+
+ * Vocabulary: 390,846 words (when including kinuyim on verbs)
+               based on 7125 nouns, 1484 adjectives, 4801 verb stems, and
+	       1799 other words
+
 Release 0.4: (March 10, 2003)
 
  * Some incorrect words purged or fixed, and many more words added: over

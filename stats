@@ -13,8 +13,10 @@ echo -n "Shmot Peula derived from verbs: "
 wc -l shemp.dat
 echo -n Sum of unique nouns and shmot peula:
 grep -h " ע" wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$//" | sort -u | wc -l
-echo -n ...out of them, needing no inflection hints:
+echo -n "...out of them: needing no inflection hints: "
 grep -h " ע" wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$//" | sort -u | grep "ע$" | wc -l
+echo -n "                needing explicit gender hints: "
+egrep ",(זכר|נקבה)" wolig.dat | grep "ע,"| wc -l
 echo -n Extrawords, milot and biza-*:
 grep -h "^[א-ת]*" extrawords milot biza-verbs biza-nouns | tr -d - | sort -u | wc -l
 # NOTE: to find duplicates in wolig.dat:
