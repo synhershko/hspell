@@ -1,6 +1,6 @@
 '\" t
-.\" Copyright (c) 2001-2004, Nadav Har'El and Dan Kenigsberg
-.TH hspell 3 "21 June 2004" "Hspell 0.8" "Ivrix"
+.\" Copyright (c) 2001-2005, Nadav Har'El and Dan Kenigsberg
+.TH hspell 3 "13 January 2005" "Hspell 0.9" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker (C API)
 .SH SYNOPSIS
@@ -27,7 +27,10 @@ hspell \- Hebrew spellchecker (C API)
 \fRtypedef int hspell_word_split_callback_func(const char *word, const char *baseword, int preflen, int prefspec);\fR
 .PP
 \fBint hspell_enum_splits(struct dict_radix *\fRdict\fB, const char *\fRword\fB, hspell_word_split_callback_func *\fRenumf\fB);\fR
-
+.PP
+\fBvoid hspell_set_dictionary_path(const char *\fRpath\fB);\fR
+.PP
+\fBconst char *hspell_get_dictionary_path(void);\fR
 .SH "DESCRIPTION"
 This manual describes the C API of the Hspell Hebrew spellchecker. Please
 refer to
@@ -156,6 +159,22 @@ returns the number represented as
 gimatria in 'word' if it is indeed proper gimatria (in canonic form),
 or 0 otherwise.
 
+.B hspell_init()
+normally reads the dictionary files from a path compiled
+into the library. This makes sense when the library's code and the
+dictionaries are distributed together, but in some scenarios the library
+user might want to use the Hspell dictionaries that are already present
+on the system in an arbitrary path. The function
+.B hspell_set_dictionary_path()
+can be used to set this path, and should
+be used before calling
+.BR hspell_init() .
+The given path is that of the word list, and other input files have that
+path with an appended prefix.
+.B hspell_get_dictionary_path()
+can be used to find the current path. On many installations, this defaults
+to "/usr/local/share/hspell/hebrew.wgz".
+
 .SH "LINKING"
 On most systems, the Hspell library is compiled to use the Zlib library
 for reading the compressed dictionaries. Therefore, a program linking with
@@ -196,11 +215,11 @@ Currently there is no concept of separate Hspell "contexts" in an application.
 Some of the context is now global for the entire application: currently, a
 single list of legal prefix-particles is kept, and the dictionary read by
 .B hspell_init()
-is always read from the same place (determined in compile time). This may
+is always read from the global default place. This may
 be solved in a later version, e.g., by switching to an API like:
 
    context = hspell_new_context();
-   hspell_set_dictionary(context, "/some/path/hebrew.wgz");
+   hspell_set_dictionary_path(context, "/some/path/hebrew.wgz");
    hspell_init(context, flags);
    ...
    hspell_check_word(context, word, preflenp);
@@ -228,9 +247,9 @@ There are too many CAVEATS in this manual.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 0.8 (June 21, 2004)
+described by this manual page is 0.9 (January 13, 2005)
 .SH "COPYRIGHT"
-Copyright (C) 2000-2004, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2005, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
 Hspell is free software, released under the GNU General Public License (GPL).

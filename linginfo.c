@@ -133,7 +133,7 @@ static int linginfo_dmask2ps(int dmask) {
 			specifier = PS_IMPER;
 		} else if ((dmask&D_TENSEMASK)!=D_PRESENT) {
 			specifier = PS_VERB;
-		} else if (dmask & D_OSMICHUT) {
+		} else if (dmask & D_OSMICHUT || dmask & D_OMASK) {
 			specifier = PS_NONDEF;
 		} else specifier = PS_ALL;
 /* TODO I feel that this may lead to a bug with μιτεμ and other infinitives that
@@ -142,7 +142,8 @@ static int linginfo_dmask2ps(int dmask) {
 		if ((dmask&D_TENSEMASK)==D_INFINITIVE) specifier = PS_L;
 		else if ((dmask&D_TENSEMASK)==D_BINFINITIVE) specifier = PS_B;
 	} else if (((dmask&D_TYPEMASK)==D_NOUN) || ((dmask&D_TYPEMASK) == D_ADJ)) {
-		if (dmask & D_OSMICHUT) {
+		if (dmask & D_OSMICHUT || dmask & D_OMASK
+		    || dmask & D_SPECNOUN) {
 			specifier = PS_NONDEF;
 		} else {
 			specifier = PS_ALL;
@@ -297,7 +298,7 @@ int linginfo_init(const char *dir) {
 
 int linginfo_lookup(const char *word, char **desc, char **stem)
 {
-	int res,i=0,bottom=0,top=lookuplen-1;
+	int res,i=0,bottom=0,top=lookuplen;
 	while (top>=bottom) {
 		if (i==(top-bottom)/2 + bottom) {
 			return 0;

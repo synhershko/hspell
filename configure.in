@@ -64,17 +64,20 @@ fi
 AC_SUBST(SEDCMD)
 
 dnl "aspell" optional feature: (--enable-aspell)
-dnl Builds data files - he_affix.dat and he.cwl - needed by Aspell to do
+dnl Builds data files - he_affix.dat and he.wl - needed by Aspell to do
 dnl spell-checking of Hebrew.
+
+dnl NOTE: This configuration parameter is deprecated. There is no point
+dnl in using it, instead of doing normal "configure" followed by "make aspell".
 
 AC_ARG_ENABLE([aspell],
 	AC_HELP_STRING([--enable-aspell],[Build data files - he_affix.dat
-	  and he.cwl - suitable for use as Aspell 0.6 dictionary for Hebrew.]),
+	  and he.wl - suitable for use as Aspell 0.6 dictionary for Hebrew.]),
 	[ac_opt_aspell=$enable_aspell], [ac_opt_aspell=no])
 
 if test x$ac_opt_aspell = xyes
 then
-	AC_MSG_NOTICE([Feature aspell enabled (building he_affix.dat, he.cwl).])
+	AC_MSG_NOTICE([Feature aspell enabled (building he_affix.dat, he.wl).])
 	TARGETS="$TARGETS aspell"
 else
 	AC_MSG_NOTICE([Feature aspell disabled (not building aspell files).])

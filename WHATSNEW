@@ -1,3 +1,36 @@
+Release 0.9 (January 13, 2005):
+
+ * Some incorrect words purged or fixed, and many more words added: almost
+   2,500 base words added.
+
+ * Continued the effort to export Hspell's dictionary (word list and valid
+   prefix information) to formats used by other spell-checking frameworks.
+   The "aspell" make target finally works correctly, and was used to generate
+   a Hebrew dictionary for Aspell 0.6 (ftp://ftp.gnu.org/gnu/aspell/dict/he/).
+   A new "myspell" target generates a dictionary in Myspell format, suitable
+   for use in OpenOffice and Mozilla. The "mozilla" target prepares an xpi
+   package for Mozilla out of that dictionary.
+
+ * C API improvements: New hspell_set_dictionary_path() function to tell
+   Hspell where its dictionaries were installed. Fixed bug on UTF8 locales
+   and removed spurious printouts.
+
+ * "Hspell -a" (ispell-like pipe API) improvements: words can now be added to
+   personal dictionary. This means that the "Add word" in KDE, LyX, and other
+   Hspell-using applications will finally work.
+
+ * Fixed errors in the morphological analyzer ("-l" option, when built
+   with --enable-linginfo). Also, now if the "-l" and "-c" options are given
+   together to hspell, morphological analysis is given also for correction
+   suggestions, and those are given even for words which are already correct.
+
+ * Fixed many other bugs. Check out http://ivrix.org.il/bugzilla/.
+
+ * Vocabulary: 445,081 words (when built with "--enable-fatverb")
+               based on 21087 base words: 10728 nouns, 3008 adjectives,
+               5207 verb stems, and 2144 other words
+
+-----------------------------------------------------------------------------
 Release 0.8 (June 21, 2004):
 
  * Some incorrect words purged or fixed, and many more words added: almost

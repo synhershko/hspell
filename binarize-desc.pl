@@ -87,23 +87,11 @@ sub text2mask {
 	elsif($desc=~m/,ציווי([^א-ת]|$)/o) {$dmask |= $D_IMPERATIVE}
 	elsif($desc=~m/,מקור([^א-ת]|$)/o) {$dmask |= $D_INFINITIVE}
 
-	if(($dmask & $D_TYPEMASK) == $D_VERB) {
-		if($desc=~m/,יחיד([^א-ת]|$)/o) {$dmask |= $D_MASCULINE | $D_SINGULAR}
-		elsif($desc=~m/,יחידה([^א-ת]|$)/o) {$dmask |= $D_FEMININE | $D_SINGULAR}
-		elsif($desc=~m/,רבים([^א-ת]|$)/o) {$dmask |= $D_MASCULINE | $D_PLURAL}
-		elsif($desc=~m/,רבות([^א-ת]|$)/o) {$dmask |= $D_FEMININE | $D_PLURAL}
-	}
+	if($desc=~m/,יחיד([^א-ת]|$)/o) {$dmask |= $D_SINGULAR}
+	elsif($desc=~m/,רבים([^א-ת]|$)/o) {$dmask |= $D_PLURAL}
 
-	# currently, wolig and woo have confusing -d output with regards
-	# to gender.
-	if((($dmask & $D_TYPEMASK) == $D_NOUN) || 
-	   (($dmask & $D_TYPEMASK) == $D_ADJ)) {
-		if($desc=~m/,יחיד([^א-ת]|$)/o) {$dmask |= $D_SINGULAR}
-		elsif($desc=~m/,רבים([^א-ת]|$)/o) {$dmask |= $D_PLURAL}
-
-		if($desc=~m/([^א-ת]|^)ז([^א-ת]|$)/o) {$dmask |= $D_MASCULINE};
-		if($desc=~m/([^א-ת]|^)נ([^א-ת]|$)/o) {$dmask |= $D_FEMININE};
-	}
+	if($desc=~m/([^א-ת]|^)ז([^א-ת]|$)/o) {$dmask |= $D_MASCULINE};
+	if($desc=~m/([^א-ת]|^)נ([^א-ת]|$)/o) {$dmask |= $D_FEMININE};
 
 	if($desc=~m/,אני/o) {$dmask |= $D_FIRST | $D_SINGULAR}
 	elsif($desc=~m/,אתה/o) {$dmask |= $D_SECOND | $D_SINGULAR | $D_MASCULINE}

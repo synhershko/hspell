@@ -1,6 +1,6 @@
 '\" t
-.\" Copyright (c) 2001-2004, Nadav Har'El and Dan Kenigsberg
-.TH hspell 1 "21 June 2004" "Hspell 0.8" "Ivrix"
+.\" Copyright (c) 2001-2005, Nadav Har'El and Dan Kenigsberg
+.TH hspell 1 "13 January 2005" "Hspell 0.9" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker
 .SH SYNOPSIS
@@ -92,6 +92,17 @@ and its tense, gender, associated Kinnuy, or other relevant information)
 If Hspell was built without morphological analysis support, this option will
 only show the correct splits of the given word into prefix + word, as the
 full information incurs a 4-fold increase in the installation size.
+
+Giving the
+.B \-c
+option in addition to
+.B \-l
+results in special behavior. In that case we suggest "corrections"
+to every word (regardless if they are in the dictionary or not), and show
+the linguistic information on all those words. This can be useful
+for a reader application, which may also want to be able to understand
+mispellings and their possible meanings.
+
 .TP
 .B \-s
 Normally, the words deemed spelling mistakes are shown in alphabetical order.
@@ -128,6 +139,12 @@ false-negatives (errors, like He followed by a possessed noun, are thought
 to be correct). The
 .B \-H
 option nevertheless tells Hspell to allow this prefix.
+.TP
+.B \-D base
+load the word lists from the given base pathname, rather than from the
+compiled-in default path. This is mostly used for testing Hspell, when the
+dictionaries have been compiled in the current directory and hspell is run as
+"hspell -Dhebrew.wgz".
 .TP
 .B \-d \-B, \-m, \-T, \-C, \-S, \-P, \-p, \-w, and \-W
 These options are passed to 
@@ -217,9 +234,9 @@ Currently always 0.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 0.8 (June 21, 2004)
+described by this manual page is 0.9 (January 13, 2005)
 .SH "COPYRIGHT"
-Copyright (C) 2000-2004, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2005, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
 Hspell is free software, released under the GNU General Public License (GPL).

@@ -23,21 +23,22 @@ use IPC::Open2;
 use IO::Handle;
 
 # options to pass to both hspell and ispell:
-my @common_opts = qw/ --dummy /;
+my @common_opts	    = qw/ --dummy /;
 # options to pass to hspell only:
-my @hspell_opts = qw/ -n --notes --verbose /;
-my $hspell_cmd  = "hspell";
-my $ispell_cmd  = "ispell";
-my $remove_niqqud = 0;
+my @hspell_opts	    = qw/ -n --notes --verbose /;
+my $hspell_cmd	    = "hspell";
+my $ispell_cmd	    = "ispell";
+my $remove_niqqud   = 0;
 
-my $debug	= 0;
-my $debug_file	= "$ENV{HOME}/multispell-dbg.txt";
-my $rc_file	= "$ENV{HOME}/.multispellrc";
+my $debug	    = 0;
+my $debug_file	    = "$ENV{HOME}/multispell-dbg.txt";
+my $rc_file	    = "$ENV{HOME}/.multispellrc";
+my $rc_file_global  = "/etc/multispellrc";
 
 my ($hsplrd, $hsplwr); # pipes to hspell
 my ($isplrd, $isplwr); # pipes to ispell
 
-my $VERSION = "0.2";
+my $VERSION = "0.4a";
 
 sub DBG {
     if ($debug) {
@@ -84,9 +85,12 @@ VALID MULTISPELL-OPTIONS:
 	    Print this message
 
 FILES:
-    ~/.multispellrc
-	    Additional command-line options to use. These override
+    /etc/multispellrc
+	    Additional command-line options to use. These _override_
 	    the ones specified on the command-line.
+
+    ~/.multispellrc
+	    If found, used _instead_ of /etc/multispellrc
 
 EOM
     exit;
@@ -134,6 +138,15 @@ sub do_loop {
 	DBG(">$line");
 	my @replies = ();
 
+	# if the last line of the input does not end in newline, add it ourselves
+	# so that hspell doesn't hang waiting for it.
+	# e.g.: echo -n word | multispell -a
+	$line .= "\n" if $line !~ /\n/;
+
+	# a workaround for some versions of Aspell that ignore empty input lines.
+	# see http://ivrix.org.il/bugzilla/show_bug.cgi?id=3
+	$line = " \n" if $line eq "\n";
+
 	if ($remove_niqqud) {
 	    # erase words containing CP1255's niqqud (hebrew points)
 	    $line =~ s/([$niqqud_heb_chars]+[$niqqud_chars][$niqqud_heb_chars]*)/
@@ -143,9 +156,10 @@ sub do_loop {
 	}
 	
 	if ($line =~ /^[#!~@%+&*-]/) {
-	    if ($line =~ /^[@*]/) {
+	    if ($line =~ /^[@&*]/) {
 		# "@word" - ignore word.
-		# "*word" - add word to private dict.		
+		# "*word" - add word to private dict.
+		# "&word" - ditto.
 		# We send hebrew words to hspell, otherwise to ispell
 		if ($line =~ /[$heb_chars]/o
 			|| $line eq "\@ActivateExtendedProtocol\n") {
@@ -234,6 +248,26 @@ sub extract_options {
     return $args;
 }
 
+# tokenize_cmd_line() is used for parsing the RC files.
+# it takes a command line string, e.g.:
+#   -x --opt="one two" -i 'on"e" two'
+# and returns an array:
+#   ('-x', '--opt=one two', '-i', 'on"e" two')
+
+sub tokenize_cmd_line {
+    my $s = shift;
+    return  map {
+		s/['"]//;
+		s/['"]$//;
+		$_;
+	    } grep {
+		/\S/
+	    } split( /(
+		[^\s'"]*(?:'.*?'|".*?") |
+		[^\s'"]+
+	    )/x , $s);
+}
+
 main: {
     $| = 1;
     Getopt::Long::Configure("bundling_override", "pass_through");
@@ -242,11 +276,17 @@ main: {
     my $dictionary	= "";
     my @drop_opts	= ();
 
-    if (-r $rc_file) {
-	open(RC, $rc_file);
+    # Applications use the '-d' option to select a dictionary.
+    # We don't want aspell to consider the locale when '-d' is not specified,
+    # because in most cases that's not what the user wants (e.g. he_IL), and,
+    # anyway, we can't represent most languages other than English in
+    # ISO-8859-8.
+    $ENV{'LC_ALL'} = 'C';
+
+    if (open(RC, $rc_file) || open(RC, $rc_file_global)) {
 	while (<RC>) {
 	    s/#.*//;
-	    push @ARGV, split ' ';
+	    push @ARGV, tokenize_cmd_line($_);
 	}
 	close(RC);
     }
@@ -270,7 +310,9 @@ main: {
 	open(DBGFL, ">>$debug_file");
 	autoflush DBGFL 1;
 	DBG("\n\n" . "-" x 75 . "\n");
-	DBG("I was invoked: $0 @saved_argv\n");
+	DBG("I was invoked: $0");
+	DBG(" '$_'") for @saved_argv;
+	DBG("\n");
 	DBG("On: " . localtime() . "\n");
 	# According to SUSV, the following 'ps' command is portable,
 	# but I don't want to take risks, so I run it only on linux.

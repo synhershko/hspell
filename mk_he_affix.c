@@ -28,6 +28,9 @@ int main(void) {
           HSPELL_VERSION_MAJOR,HSPELL_VERSION_MINOR,HSPELL_VERSION_EXTRA,
           __DATE__); 
   fprintf(hefp, "# Copyright 2004, Nadav Har'El and Dan Kenigsberg\n"); 
+  fprintf(hefp, "# This dictionary (this file and the corresponding word list)\n"
+                "# is licensed under the GNU General Public License (GPL)\n"); 
+
   prefixfp = popen("gzip -dc hebrew.wgz.prefixes", "r");
   while ((specifier=fgetc(prefixfp))!= EOF) {
     for(i=0, seen=0; (i<already_seen) && !seen; i++) {
@@ -37,10 +40,13 @@ int main(void) {
 
     /* count the number of matching prefixes */
     for (i=1, count=0; prefixes_noH[i]!=0; i++) {
-      if (masks_noH[i] & specifier) count++;
+      if (masks_noH[i] & specifier) {
+        if (!strcmp("е",prefixes_noH[i])) count += 2;
+        else count += 4;
+      }
     }
     rulechar = already_seen+'A'-1;
-    fprintf(hefp, "PFX %c N %d\n",rulechar,2*count-1);
+    fprintf(hefp, "PFX %c N %d\n",rulechar,count);
 
     /* print one rule for each leagal prefix, and remember to double initial waw
        if a prefix is prepended. */
@@ -55,10 +61,13 @@ int main(void) {
       if (masks_noH[i] & specifier) {
         if (!strcmp("е",prefixes_noH[i])) {
           fprintf(hefp, "PFX %c   0 %s .\n",rulechar,prefixes_noH[i]);
+          fprintf(hefp, "PFX %c   0 %s\" .\n",rulechar,prefixes_noH[i]);
         }
         else {
           fprintf(hefp, "PFX %c   0 %s [^е]\n",rulechar,prefixes_noH[i]);
-          fprintf(hefp, "PFX %c   0 %sе е\n",rulechar,prefixes_noH[i]);
+          fprintf(hefp, "PFX %c   0 %s ее\n",rulechar,prefixes_noH[i]);
+          fprintf(hefp, "PFX %c   0 %s\" .\n",rulechar,prefixes_noH[i]);
+          fprintf(hefp, "PFX %c   0 %sе е[^е]\n",rulechar,prefixes_noH[i]);
         }
       }
     }

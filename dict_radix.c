@@ -130,7 +130,12 @@ struct node_medium {
 };
 
 
-inline int char_to_letter(unsigned char c)
+/* Note: char_to_letter prints a message when it comes across an invalid
+   letter, so it should not be used in lookup(), only in reading the
+   dictionary (which is assumed to contain only valid words). lookup()
+   has its own implementation of this function inside it.
+*/
+static inline int char_to_letter(unsigned char c)
 {
 	if(c>=(unsigned char)'à' && c<(unsigned char)'à'+27){
 		return c - (unsigned char)'à' + 2;
@@ -140,14 +145,12 @@ inline int char_to_letter(unsigned char c)
 		return 1;
 	} else {
 		fprintf(stderr,"Hspell: unknown letter %c...\n",c);
-		/* This is not a really sensible thing to do, but there's
-		   nothing we really can do if the dictionary contains bad
-		   letters. If we had exceptions, we could throw one here...*/
+		/* a silly thing to do, but what the heck */
 		return 0;
 	}
 }
 
-inline unsigned char letter_to_char(int l)
+static inline unsigned char letter_to_char(int l)
 {
 	if(l>=2 && l<29){
 		return l+(unsigned char)'à'-2;
@@ -692,9 +695,21 @@ lookup(const struct dict_radix *dict, const char *word)
 			break;
 		case HIGHBITS_FULL:
 			if(*word){
+				/* the following is a copy of char_to_letter */
+				register int ind;
+				register unsigned char c = *word;
+				if(c>=(unsigned char)'à' &&
+				   c<(unsigned char)'à'+27)
+					ind = c - (unsigned char)'à' + 2;
+				else if (c=='"')
+					ind = 0;
+				else if (c=='\'')
+					ind = 1;
+				else
+					return 0; /* non-Hebrew letter */
 				current=dict->nodes[current.val_or_index
 						    & VALUEMASK]
-					.children[char_to_letter(*word)];
+					.children[ind];
 			} else {
 				return dict->nodes[current.val_or_index
 						   & VALUEMASK].value;

@@ -8,12 +8,12 @@ usually as simple as running
 	make
 	make install
 
-Note that before running "make install", you won't be able to run the hspell
-executable from the build directory, because it expects the dictionary files
-to be installed in their final position. A workaround is available for those
-who want to test, but not to install, hspell: doing "./configure --enable-test"
-will create an executable that expects the dictionaries to be present in the
-current directory.
+Note that before running "make install", if you want to run the hspell
+executable from the build directory, you must tell it to expect the dictionary
+files in the current directory, rather than in their final location. Do this
+by running "hspell -Dhebrew.wgz". You can also replace the first step
+above with "./configure --enable-test" to create an executable that will
+always expect by default to find the dictionaries in the current directory.
 
 By default, Hspell is built for installation in the /usr/local tree. If you
 want to install it somewhere else, use "./configure --prefix=/some/dir".
@@ -41,7 +41,7 @@ probably slightly more useful:
         isn't used.
 
   --enable-aspell
-        Build data files - he_affix.dat and he.cwl - suitable for use as
+        Build data files - he_affix.dat and he.wl - suitable for use as
         Aspell 0.6 dictionary for Hebrew. Probably not useful for anyone
         but Aspell's dictionary package developers.
 

@@ -1,4 +1,4 @@
-/* Copyright (C) 2003 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2004 Nadav Har'El and Dan Kenigsberg */
 
 #ifndef INCLUDED_HASH_H
 #define INCLUDED_HASH_H
@@ -11,6 +11,12 @@
    void hspell_hash_init(hspell_hash *p);
    void hspell_hash_incr_int(hspell_hash *hashp, const char *key);
 
+   int hspell_hash_exists(hspell_hash *hashp, const char *key);
+   int hspell_hash_get_int(hspell_hash *hashp, const char *key, int *value);
+   void hspell_hash_set_int(hspell_hash *hashp, const char *key, int value);
+   void hspell_hash_destroy(hspell_hash *p);
+
+
    typedef struct {
       const char *key;
       int value;
@@ -19,13 +25,12 @@
                                                           int *size);
    void hspell_hash_free_keyvalue_array(hspell_hash *h, int size,
                                         hspell_hash_keyvalue *p);
-   int hspell_hash_exists(hspell_hash *hashp, const char *key)
 */
 #include "tclHash.h"
 
 typedef Tcl_HashTable hspell_hash;
 
-inline void hspell_hash_init(hspell_hash *p)
+static inline void hspell_hash_init(hspell_hash *p)
 {
 	Tcl_InitHashTable(p, TCL_STRING_KEYS);
 }
@@ -34,7 +39,7 @@ inline void hspell_hash_init(hspell_hash *p)
    for the key. If there is no value for this key yet, it is initialized
    to zero and then incremented to 1.
 */
-inline void hspell_hash_incr_int(hspell_hash *hashp, const char *key)
+static inline void hspell_hash_incr_int(hspell_hash *hashp, const char *key)
 {
 	Tcl_HashEntry *e;
 	int isnew;
@@ -51,7 +56,7 @@ inline void hspell_hash_incr_int(hspell_hash *hashp, const char *key)
 /* hspell_hash_exists returns 0 if there is no value for this key yet, 1
    otherwise.
 */
-inline int hspell_hash_exists(hspell_hash *hashp, const char *key)
+static inline int hspell_hash_exists(hspell_hash *hashp, const char *key)
 {
 	Tcl_HashEntry *e;
 	e=Tcl_FindHashEntry(hashp, key);
@@ -67,12 +72,12 @@ typedef struct {
    from the given hash table.  Note that the keys are pointers to strings
    that sit inside the hash table, so they are only valid until the next
    time some key is deleted from the hash-table (or the hash table itself
-   is deleted.
+   is deleted).
    This function return a pointer which the caller should free with
    hspell_hash_free_keyvalue_array(). 
 */
-inline hspell_hash_keyvalue *hspell_hash_build_keyvalue_array(hspell_hash *h,
-							      int *size)
+static inline hspell_hash_keyvalue *hspell_hash_build_keyvalue_array(
+	hspell_hash *h, int *size)
 {
 	Tcl_HashEntry *e;
 	Tcl_HashSearch s;
@@ -111,8 +116,8 @@ inline hspell_hash_keyvalue *hspell_hash_build_keyvalue_array(hspell_hash *h,
 	return array;
 }
 
-inline void hspell_hash_free_keyvalue_array(hspell_hash *h, int size,
-					    hspell_hash_keyvalue *p)
+static inline void hspell_hash_free_keyvalue_array(hspell_hash *h, int size,
+					           hspell_hash_keyvalue *p)
 {
 	if(p)
 		free(p);
@@ -126,8 +131,8 @@ inline void hspell_hash_free_keyvalue_array(hspell_hash *h, int size,
    The get function returns 0 on failure, and 1 on success with the value
    put in the given pointer.
 */
-inline int hspell_hash_get_int(hspell_hash *hashp, const char *key,
-			       int *value)
+static inline int hspell_hash_get_int(hspell_hash *hashp, const char *key,
+			              int *value)
 {
 	Tcl_HashEntry *e;
 
@@ -137,14 +142,22 @@ inline int hspell_hash_get_int(hspell_hash *hashp, const char *key,
 	return 1;
 }
 
-inline void hspell_hash_set_int(hspell_hash *hashp, const char *key,
-				int value)
+static inline void hspell_hash_set_int(hspell_hash *hashp, const char *key,
+				       int value)
 {
 	Tcl_HashEntry *e;
 	int isnew;
 
 	e=Tcl_CreateHashEntry(hashp, key, &isnew);
 	Tcl_SetHashValue(e, value);
+}
+
+/* After calling hspell_hash_destroy on p, p should not be used again
+   until hspell_hash_init is used to create a new hash table.
+*/
+static inline void hspell_hash_destroy(hspell_hash *p)
+{
+	Tcl_DeleteHashTable(p, TCL_STRING_KEYS);
 }
 
 #endif /* INCLUDED_HASH_H */

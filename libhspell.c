@@ -10,6 +10,32 @@
 #include "hspell.h"
 #include "linginfo.h"
 
+
+/* Hspell uses a dictionary, and several related files (prefix information,
+   sizes information, stems, and linguistic description file). It needs
+   to know the path of the dictionary, and to that it add suffixes to get
+   the names of the other files.
+
+   The function hspell_set_dictionary_path() can be used before calling
+   hspell_init() to determine where that function loads the dictionary
+   from. hspell_get_dictionary_path() queries the current setting.
+*/
+static const char *hspell_dictionary = DICTIONARY_BASE;
+
+const char *
+hspell_get_dictionary_path(void)
+{
+	return hspell_dictionary;
+}
+
+void
+
+hspell_set_dictionary_path(const char *path)
+{
+	hspell_dictionary = path;
+}
+
+
 /* TODO: compile out debug code in production version... */
 int hspell_debug=0;
 
@@ -26,10 +52,8 @@ load_data(struct dict_radix **dictp)
 	}
 
 	*dictp = new_dict_radix();
-#ifndef DICTIONARY_BASE
-#define DICTIONARY_BASE "./hebrew.wgz"
-#endif
-	if(!read_dict(*dictp, DICTIONARY_BASE)){
+	if(!read_dict(*dictp, hspell_dictionary)){
+		delete_dict_radix(*dictp);
 		return -1;
 	}
 
@@ -300,7 +324,42 @@ int hspell_enum_splits(struct dict_radix *dict, const char *word,
 	return count;
 }
 
+/* In the past, we used to use snprintf for this splicing needed for
+   hspell_trycorrect. But it turns out that snprintf, when given the %.*s
+   format, counts locale "characters", and not bytes. When the locale was
+   UTF8, this made it count wrong, despite us knowing here that we only
+   deal with iso-8859-8. So let's implement this functionality on our own.
+   This is ugly :(
 
+   This function splices together the first s1len characters of s1, then
+   two characters c1,c2 (or nothing if c is 0) and the string s2.
+*/
+static inline splice(char *buf, int size, const char *s1, int s1len,
+		     char c1, char c2, const char *s2)
+{
+	int len=s1len;
+	if(len>=size)
+		len=size-1;
+	strncpy(buf,s1,len);
+	if(len+1>=size){
+		buf[len]='\0';
+		return;
+	} else if(c1) {
+		buf[len++]=c1;
+	}
+	if(len+1>=size){
+		buf[len]='\0';
+		return;
+	} else if(c2) {
+		buf[len++]=c2;
+	}
+	if(s2){
+		strncpy(buf+len,s2,size-len-1);
+		buf[size-1]='\0'; /* in case the last command truncated */
+	} else {
+		buf[len]='\0';
+	}
+}
 
 /* try to find corrections for word */
 void
@@ -315,16 +374,16 @@ hspell_trycorrect(struct dict_radix *dict, const char *w, struct corlist *cl)
 #define TRYBUF if(hspell_check_word(dict, buf, &preflen)) corlist_add(cl, buf)
 	/* try to add a missing em kri'a - yud or vav */
 	for(i=1;i<len;i++){
-		snprintf(buf,sizeof(buf),"%.*sй%s",i,w,w+i);
+		splice(buf,sizeof(buf),w,i,'й',0,w+i);
 		TRYBUF;
-		snprintf(buf,sizeof(buf),"%.*sе%s",i,w,w+i);
+		splice(buf,sizeof(buf),w,i,'е',0,w+i);
 		TRYBUF;
 	}
 	/* try to remove an em kri'a - yud or vav */
 	/* NOTE: in hspell.pl the loop was from i=0 to i<len... */
 	for(i=1;i<len-1;i++){
 		if(w[i]=='й' || w[i]=='е'){
-			snprintf(buf,sizeof(buf),"%.*s%s",i,w,w+i+1);
+			splice(buf,sizeof(buf),w,i,0,0,w+i+1);
 			TRYBUF;
 		}
 	}
@@ -332,12 +391,12 @@ hspell_trycorrect(struct dict_radix *dict, const char *w, struct corlist *cl)
 	/* TODO: don't add an aleph next to yud or non-double vav,
 	 * as it can't be an em kria there? */
 	for(i=1;i<len;i++){
-		snprintf(buf,sizeof(buf),"%.*sа%s",i,w,w+i);
+		splice(buf,sizeof(buf),w,i,'а',0,w+i);
 		TRYBUF;
 	}
 	for(i=1;i<len-1;i++){
 		if(w[i]=='а'){
-			snprintf(buf,sizeof(buf),"%.*s%s",i,w,w+i+1);
+			splice(buf,sizeof(buf),w,i,0,0,w+i+1);
 			TRYBUF;
 		}
 	}
@@ -356,14 +415,11 @@ hspell_trycorrect(struct dict_radix *dict, const char *w, struct corlist *cl)
 				for(g=similar[group];*g;g++){
 					if(*g==w[i]) continue;
 					if(i>0 && w[i]=='е' && w[i+1]=='е')
-						snprintf(buf,sizeof(buf),
-						    "%.*s%c%s",i,w,*g,w+i+2);
+						splice(buf,sizeof(buf),w,i,*g,0,w+i+2);
 					else if(*g=='е')
-						snprintf(buf,sizeof(buf),
-						    "%.*sее%s",i,w,w+i+1);
+						splice(buf,sizeof(buf),w,i,'е','е',w+i+1);
 					else
-						snprintf(buf,sizeof(buf),
-						   "%.*s%c%s",i,w,*g,w+i+1);
+						splice(buf,sizeof(buf),w,i,*g,0,w+i+1);
 					TRYBUF;
 				}
 			}
@@ -387,7 +443,7 @@ hspell_trycorrect(struct dict_radix *dict, const char *w, struct corlist *cl)
 	if(buf[len-1]!=w[len-1]){ TRYBUF; }
 	/* try to make the word into an acronym (add " before last character */
 	if(len>=2){
-		snprintf(buf,sizeof(buf), "%.*s\"%c",len-1,w,w[len-1]);
+		splice(buf,sizeof(buf),w,len-1,'"',w[len-1],0);
 		TRYBUF;
 	}
 	/* try to make the word into an abbreviation (add ' at the end) */
@@ -409,7 +465,7 @@ hspell_init(struct dict_radix **dictp, int flags){
 	build_prefix_tree(flags & HSPELL_OPT_HE_SHEELA);
 #ifdef USE_LINGINFO
 	if (flags & HSPELL_OPT_LINGUISTICS) {
-		if (!linginfo_init(DICTIONARY_BASE)) return -1;
+		if (!linginfo_init(hspell_dictionary)) return -1;
 	}
 #endif
 	return 0;
