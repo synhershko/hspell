@@ -1,31 +1,28 @@
-We are proud to announce version 0.1 of Hspell, the free Hebrew spellchecker
-and morphology engine.
+This is version 0.2 of Hspell, the free Hebrew spellchecker and morphology
+engine.
 
-We have worked very hard to bring you a fully working Hebrew spellchecker
-on the first release. It is not a toy release, and on typical documents it
-should recognize the majority of correct words. However, users of this release
-must take into account that it still will not recognize *all* the correct
-words; The dictionary is still admittedly not complete, and this situation
-will be improved in the next releases. On the other hand, barring bugs
-hspell should not recognize incorrect words - extreme attention has been
+It is a fully working Hebrew spellchecker, not a toy release. On typical
+documents it should recognize the majority of correct words. However, users
+of this release must take into account that it still will not recognize *all*
+the correct words; The dictionary is still admittedly not complete, and this
+situation will be improved in the next releases. On the other hand, barring
+bugs hspell should not recognize incorrect words - extreme attention has been
 given to the correctness and consistency of the dictionary.
 
 You can get Hspell from:
 	http://www.ivrix.org.il/projects/spell-checker/
 
 Hspell was written by Nadav Har'El and Dan Kenigsberg.
-Thanks to Uwe Brauer and Michael Lugassy for "convincing" us to start and
-to advance this project when we were almost ready to give up.
 
 People who wish to integrate Hspell's technology into their or others' GPL
 software (e.g., word processors, editors), are encouraged to do so, and are
 welcome to contact us for help. People who wish to help us with enlarging
 the word lists, are also encouraged to contact us and will be appreciated
-(see the full README for instructions on how to help).
+(see below for instructions on how you can help).
 
-The full README (http://www.ivrix.org.il/projects/spell-checker/README)
-explains Hspell's spelling standard (niqqud-less), a bit about the technology
-behind Hspell, how to use the "hspell" program, and lists a few future
+The rest of this README file explains Hspell's spelling standard (niqqud-less),
+a bit about the technology behind Hspell, how to use the "hspell" program
+(but see the manual page for more current information), and lists a few future
 directions.
 
 

@@ -1,0 +1,34 @@
+Release 0.2: (January 5, 2003)
+ * Many more nouns, verbs, and other words: around 2500 new base words, and
+   40,000 inflections. Emphasis has been given to adding *common* words that
+   will appear in typical, modern, documents.
+ * Several incorrect words purged or fixed.
+ * Wolig.pl (noun inflector) overhaul to better and more consistently handle
+   niqqud-less (ktiv male) spelling rules, and to be able to theoretically
+   handle at least 99.9% of the Hebrew nouns (of course, we don't have all of
+   them in the dictionary, yet :)).
+ * -n option to hspell program, which gives longer (human-written) explanations
+   on certain spelling errors - especially common niqqud-less spelling errors.
+ * Read additional accepted words from ~/.hspell_words and/or ./hspell_words
+ * Kinuim Khavurim (possesive suffixes) are recognized on the infinitive forms
+   of the verb.
+ * Added manual page, hspell(1)
+ * Improved Makefile (thanks to Oron Peled) and made other changes to the
+   distribution (thanks to Baruch Even) for more easily building binary
+   packages of hspell.
+
+ * Vocabulary: 169,266 words
+               based on 4505 nouns, 645 adjectives, 3407 verb stems, and
+	       1237 other words
+
+-----------------------------------------------------------------------------
+Release 0.1: (first public release - December 13, 2002)
+
+ * Vocabulary: 125,022 words
+               based on 3206 nouns, 452 adjectives, 2712 verb stems, and
+	       980 other words
+
+ * In this release we would like to thank Uwe Brauer and Michael Lugassy for
+   "convincing" us to start and to advance this project when we were almost
+   ready to give up.
+   See more acknowledgments in the README file.

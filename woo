@@ -47,9 +47,9 @@ while(<$fh>){
     push @binyanim, $Word::qutal if ($opts{"פו"});
     push @binyanim, $Word::hitqatel if ($opts{"הת"});
 
-#    $transitive{$Word::qal}=1 if ($opts{"קל_אפעל+"}||$opts{"קל_אפעול+"});
-#    $transitive{$Word::hiqtil}=1 if ($opts{"הפ+"});
-#    $transitive{$Word::qitel}=1 if ($opts{"פי+"});
+    $transitive{$Word::qal}=1 if ($opts{"קל_אפעל+"}||$opts{"קל_אפעול+"});
+    $transitive{$Word::hiqtil}=1 if ($opts{"הפ+"});
+    $transitive{$Word::qitel}=1 if ($opts{"פי+"});
 
     $w->{opts}= \%opts; #TODO pass only relevant options.
  
@@ -63,7 +63,7 @@ while(<$fh>){
       if (defined($s) && $transitive{$w->{binyan}} ) {
 	foreach $bj (1,2,4,5,6,7,8,9,10) {
           my $n = $w->objectize($s, $bj);
-          print &Word::finalize($n),"*\n" if $n;
+          print &Word::finalize($n),"\n" if $n;
         }
       }
 
@@ -71,7 +71,12 @@ while(<$fh>){
       {
         $s = $w->past_conj($g);
         $w->outword($s);
-	if ($transitive{$w->{binyan}}) {
+	# support for the mostly-archaic nitpa`el form.
+	if ($w->{binyan} == $Word::hitqatel && ${$w->{opts}}{"גם_נת"}) {
+	  $s =~ s/^ה/נ/o;
+          $w->outword($s);
+	}
+	if (0 && $transitive{$w->{binyan}}) {
 	  next if $g eq 8; # $aten is same as transitivisation of $atem
           foreach $bj (1,2,4,5,6,7,8,9,10) {
 	    my $n = $w->objectize($s, $bj);
@@ -83,7 +88,7 @@ while(<$fh>){
       {
 	$s = $w->imperative_conj($g);
         $w->outword($s);
-	if ($transitive{$w->{binyan}}) {
+	if (0 && $transitive{$w->{binyan}}) {
 	  next if $g eq 8; # TODO do $aten have objectization??
           foreach $bj (1,2,4,5,6,7,8,9,10) {
 	    my $n = $w->objectize($s, $bj);
@@ -100,6 +105,8 @@ while(<$fh>){
       {
         $s = $w->present_conj($g);
         $w->outword($s);
+	if ($s && $g eq 3) {if ($s =~ s/ה$/ת-/) {$w->outword($s);}}
+	if ($s && $g eq 7) {$s =~ s/ם$/-/; $w->outword($s);}
       }
       if ($w->{binyan} eq $Word::qal) {
         foreach $g (2,3,7,8)
@@ -139,11 +146,6 @@ while(<$fh>){
     
     %future_initial = ($ani=>'א', $ata=>'ת', $at=>'ת', $hu=>'י', $hi=>'ת',
 	$anu=>'נ', $atem=>'ת', $aten=>'ת', $hem=>'י', $hen=>'ת');
-
-    %list1_future = ('לטעת'=>'ליטע', 'לרדת'=>'לרד', 'לגעת'=>'ליגע', 
-	'ללכת'=>'ללכ', 'לגשת'=>'ליגש', 'לצאת'=>'לצא', 'לשבת'=>'לשב', 
-	'לדעת'=>'לדע', 'לקחת'=>'ליקח', 'לתת'=>'ליתנ', 'לשאת'=>'לישא',
-	'לצקת'=>'לנצוק', 'ללדת'=>'ללד', 'לרשת'=>'לירש');
 
     %object_suf = ($ani=>'ני', $ata=>'ך', $at=>'ך', $hu=>'הו', $hi=>'ה', 
 	$anu=>'נו', $atem=>'כם', $aten=>'כן', $hem=>'ם', $hen=>'ן');
@@ -791,9 +793,10 @@ _cond_debug('5');
       } else {
 	#cond #7 - is $m in list1?
 _cond_debug('7');
-	if ($list1_future{$m}) {
+	# this list1 thing is soooo ugly: TODO: change it!
+	if (${$w->{opts}}{'עתיד1'}) {
 	  #action #8 - convert according to list1
-	  $m = $list1_future{$m};
+	  $m = ${$w->{opts}}{'עתיד1'};
 	  #jump to #10
           $m = $w->_future_cond10($m);
 	} else {
@@ -1089,9 +1092,13 @@ _cond_debug(9);
     my ($w, $s, $bj, $suf) = @_;
     $w->{object} = $bj;
     if ($w->{tense} eq $infinitive) {
-      $s =~ s/^ל(.)(.)ו(?=.$)/ל$1ו$2/ if $w->{binyan} eq $qal;
+      $s =~ s/^ל(.)(.)ו(?=.$)/ל$1ו$2/ if $w->{binyan} eq $qal && 
+			!$w->_nakey_lh && $bj !~ m/^($atem|$aten)$/;
+      # TODO move the handling of Dobles to all tenses
+      $s =~ s/(?=.$)/י/o if ($w->{t} eq $w->{l} && !${$w->{opts}}{"שמור_עע"});
       $suf = $object_suf{$bj};
       $suf =~ s/^הו$/ו/;
+      $s =~ s/ל/L/o;
       return $s.$suf;
     }
     if (defined $w->{guf}) {
@@ -1131,7 +1138,10 @@ _cond_debug(9);
       $mult = 's' if $w->{guf} =~ m/^($ani|$ata|$at|$hu|$hi)$/o;
       $mult = 'p' if $w->{guf} =~ m/^($anu|$aten|$atem|$hem|$hen)$/o;
     }
-    
+
+    $s =~ s/Yו/יו/;
+    $s =~ s/וY/וי/;
+    $s =~ s/Y/יי/;
     print finalize($s).
 	#"\tv $tense,$person,$gender,$mult".
 	"\n";
