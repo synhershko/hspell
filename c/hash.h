@@ -1,3 +1,5 @@
+/* Copyright (C) 2003 Nadav Har'El and Dan Kenigsberg */
+
 #ifndef INCLUDED_HASH_H
 #define INCLUDED_HASH_H
 
@@ -61,7 +63,7 @@ typedef struct {
 	int value;
 } hspell_hash_keyvalue;
 
-/* Hspell_hash_build_keyvalue_vector builds an array of keys an values
+/* Hspell_hash_build_keyvalue_vector builds an array of keys and values
    from the given hash table.  Note that the keys are pointers to strings
    that sit inside the hash table, so they are only valid until the next
    time some key is deleted from the hash-table (or the hash table itself
@@ -115,4 +117,34 @@ inline void hspell_hash_free_keyvalue_array(hspell_hash *h, int size,
 	if(p)
 		free(p);
 }
+
+/* The following functions also keep integer values in the hash table.
+   These values must be small enough to fit in the flatform's pointer
+   (on modern machines, this is not a problem - pointers are usually
+   as large, or even larger, than integers). These functions are useful for
+   Hspell's "-n" option, for example.
+   The get function returns 0 on failure, and 1 on success with the value
+   put in the given pointer.
+*/
+inline int hspell_hash_get_int(hspell_hash *hashp, const char *key,
+			       int *value)
+{
+	Tcl_HashEntry *e;
+
+	if(!(e=Tcl_FindHashEntry(hashp, key)))
+		return 0;
+	*value=(int)Tcl_GetHashValue(e);
+	return 1;
+}
+
+inline void hspell_hash_set_int(hspell_hash *hashp, const char *key,
+				int value)
+{
+	Tcl_HashEntry *e;
+	int isnew;
+
+	e=Tcl_CreateHashEntry(hashp, key, &isnew);
+	Tcl_SetHashValue(e, value);
+}
+
 #endif /* INCLUDED_HASH_H */

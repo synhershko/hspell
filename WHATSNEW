@@ -1,3 +1,38 @@
+Release 0.7 (December 22, 2003):
+
+ * Some incorrect words purged or fixed, and many more words added: over
+   1,000 base words added.
+
+ * Portability improvements (thanks to Baruch Even).
+
+ * New run-time option -H causes hspell to accept He Ha-she'ela in the text.
+
+ * The "-n" option (for spelling hints, an explanation of certain kinds of
+   errors) that was lost in version 0.6, is now back. The "likelyerrors"
+   feature is still missing in this version.
+
+ * A new, and somewhat tentative, Documented C API (libhspell.a library,
+   spell.h header, hspell.3 manual). This are not available in the normal
+   RPM - compile the sources yourself if you want them.
+
+ * A full morphological analyzer (explaining all the possible ways to read
+   a given word, how each reading was derived and its syntactic properties)
+   is now available when Hspell is run with the "-l" option.
+
+   Because the data files needed for this feature currently take up as much
+   as 4 times the space needed only for spell-checking, and because the
+   collection and sorting of linguistic information makes the compilation
+   takes much longer, this feature is not compiled by default, unless
+   compilation is done with "make linginfo". Also, the normal RPM does not
+   include this feature, but the "fat" RPM does include it.
+   An innovative parade of hash symbols now appears on screen to the benefit
+   of the bored builder :)
+
+ * Vocabulary: 406,629 words (when including kinuyim on verbs)
+               based on 8042 nouns, 1783 adjectives, 5113 verb stems, and
+	       1880 other words
+
+-----------------------------------------------------------------------------
 Release 0.6 (August 5, 2003):
 
  In this release, the Hspell front-end (the hspell program) was rewritten.
@@ -22,6 +57,7 @@ Release 0.6 (August 5, 2003):
    dictionary (~/.hspell_words or ./hspell_words) are no longer automatically
    accepted with prefixes. Also, these words are never used as suggested
    corrections.
+
 
  * "hspell -a" was made more compatible with the standard "ispell -a" (thanks
    to Mooffie). Hspell is now known to be used with LyX, KDE, Geresh and Emacs.

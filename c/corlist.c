@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-#include "corlist.h"
+#include "hspell.h"
 
 int
 corlist_init(struct corlist *cl)

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# Copyright (C) 2000-2002 Nadav Har'El, Dan Kenigsberg
+# Copyright (C) 2000-2003 Nadav Har'El, Dan Kenigsberg
 #
 use Carp;
 use FileHandle;
@@ -18,11 +18,13 @@ sub outword {
 
   # change otiot-sofiot in the middle of the word
   # (the silly a-z was added for our special "y" and "w" marks).
-  $word =~ s/ך(?=[א-תa-z])/כ/go;
-  $word =~ s/ן(?=[א-תa-z])/נ/go;
-  $word =~ s/ם(?=[א-תa-z])/מ/go;
-  $word =~ s/ץ(?=[א-תa-z])/צ/go;
-  $word =~ s/ף(?=[א-תa-z])/פ/go;
+  # (the ('?) and $1 are for סנדוויץ', סנדוויצ'ים)
+  #$word =~ s/ך(?=[א-תa-z])/כ/go;
+  $word =~ s/ך('?)(?=[א-תa-z])/כ$1/go;
+  $word =~ s/ן('?)(?=[א-תa-z])/נ$1/go;
+  $word =~ s/ם('?)(?=[א-תa-z])/מ$1/go;
+  $word =~ s/ץ('?)(?=[א-תa-z])/צ$1/go;
+  $word =~ s/ף('?)(?=[א-תa-z])/פ$1/go;
 
   # change special consonant marks into the proper Hebrew letters, using
   # proper ktiv male rules.
@@ -604,11 +606,18 @@ while(<$fh>){
       $xword=$xword."י";
       $opts{"נקבה_ת"}=1;
     }
-    my $nekeva_implicit = !($opts{"נקבה_ת"} || $opts{"נקבה_ה"});
+    my $nekeva_implicit = !($opts{"נקבה_ת"} || $opts{"נקבה_ה"} ||
+    			    $opts{"יחידה"});
     my $nekeva_t = $opts{"נקבה_ת"} ||
     		   ($nekeva_implicit && substr($xword,-1,1) eq "י");
     my $nekeva_h = $opts{"נקבה_ה"} ||
     		   ($nekeva_implicit && !$nekeva_t);
+    if(exists($opts{"יחידה"})){
+      my $yechida=$opts{"יחידה"};
+      outword $yechida,     "ת,יחיד,נ";
+      $yechida =~ s/ה$/ת/ if(!$opts{"שמור_ה"});
+      outword $yechida."-", "ת,יחיד,נ,סמיכות";
+    }
     if($nekeva_t){
       if(substr($word,-1,1) eq "ה" && !$opts{"שמור_ה"}){
         # This is a rare case, where an adjective ending with ה gets a ת

@@ -1,3 +1,5 @@
+/* Copyright (C) 2003 Nadav Har'El and Dan Kenigsberg */
+
 #ifndef INCLUDED_RADIX_H
 #define INCLUDED_RADIX_H
 

@@ -8,6 +8,7 @@
 
 #include <time.h>
 
+int
 main(int argc, char *argv[])
 {
 	struct dict_radix *dict = new_dict_radix();

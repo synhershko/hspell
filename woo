@@ -1,10 +1,10 @@
 #!/usr/bin/perl -w
 #
-# Copyright (C) 2000-2002 Nadav Har'El, Dan Kenigsberg
+# Copyright (C) 2000-2003 Nadav Har'El, Dan Kenigsberg
 #
 use Carp;
 
-my $infile;
+my ($infile,$c);
 my $detailed_output=0;
 
 if ($#ARGV>=0 && $ARGV[0] eq "-d")
@@ -26,6 +26,7 @@ while(<INFILE>){
   chomp;
   next if /^( |	)*$/;      # ignore empty lines.
   next if /^ *#/;          # comments start with '#'.
+  $c++; print STDERR "#" if !($c % 20);
   s/ *\#.*$//; #and appear at end of lines.
   ($word,$optstring)=split;
   undef %opts;
@@ -82,6 +83,29 @@ while(<INFILE>){
       if ($opts{"נסתר"}) {$w->abar_nistar($word);}
       else { $w->abar_nistar;}
 
+      # in past, hem==hen and in niqqudless script so is at==ata. But the
+      # objectization is different, so we generate both at and ata.
+      foreach $g (4,1,2,3,5,6,7,8,9) 
+      {
+        $w->{object} = undef; #clear objectization
+        $s = $w->past_conj($g);
+        $w->outword($s);
+	# support for the mostly-archaic nitpa`el form.
+	if ($w->{binyan} == $Word::hitqatel && ${$w->{opts}}{"גם_נת"}) {
+	  $s =~ s/^ה/נ/o;
+          $w->outword($s);
+	}
+	if (1 && $transitive{$w->{binyan}}) {
+	  next if $g eq 8; # $aten is same as transitivisation of $atem
+	  $w->{second_bj_form} = 0;
+          foreach $bj (1,2,4,4,5,6,7,8,9,10) {
+	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj == $Word::hu;
+	    my $n = $w->objectize($s, $bj);
+	    $w->outword($n) if $n;
+          }
+        }
+      }
+
       my $s = $w->infinitive_conj;
       # in most cases, we want to accept all bklm in the initial. but since the
       # code is less-than-perfect, it relies on 'ל' so we substitute the lamed
@@ -123,29 +147,6 @@ while(<INFILE>){
             $w->outword($n) if $n;
           }
 	}
-      }
-
-      # in past, hem==hen and in niqqudless script so is at==ata. But the
-      # objectization is different, so we generate both at and ata.
-      foreach $g (1,2,3,4,5,6,7,8,9) 
-      {
-        $w->{object} = undef; #clear objectization
-        $s = $w->past_conj($g);
-        $w->outword($s);
-	# support for the mostly-archaic nitpa`el form.
-	if ($w->{binyan} == $Word::hitqatel && ${$w->{opts}}{"גם_נת"}) {
-	  $s =~ s/^ה/נ/o;
-          $w->outword($s);
-	}
-	if (1 && $transitive{$w->{binyan}}) {
-	  next if $g eq 8; # $aten is same as transitivisation of $atem
-	  $w->{second_bj_form} = 0;
-          foreach $bj (1,2,4,4,5,6,7,8,9,10) {
-	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj == $Word::hu;
-	    my $n = $w->objectize($s, $bj);
-	    $w->outword($n) if $n;
-          }
-        }
       }
 
       foreach $g (2,3,7,8) # in imperative only at,ata,atem,aten (second person)
@@ -327,8 +328,10 @@ while(<INFILE>){
     my ($w, $n) = @_;
     if (defined $n) {$w->{nistar}=$n; return;}
     # The academia rules says: no yod in qitel quadruple
-    $w->{mishqal} =~ s/^(.'?)י/$1/ if ($w->{binyan} eq $qitel) 
-    				&& length($w->{t}) > 1;
+    $w->{mishqal} =~ s/^(.'?)י/$1/ 
+      if ($w->{binyan} eq $qitel) && (length($w->{t}) > 1) &&
+	  # but keep a double yod if specifically asked to.
+          !(${$w->{opts}}{"שמור_פי"} && $w->{q} eq 'י');
 
     # nakey p"n
     if (($w->{q} eq 'נ' || $w->{q} eq 'י' && $w->{t} eq 'צ') &&
@@ -347,6 +350,7 @@ while(<INFILE>){
     }
 
     # consonantal p"y - double only in hitqatel??
+    #     -> no, also for quadruple roots (taken care of above)
     if ($w->{q} eq 'י') {
       $w->{mishqal} =~ s/q/qq/ if $w->{binyan} eq $hitqatel;
     }
@@ -1078,7 +1082,7 @@ while(<INFILE>){
 	#cond #5 - does the first vowel in the form Xa/Xe ???
 	# TODO this rule is awful!!
 	if ($w->{binyan} eq $niqtal && $m =~ m/^ני?.ו.$/ ||
-		${$w->{opts}}{"בינוני_שמן"}) {
+		(${$w->{opts}}{"בינוני_שמן"} && $w->{binyan} eq $qal)) {
 	  #action #6 - NNN
 	  #jump to cond #8
           $m = $w->_present_cond8($m);

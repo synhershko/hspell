@@ -3,15 +3,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "gimatria.h"
+#include "hspell.h"
 
-extern int debug;
+extern int hspell_debug;
 
 /* functions for checking valid gimatria */
 static int
 gim2int(const char *w){
 	int n=0;
-	if(debug) fprintf(stderr,"gim2int got %s ",w);
+	if(hspell_debug) fprintf(stderr,"gim2int got %s ",w);
 	while(*w){
 		switch(*w){
 		case '\'':
@@ -51,7 +51,7 @@ gim2int(const char *w){
 		}
 		w++;
 	}
-	if(debug) fprintf(stderr,"returning %d\n",n);
+	if(hspell_debug) fprintf(stderr,"returning %d\n",n);
 	return n;
 }
 #if 0
@@ -115,7 +115,7 @@ int2gim(int n, char *buf)
 	char *b=buf, *bleft, *bright;
 	*b='\0';
 
-	if(debug) fprintf(stderr,"int2gim got %d ",n);
+	if(hspell_debug) fprintf(stderr,"int2gim got %d ",n);
         while (n>0) {
                 if (i == 3) {i = 0; b=appendStr("\'", b);}
                 if (!i && (n%100 == 15 || n%100 == 16)) {
@@ -130,7 +130,7 @@ int2gim(int n, char *buf)
                 }
         }
 	/* reverse the string */
-	if(debug) fprintf(stderr,"before %s\n",buf);
+	if(hspell_debug) fprintf(stderr,"before %s\n",buf);
 	if(buf[0]!='\0')
 	for(bleft=buf, bright=b-1; bright>bleft; bleft++, bright--){
 		char tmp;
@@ -138,7 +138,7 @@ int2gim(int n, char *buf)
 		*bleft=*bright;
 		*bright=tmp;
 	}
-	if(debug) fprintf(stderr,"after %s\n",buf);
+	if(hspell_debug) fprintf(stderr,"after %s\n",buf);
 	/* we decided gimatria to end in final letters */
 	if(buf[0]){
 		switch(b[-1]){
@@ -170,14 +170,14 @@ int2gim(int n, char *buf)
 			b[1]='\0';
 		}
 	}
-	if(debug) fprintf(stderr,"returning %s\n",buf);
+	if(hspell_debug) fprintf(stderr,"returning %s\n",buf);
 }
 /* TODO: stuff like ие' is now recognized as 15,000. In hspell.pl this
  * wasn't recognized because (I think) a bug in int2gim which generate
  * something like ие"'. Frankly, I doubt we want to recognize this case
  * at all... */
 int
-is_canonic_gimatria(const char *w)
+hspell_is_canonic_gimatria(const char *w)
 {
 	const char *p;
 	char buf[50];

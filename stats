@@ -18,7 +18,7 @@ grep -h " ע" wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$//" | sort -u | gr
 echo -n "                needing explicit gender hints: "
 egrep ",(זכר|נקבה)" wolig.dat | grep "ע,"| wc -l
 echo -n Extrawords, milot and biza-*:
-grep -h "^[א-ת]*" extrawords milot biza-verbs biza-nouns | tr -d - | sort -u | wc -l
+grep -h "^[א-ת]" extrawords milot biza-verbs biza-nouns | tr -d - | sort -u | wc -l
 # NOTE: to find duplicates in wolig.dat:
 # grep " ע" wolig.dat | grep -v "^#"| sed "s/ *#.*$//"|sort |uniq -c | sort -n | less
 wc -l milot likelyerrors biza-verbs biza-nouns extrawords

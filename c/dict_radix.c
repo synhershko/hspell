@@ -285,17 +285,17 @@ read_dict(struct dict_radix *dict, const char *dir)
 			return 0;
 		}
 		if(fscanf(fp,"%d %d %d",&small,&medium,&full)!=3){
-			fprintf(stderr,"can't open %s.\n",s);
+			fprintf(stderr,"can't read from %s.\n",s);
 			return 0;
 		}
 		fclose(fp);
-		snprintf(s,sizeof(s),"gzip -dc %s",dir);
+		snprintf(s,sizeof(s),"gzip -dc '%s'",dir);
 		if(!(fp=popen(s,"r"))){
 			fprintf(stderr,"can't run %s.\n",s);
 			return 0;
 		}
 #ifdef PREFIX_FILE
-		snprintf(s,sizeof(s),"gzip -dc %s.prefixes",dir);
+		snprintf(s,sizeof(s),"gzip -dc '%s.prefixes'",dir);
 		if(!(prefixes=popen(s,"r"))){
 			fprintf(stderr,"can't run %s.\n",s);
 			return 0;

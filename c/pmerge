@@ -4,10 +4,6 @@
 # Merges several dictionaries with prefix hints, into one dictionary with
 # or'ed prefix hints.
 # Usage: cat dict1 dict2 ... | pmerge -p prefixesout > wordsout
-#
-# Note that despite the name, currently only the information in the B/L
-# markers is used to define the prefixes.
-#
 
 use IO::File;
 use Carp;
