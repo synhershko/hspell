@@ -1,12 +1,17 @@
 #!/usr/bin/perl -w
 #
-# Copyright (C) 2000-2003 Nadav Har'El, Dan Kenigsberg
+# Copyright (C) 2000-2004 Nadav Har'El, Dan Kenigsberg
 #
 use Carp;
 use FileHandle;
 
 my $detailed_output=0;
 my $detail_prefix;
+
+# This arrays will be useful later to convert ordinary letters into final,
+# and vice-versa.
+my %fin = ('כ'=>'ך', 'מ'=>'ם', 'נ'=>'ן', 'פ'=>'ף', 'צ'=>'ץ');
+my %nif = ('ך'=>'כ', 'ם'=>'מ', 'ן'=>'נ', 'ף'=>'פ', 'ץ'=>'צ');
 
 sub outword {
   my $word = shift;
@@ -18,13 +23,8 @@ sub outword {
 
   # change otiot-sofiot in the middle of the word
   # (the silly a-z was added for our special "y" and "w" marks).
-  # (the ('?) and $1 are for סנדוויץ', סנדוויצ'ים)
-  #$word =~ s/ך(?=[א-תa-z])/כ/go;
-  $word =~ s/ך('?)(?=[א-תa-z])/כ$1/go;
-  $word =~ s/ן('?)(?=[א-תa-z])/נ$1/go;
-  $word =~ s/ם('?)(?=[א-תa-z])/מ$1/go;
-  $word =~ s/ץ('?)(?=[א-תa-z])/צ$1/go;
-  $word =~ s/ף('?)(?=[א-תa-z])/פ$1/go;
+  # (the ('?) and $2 are for סנדוויץ', סנדוויצ'ים)
+  $word =~ s/([ךםןףץ])('?)(?=[א-תa-z])/$nif{$1}$2/go;
 
   # change special consonant marks into the proper Hebrew letters, using
   # proper ktiv male rules.
@@ -498,7 +498,8 @@ while(<$fh>){
       # of the ending to guess the smichut and possesives (letting the user
       # override the smichut forms too).
       my $plural=$opts{"רבים"};
-      outword $plural, "ע,רבים";
+      #outword $plural, "ע,רבים";
+      outword((exists($opts{"נפרדים"}) ? $opts{"נפרדים"} : $plural), "ע,רבים");
       # Overriding the plural nishmach with the נסמכים option: David Yalin,
       # In his book דקדוק הלשון העברית (1942) explains in page 207 how some
       # of the kinuyim are known as "kinuyey hanifrad" and some "kinuyey
@@ -573,8 +574,8 @@ while(<$fh>){
         outword substr($word,0,-3)."ה", "ע,פרטי,נ";  # country name
       } else {
         $country = $word;
-        $country =~ s/i?י$//; $country =~ s/מ$/ם/; $country =~ s/נ$/ן/;
-	$country =~ s/כ$/ך/; $country =~ s/פ$/ף/; $country =~ s/צ$/ץ/;
+        $country =~ s/i?י$//;
+	$country =~ s/([כמנפצ])$/$fin{$1}/;
         outword $country, "ע,פרטי,נ"; # country name
       }
       outword $word."ם", "ע,רבים,ז"; # plural (people of that nationality)

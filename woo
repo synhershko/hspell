@@ -1,11 +1,12 @@
 #!/usr/bin/perl -w
 #
-# Copyright (C) 2000-2003 Nadav Har'El, Dan Kenigsberg
+# Copyright (C) 2000-2004 Nadav Har'El, Dan Kenigsberg
 #
 use Carp;
 
 my ($infile,$c);
 my $detailed_output=0;
+my %fin = ('כ'=>'ך', 'מ'=>'ם', 'נ'=>'ן', 'פ'=>'ף', 'צ'=>'ץ');
 
 if ($#ARGV>=0 && $ARGV[0] eq "-d")
 {
@@ -40,6 +41,11 @@ while(<INFILE>){
   if($opts{"פ"}){
     $w = new Word;
     $word =~ tr/ךםןףץ/כמנפצ/;
+    $word =~ s/ג'/J/;
+    $word =~ s/ז'/Z/;
+    $word =~ s/צ'/C/;
+    $word =~ s/ה$/h/o if $opts{"שמור_מפיק"};
+    $word =~ tr/יו/yw/ if $opts{"שמור_עו"};
     $w->root($word);
     my @binyanim = ();
     my %transitive = ();
@@ -73,7 +79,6 @@ while(<INFILE>){
       # subject of a sentence, rather than the object. In some (few) cases it
       # makes a difference.
       my $SUBJECTIZE = 1;
-      $w->{guf} = undef; # some cleanup. should there be more?
       $w->binyan($b);
 
       # When the options נסתר is given, $word is not the root to conjugate, but
@@ -84,28 +89,34 @@ while(<INFILE>){
       else { $w->abar_nistar;}
 
       # in past, hem==hen and in niqqudless script so is at==ata. But the
-      # objectization is different, so we generate both at and ata.
-      foreach $g (4,1,2,3,5,6,7,8,9) 
+      # objectization is different, so we generate both at and ata. And for
+      # the sake of completeness of the morphological analysis, also hen is
+      # added.
+      foreach $g ($Word::hu,$Word::ani,$Word::ata,$Word::at,$Word::hi,
+		  $Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) 
       {
         $w->{object} = undef; #clear objectization
         $s = $w->past_conj($g);
         $w->outword($s);
 	# support for the mostly-archaic nitpa`el form.
-	if ($w->{binyan} == $Word::hitqatel && ${$w->{opts}}{"גם_נת"}) {
+	if ($w->{binyan} eq $Word::hitqatel && ${$w->{opts}}{"גם_נת"}) {
 	  $s =~ s/^ה/נ/o;
           $w->outword($s);
 	}
-	if (1 && $transitive{$w->{binyan}}) {
-	  next if $g eq 8; # $aten is same as transitivisation of $atem
+	if (defined($s) && $transitive{$w->{binyan}}) {
+	  next if $g eq $Word::aten; # $aten's transitivisation is as $atem's
 	  $w->{second_bj_form} = 0;
-          foreach $bj (1,2,4,4,5,6,7,8,9,10) {
-	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj == $Word::hu;
+          foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hu,$Word::hi,
+		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
+	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj eq $Word::hu;
 	    my $n = $w->objectize($s, $bj);
 	    $w->outword($n) if $n;
           }
         }
       }
 
+      $w->{guf} = undef; # some cleanup.
+      $w->{object} = undef; 
       my $s = $w->infinitive_conj;
       # in most cases, we want to accept all bklm in the initial. but since the
       # code is less-than-perfect, it relies on 'ל' so we substitute the lamed
@@ -135,45 +146,52 @@ while(<INFILE>){
       # form, as done by rav-millim.
       if (defined($s)) {
         if ($transitive{$w->{binyan}} ) {
- 	  foreach $bj (1,2,4,5,6,7,8,9,10) {
+ 	  foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hi,
+		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
             my $n = $w->objectize($s, $bj);
             $w->outword($n) if $n;
           }
           my $n = $w->objectize($s, $Word::ani, $SUBJECTIZE);
           $w->outword($n) if $n;
 	} else { # output only subjectizations for intransitive verbs.
- 	  foreach $bj (1,2,4,5,6,7,8,9,10) {
+ 	  foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hi,
+		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
             my $n = $w->objectize($s, $bj, $SUBJECTIZE);
             $w->outword($n) if $n;
           }
 	}
       }
 
-      foreach $g (2,3,7,8) # in imperative only at,ata,atem,aten (second person)
+      # in imperative only at,ata,atem,aten (second person)
+      foreach $g ($Word::ata,$Word::at,$Word::atem,$Word::aten) 
       {
         $w->{object} = undef; #clear objectization
 	$s = $w->imperative_conj($g);
         $w->outword($s);
-	if (1 && $transitive{$w->{binyan}}) {
-	  next if $g eq 8; # TODO do $aten have objectization??
-          foreach $bj (1,2,4,5,6,7,8,9,10) {
+	if (defined($s) && $transitive{$w->{binyan}}) {
+	  next if $g eq $Word::aten; # TODO do $aten have objectization??
+          foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hi,
+		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
 	    my $n = $w->objectize($s, $bj);
 	    $w->outword($n) if $n;
           }
         }
       }
 
-      foreach $g (1,2,3,4,5,6,7,8,9) 
+      foreach $g ($Word::ani,$Word::ata,$Word::at,$Word::hu,$Word::hi,
+	$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) 
       {
         $w->{object} = undef; #clear objectization
         $s = $w->future_conj($g);
         $w->outword($s);
-      	if (1 && $transitive{$w->{binyan}}) {
-	  next if $g eq 8;
+      	if (defined($s) && $transitive{$w->{binyan}}) {
+	  next if $g eq $Word::aten || $g eq $Word::hen;
 	  $w->{second_bj_form} = 0;
-          foreach $bj (1,2,4,5,4,5,6,7,8,9,10) {
+          foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hi,$Word::hu,
+		$Word::hi,$Word::anu,$Word::atem,$Word::aten,
+		$Word::hem,$Word::hen) {
 	    # a trick to flip second_bj_form for the second time of bj=hu/hi
-	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj == 4;
+	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj eq $Word::hu;
 	    my $n = $w->objectize($s, $bj);
 	    $w->outword($n) if $n;
           }
@@ -191,8 +209,9 @@ while(<INFILE>){
         $w->{object} = undef; #clear objectization
         $s = $w->present_conj($g);
         $w->outword($s);
-	if (1 && $transitive{$w->{binyan}}) {
-          foreach $bj (1,2,3,4,5,6,7,8,9,10) {
+	if (defined($s) && $transitive{$w->{binyan}}) {
+          foreach $bj ($Word::ani,$Word::ata,$Word::at,$Word::hu,$Word::hi,
+		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
 	    my $n = $w->objectize($s, $bj);
 	    $w->outword($n) if $n;
           }
@@ -201,7 +220,7 @@ while(<INFILE>){
 	  if ($s =~ s/ה$/ת-/) {$w->outword($s);}
 	  # create the other form of the present female if both are requested
 	  if (${$w->{opts}}{"בינונית_תה"} || 
-		$w->_nakey_lh && $w->{binyan}==$Word::huqtal) {
+		$w->_nakey_lh && $w->{binyan} eq $Word::huqtal) {
 	    ${$w->{opts}}{"בינונית_ארכאית"} = 1;
             $s = $w->present_conj($g);
             $w->outword($s);
@@ -214,11 +233,21 @@ while(<INFILE>){
 
       $s = $w->shempeula_conj;
       if ($s) {
-#	$s =~ s/^w/ו/o;
-#	$s =~ s/ו?wו?/וו/o; # enough for shemps
-        print SHEMP &Word::finalize($s)." ע";
+	$s =~ s/C/צ'/o;
+        $s =~ s/([כמנפצ])$/$fin{$1}/;
+        $s =~ s/h/ה/o;
+
+  $s =~ s/[יI]yו/יו/go;
+  $s =~ s/(?<=[^ויy])y(?=[^ויyה]|$)/יי/go;
+  $s =~ s/y/י/go;                      # otherwise, just one yud.
+
+  $s =~ s/וw/ו/go;
+  $s =~ s/(?<=[^וw])w(?=[^וw-])/וו/go;  # if vav needs to be doubled, do it
+
+        $s =~ s/([כמנפצ])$/$fin{$1}/;
+        print SHEMP $s." ע";
 	# for male shemps ending with ות, we must pass a hint to wolig.pl
-        print SHEMP ",ים" if ($w->{binyan}==$Word::qitel && $s =~ m/ות$/);
+        print SHEMP ",ים" if ($w->{binyan} eq $Word::qitel && $s =~ m/ות$/o);
         print SHEMP "\n"
       }
       print "-----\n";
@@ -226,12 +255,12 @@ while(<INFILE>){
     # Create the pa`ul form, when applicable.
     if (${$w->{opts}}{"פעול"} || ${$w->{opts}}{"קל_אפעל"} 
 	      || ${$w->{opts}}{"קל_אפעול"}) {
-      foreach $g (2,3,7,8)
+      foreach $g ($Word::ata,$Word::at,$Word::atem,$Word::aten)
       {
         $s = $w->paul_conj($g);
         $w->outword($s);
-        if ($s && $g eq 3) {$s =~ s/ה$/ת-/; $w->outword($s);}
-        if ($s && $g eq 7) {$s =~ s/ם$/-/; $w->outword($s);}
+        if ($s && $g eq $Word::at) {$s =~ s/ה$/ת-/; $w->outword($s);}
+        if ($s && $g eq $Word::atem) {$s =~ s/ם$/-/; $w->outword($s);}
       }
       print "-----\n" if $s;
     }
@@ -246,10 +275,10 @@ while(<INFILE>){
   sub INIT {
     @all_binyan = 
             ($qal, $niqtal, $qitel, $qutal, $hitqatel, $hiqtil, $huqtal) =
-            (101,102,103,104,105,106,107);
+            ('a','b','c','d','e','f','g');
     
     @all_guf = ($ani, $ata, $at, $hu, $hi, $anu, $atem, $aten, $hem, $hen) =
-            (1,2,3,4,5,6,7,8,9,10);
+            ('A','B','C','D','E','F','G','H','I','J');
     
     %mishqal_abar = ($qal => 'qtl', $niqtal => 'נqtl', 
     	$qitel => 'qיtl', $qutal=>'qוtl', $hitqatel=>'התqtl',
@@ -268,7 +297,15 @@ while(<INFILE>){
 	$anu=>'נו', $atem=>'כם', $aten=>'כן', $hem=>'ם', $hen=>'ן');
 
     ($past, $present, $future, $imperative, $infinitive, $adjective) = 
-	(201, 202, 203, 204, 205, 206);
+	(1, 2, 3, 4, 5, 6);
+
+    %gname = ($ani => 'אני', $ata => 'אתה', $at => 'את', $hu => 'הוא',
+  	     $hi => 'היא',  $anu => 'אנו', $atem => 'אתם', $aten => 'אתן',
+  	     $hem => 'הם', $hen => 'הן');
+    %pname = ($ata => 'יחיד', $at => 'יחידה', 
+  		$aten => 'רבות', $atem => 'רבים');
+    %tname = ($past=>'עבר', $present=>'הווה', $future=>'עתיד', 
+		$imperative=>'ציווי', $infinitive=>'מקור', undef=>'-');
   }
 
   sub new {
@@ -280,10 +317,17 @@ while(<INFILE>){
 
   sub root {
     my ($w, $r) = @_;
-    $w->{root} = $r;
-    $w->{q} = substr($r,0,1);
-    $w->{t} = substr($r,1,length($r)-2);
-    $w->{l} = substr($r,-1,1);
+    if ($r =~ m/(.*)-(.*)-(.*)/o) {
+      $w->{root} = $1.$2.$3;
+      $w->{q} = $1;
+      $w->{t} = $2;
+      $w->{l} = $3;
+    } else {
+      $w->{root} = $r;
+      $w->{q} = substr($r,0,1);
+      $w->{t} = substr($r,1,length($r)-2);
+      $w->{l} = substr($r,-1,1);
+    }
   }
 
   sub binyan {
@@ -292,34 +336,21 @@ while(<INFILE>){
     $w->{mishqal} = $mishqal_abar{$b};
   }
 
-  sub finalize {
-    my $s = shift;
-    $s =~ s/כ$/ך/;
-    $s =~ s/מ$/ם/;
-    $s =~ s/נ$/ן/;
-    $s =~ s/פ$/ף/;
-    $s =~ s/צ$/ץ/;
-    return $s;
-  }
-
   sub _subst_root {
     my ($w, $s) = @_;
-    my $q = substr($w->{root}, 0, 1);
-    my $t = substr($w->{root}, 1, length($w->{root})-2);
-    my $l = substr($w->{root}, -1, 1);
-    $s =~ s/q/$q/g;
-    $s =~ s/t/$t/g;
-    $s =~ s/l/$l/g;
+    $s =~ s/q/$w->{q}/g;
+    $s =~ s/t/$w->{t}/g;
+    $s =~ s/l/$w->{l}/g;
     return $s;
   }
 
   sub _bdoq_sikul {
     my $w = shift;
-    return if ($w->{q} !~ m/(ד|ז|ט|ס|צ|ש|ת)/);
-    $w->{mishqal} =~ s/^התq/הqת/ if ($w->{q} =~ m/(ס|ש)/);
-    $w->{mishqal} =~ s/^התq/הqט/ if ($w->{q} eq 'צ');
-    $w->{mishqal} =~ s/^התq/הqד/ if ($w->{q} eq 'ז');
-    $w->{mishqal} =~ s/^התq/היq/ if ($w->{q} =~ m/(ת|ד|ט)/ && 
+    return if ($w->{q} !~ m/[דזטסצCZשת]/o);
+    $w->{mishqal} =~ s/^התq/הqת/ if ($w->{q} =~ m/[סש]/o);
+    $w->{mishqal} =~ s/^התq/הqט/ if ($w->{q} =~ m/[צC]/o);
+    $w->{mishqal} =~ s/^התq/הqד/ if ($w->{q} =~ m/[זZ]/o);
+    $w->{mishqal} =~ s/^התq/היq/ if ($w->{q} =~ m/[תדט]/o && 
 			!${$w->{opts}}{"שמור_פד"});
   }
 
@@ -328,7 +359,7 @@ while(<INFILE>){
     my ($w, $n) = @_;
     if (defined $n) {$w->{nistar}=$n; return;}
     # The academia rules says: no yod in qitel quadruple
-    $w->{mishqal} =~ s/^(.'?)י/$1/ 
+    $w->{mishqal} =~ s/י// 
       if ($w->{binyan} eq $qitel) && (length($w->{t}) > 1) &&
 	  # but keep a double yod if specifically asked to.
           !(${$w->{opts}}{"שמור_פי"} && $w->{q} eq 'י');
@@ -336,8 +367,8 @@ while(<INFILE>){
     # nakey p"n
     if (($w->{q} eq 'נ' || $w->{q} eq 'י' && $w->{t} eq 'צ') &&
 	   !${$w->{opts}}{"שמור_פנ"} &&
-	   $w->{t} !~ m/[רעהאח]/) { # non guteral ayin-poal!
-      $w->{mishqal} =~ s/q//o if $w->{binyan} =~ m/($hiqtil|$huqtal)/ && 
+	   $w->{t} !~ m/[רעהאח]/o) { # non guteral ayin-poal!
+      $w->{mishqal} =~ s/q//o if $w->{binyan} =~ m/[$hiqtil$huqtal]/o && 
 		$w->{t} !~ m/^[יו]$/o;
       # REM: this special niqtal behavior is based on my pesonal feeling only
       $w->{mishqal} =~ s/q/י/o if $w->{binyan} eq $niqtal;
@@ -345,7 +376,7 @@ while(<INFILE>){
 
     # nakey p"y
     if ($w->{q} eq 'י' && !${$w->{opts}}{"שמור_פי"} ) {
-      $w->{mishqal} =~ s/q/ו/ if $w->{binyan} =~ m/($niqtal|$hiqtil)/;
+      $w->{mishqal} =~ s/q/ו/ if $w->{binyan} =~ m/[$niqtal$hiqtil]/o;
       $w->{mishqal} =~ s/q// if $w->{binyan} eq $huqtal;
     }
 
@@ -356,19 +387,14 @@ while(<INFILE>){
     }
 
     # nakey ayin waw
-    if ($w->{t} =~ m/^[יו]$/o) {
-      if (${$w->{opts}}{"שמור_עו"}) { # if it isn't nake
-	# double a consonental yod and waw if needed.
-	$w->{mishqal} =~ s/t/tt/o if $w->{binyan} =~ m/($hitqatel|$qal|$niqtal|$hiqtil|$huqtal)/;
-        $w->{mishqal} =~ s/t/tt/o if $w->{binyan} eq $qitel && $w->{t} eq 'ו';
-      } else { # if it is nake, drop the waw/yod
+    if ($w->{t} =~ m/^[יו]$/o) { # if it is nake, drop the waw/yod
         $w->{mishqal} =~ s/t// 
-	  if $w->{binyan} =~ m/($huqtal|$qal|$hiqtil)/;
-        $w->{mishqal} =~ s/(י|ו)?tl/וll/o 
-	  if $w->{binyan} =~ m/($qitel|$qutal|$hitqatel)/;
+	  if $w->{binyan} =~ m/[$huqtal$qal$hiqtil]/o;
+        $w->{mishqal} =~ s/(?<=[נה])i// if $w->{binyan} =~ m/[$hiqtil$niqtal]/;
+        $w->{mishqal} =~ s/([יו])?tl/וll/o 
+	  if $w->{binyan} =~ m/[$qitel$qutal$hitqatel]/o;
 	$w->{mishqal} =~ s/^נ/ני/o 
 	  if $w->{binyan} eq $niqtal && ${$w->{opts}}{"נפ_ניזון"};
-      }
     }
 
     # kpulim
@@ -394,7 +420,7 @@ while(<INFILE>){
 
   sub _nakey_lh {
     my ($w) = @_;
-    return $w->{l} eq 'ה' && !${$w->{opts}}{"שמור_מפיק"}
+    return $w->{l} eq 'ה'
   }
 
   sub _past_cond8 {
@@ -405,9 +431,9 @@ while(<INFILE>){
     # past tense.
     $hataya = $w->{q}.$w->{t}.$w->{l} if ${$w->{opts}}{'בינוני_שומר'} &&
 	$w->{binyan} eq $qal && $w->{t} eq $w->{l} && 
-	$w->{guf} =~ m/^($hu|$hi|$hem|$hen)$/;
+	$w->{guf} =~ m/[$hu$hi$hem$hen]/o;
 
-    if ($w->{nistar} =~ m/^.(י|ו|).$/ || #one vowel
+    if ($w->{nistar} =~ m/^.[יו]?.$/o || #one vowel
         $w->{binyan} eq $hiqtil) { #last vowel i
       #case 9 - only add coran.
     } else {
@@ -432,7 +458,7 @@ while(<INFILE>){
       #condition #14 - does the coran begin with consonant
       if ($coran =~ m/^[תנ]/o) { # begins with consonant
 	#codition #15
-	if ($w->{binyan} =~ m/($qal|$hiqtil)/) {
+	if ($w->{binyan} =~ m/[$qal$hiqtil]/o) {
 	  #case #16 - replace last vowel with i
 	  #TODO: check subcase (a)
           $hataya =~ s/ה$/י/;
@@ -446,9 +472,6 @@ while(<INFILE>){
       } elsif ($coran eq 'ה') {
 	  #case #19 - replace last vowel with t
 	  #TODO: check subcase (b)(d)
-	  	# the following line : for הייתה
-	  $hataya =~ s/ה$/$w->{t}ת/ if ${$w->{opts}}{'שמור_עו'} &&
-			$w->{t} eq 'י';
           $hataya =~ s/ה$/ת/;
       }
     } elsif ($w->{l} eq 'א') {
@@ -471,14 +494,14 @@ while(<INFILE>){
       #condition #3
       if ($coran =~ m/^[תנ]/o) { # begins with consonant
         #cond #4
-        if ($hataya =~ m/נ.ו./ && !${$w->{opts}}{'נסוב_מודרני'}) {
+        if ($hataya =~ m/נ.ו./o && !${$w->{opts}}{'נסוב_מודרני'}) {
 	  #case #5 - replace last vowel with u and add o.
 	  #TODO check subcase (a)
           $hataya =~ s/$/ו/o;
         } else {
 	  #case #6
 	  # do not remove consonental yod!
-	  unless ($w->{binyan} eq $hitqatel && $w->{t} =~ m/[יו]$/) {
+	  unless ($w->{binyan} eq $hitqatel && $w->{t} =~ m/[יו]$/o) {
 	  # usually two letters in (ה..)י(.) are enough,
 	  # but for הווריד and היפיל I allow more and less.
 	  $hataya =~ s/(ה.+)י(.)$/$1$2/;
@@ -497,7 +520,7 @@ while(<INFILE>){
     # if the last consonant of the basis is equal to the first of the coran, one
     # of the should usually go.
     if (substr($hataya,-1,1) eq substr($coran,0,1) && 
-        !${$w->{opts}}{"שמור_מפיק"} && !${$w->{opts}}{"שמור_ל"}) {
+        !${$w->{opts}}{"שמור_ל"}) {
       $hataya =~ s/.$//o;
     }
     # extremely singular exception נתן
@@ -516,13 +539,16 @@ while(<INFILE>){
     my $n = $w->{nistar};
 
     $w->{tense} = $infinitive;
-    # the following line is commented out on purpose. It  causes lots of
-    # undesired sideeffect. To be delt with sometimes in the future.
-    # return ${$w->{'opts'}}{'מקור'} if ${$w->{'opts'}}{'מקור'};
+
+    if (${$w->{'opts'}}{'מקור'}) {
+      $w->{infinitive} = ${$w->{'opts'}}{'מקור'};
+      return $w->{infinitive};
+    }
+    return undef if ${$w->{opts}}{'אין_מקור'};
 
     #cond #2 - does abar_nistar have exactly 2 syllables?
     #_cond_debug(2);
-    if ($w->{binyan} ne $hitqatel && $n !~ m/^.[יו]?.$/) {
+    if ($w->{binyan} ne $hitqatel && $n !~ m/^.[יו]?.$/o) {
       #cond #3 - does $n begin with non-root nun?
       #_cond_debug(3);
       if ($w->{binyan} eq $niqtal) {
@@ -531,26 +557,26 @@ while(<INFILE>){
         #_cond_debug(4);
 	# double consonant waw
 	$n =~ s/^נו([^ו])/נוו$1/ if $w->{q} =~ m/[יו]/o ;
-	$n = 'לגשת' if $n eq 'ניגש'; # singular exception
+#	$n = 'לגשת' if $n eq 'ניגש'; # singular exception
 	if (${$w->{'opts'}}{'נפ_ניזון'}) {
 	  $n =~ s/^ני?/להי/o;
 	} elsif ($w->{q} ne 'נ') {
 	  # for ליהנות, ליהרס וכו'
-	  $n =~ s/^נה/ליה/o if $w->{q} eq 'ה'; # && ${$w->{'opts'}}{'קצר_פה'};
+	  $n =~ s/^נה/ליה/o if $w->{q} eq 'ה';
 	  $n =~ s/^נ/להי/o;
 	} else {
-	  $n =~ s/^(ננ|ני)/להינ/o if $w->{q} eq 'נ';
+	  $n =~ s/^נ[ני]/להינ/o if $w->{q} eq 'נ';
 	}
       } else {
 	#cond #5 - is the first vowel e/i?
         #_cond_debug(5);
-	if ($w->{binyan} =~ m/^($qitel|$hitqatel|$hiqtil)$/) {
+	if ($w->{binyan} =~ m/[$qitel$hitqatel$hiqtil]/o) {
 	  #case #6
           #_cond_debug(6);
 	  # double consonant waw
 	  $n =~ s/^וי/וו/ if $w->{q} eq 'ו'; 
 	  # remove i vowel, but not double yod
-	  $n =~ s/^(.'?)י/$1/ if $w->{q} ne 'י' && $w->{t} ne 'י'; 
+	  $n =~ s/^(.)[יi]/$1/ if $w->{q} ne 'י' && $w->{t} ne 'י'; 
 	  $n = 'ל'.$n;
 	} else {
 	  #cond #7 - is the first vowel a?
@@ -600,7 +626,7 @@ while(<INFILE>){
 	    }
 	  } else {
 	    #cond #17 - are the 2 vowels u and a?
-	    if ($w->{binyan} =~ m/($qutal|$huqtal)/) {
+	    if ($w->{binyan} =~ m/[$qutal$huqtal]/o) {
 	      #case #18
 	      $n = undef;
 	    } else { 
@@ -627,13 +653,12 @@ while(<INFILE>){
       }
     }
     if (defined($n)) {
-      $n =~ s/ו?ה$/ות/o if !${$w->{'opts'}}{'שמור_מפיק'}; #check (c)
-      if ($w->{binyan} == $qal) { # check (e)
+      $n =~ s/ו?ה$/ות/o; #check (c)
+      if ($w->{binyan} eq $qal) { # check (e)
 #        $n =~ s/^לנ([^רעהאח])/ל$1/o unless ${$w->{'opts'}}{'שמור_פנ'};
       }
     }
     $w->{infinitive} = $n;
-    return undef if ${$w->{opts}}{'אין_מקור'};
     return $n;
   }
 
@@ -646,9 +671,9 @@ while(<INFILE>){
 
     # cond #7 - is the guf at or atem?
 #_cond_debug(7);
-    if ($w->{guf} =~ m/^($at|$atem|$aten)$/) {
+    if ($w->{guf} =~ m/[$at$atem$aten]/o) {
       # case #8 - if gone through cond #4, remove final he TODO
-      if (!${$w->{'opts'}}{'שמור_מפיק'} && $w->{l} eq 'ה')
+      if ($w->{l} eq 'ה')
       {
 	$m =~ s/ה$/י/ if $w->{guf} eq $aten;
 	$m =~ s/ה$// if $w->{guf} ne $aten;
@@ -657,7 +682,7 @@ while(<INFILE>){
       $m .= 'ו' if $w->{guf} eq $atem;
       $m =~ s/ווו/וו/o; # remove triple waw!
       # remove hiqtil's yod for 2pf
-      $m =~ s/י(.'?)$/$1/o if $w->{guf} eq $aten && $w->{binyan} eq $hiqtil;
+      $m =~ s/י(.)$/$1/o if $w->{guf} eq $aten && $w->{binyan} eq $hiqtil;
       $m =~ s/(?<=^.)ו(?=ח$)//o if $w->{guf} eq $aten; # for נוח
       $m =~ s/נ?$/נה/ if $w->{guf} eq $aten;
     } else {
@@ -675,14 +700,18 @@ while(<INFILE>){
     }
     $m .= 'י' if $w->{guf} eq $at;
     $m .= 'ו' if $w->{guf} eq $atem;
-    $m =~ s/ווו/וו/o; # remove triple waw!
-    $m =~ s/נ?$/נה/ if $w->{guf} eq $aten;
+#    $m =~ s/ווו/וו/o; # remove triple waw!
+    if ($w->{guf} eq $aten) {
+      $m =~ s/נ?$/נה/;
+      return $m;
+    }
     # cond #19 - is the second final consonant gutteral?
     #_cond_debug(19);
     if (0) {
       # action #20
-    } else {
-      # action #21
+    } else { # action #21
+      # perform only if cond #13 is true (copied here)
+
     }
     return $m;
   }
@@ -697,7 +726,7 @@ while(<INFILE>){
     my $m = $w->{infinitive};
     return undef unless $m; # in case there is no maqor form.
     # only second persons have imperative form
-    return undef unless $w->{guf} =~ m/^($ata|$at|$atem|$aten)$/o;
+    return undef unless $w->{guf} =~ m/[$ata$at$atem$aten]$/o;
     return undef if ${$w->{opts}}{'אין_ציווי'};
 
     # I like to shorten the he in the infinitives ליהנות, but the imperative
@@ -710,7 +739,7 @@ while(<INFILE>){
     $m =~ s/^וו/ו/o if $w->{binyan} eq $qitel;
     # cond #3 - does m end with ות and the abar with ה?
 #_cond_debug(3);
-    if ($m =~ m/ות$/ && $w->{nistar} =~ m/ה$/) {
+    if ($m =~ m/ות$/o && $w->{nistar} =~ m/ה$/o) {
       # action #4
       $m =~ s/וות$/ווה/; # keep consonantal waw
       $m =~ s/ות$/ה/; # seems redundant - if $w->{guf} eq $ata;
@@ -718,7 +747,7 @@ while(<INFILE>){
     } else {
       # case #5 - are $m and the abar one-syllabled?
 #_cond_debug(5);
-      if ($w->{nistar}=~m/^.[יו]?.$/ && $m =~ m/^.[יו]?.$/) {
+      if ($w->{nistar}=~m/^.[יו]?.$/o && $m =~ m/^.[יו]?.$/o) {
 	# jump to cond #7
         $m = $w->_imperative_cond7($m);
       } else {
@@ -740,13 +769,13 @@ while(<INFILE>){
 	  } else {
 	    # cond #12 - is the first consonant has shwa/xataf?
 #_cond_debug(12);
-	    if ($w->{binyan} eq $qal && $m!~m/^.(ו|י).$/o) { #TODO: is this a good rule?
+	    if ($w->{binyan} eq $qal && $m!~m/^.[וי].$/o) { #TODO: is this a good rule?
 	      # cond #13 - is $m in list2? Or does it end with gutteral
 	      # consonant?
 #_cond_debug(13);
 	      if (defined(${$w->{opts}}{"ציווי"})) {
 	        $m = ${$w->{opts}}{"ציווי"} if ${$w->{opts}}{"ציווי"};
-	      } elsif ($m =~ m/[אחהע]$/ || $m =~ m/[אחהע]ו?.$/) {
+	      } elsif ($m =~ m/[אחהhע]$/o || $m =~ m/[אחהhע]ו?.$/o) {
 		# action #14 TODO: check double star **
 		$m =~ s/ו(.)$/$1/;
 	      } else {
@@ -770,7 +799,7 @@ while(<INFILE>){
 	    if ($w->{guf} ne $ata) {
 	      # cond #16 - is the mishqal hi..o. (hisob)
 #_cond_debug(16);
-	      if ($m =~ m/^הי.ו.$/) {
+	      if ($m =~ m/^הי.ו.$/o) {
 	        # action #17
 		$m .= 'י' if $w->{guf} eq $at;
 		$m .= 'ו' if $w->{guf} eq $atem;
@@ -807,12 +836,12 @@ while(<INFILE>){
 		# אפול ולא איפול
       		|| ($w->{binyan} eq $qal && $w->{q} ne 'י')
 		# אצוק ולא איצוק
-		|| ($w->{binyan} eq $qal && $w->{root}=~m/^יצ/);
+		|| ($w->{binyan} eq $qal && $w->{root}=~m/^יצ/o);
     } else {
       # case #12
     }
     my $fi = $future_initial{$w->{guf}};
-    $m = $fi.$m unless $fi eq 'י' and $m =~ m/^יי/;
+    $m = $fi.$m unless $fi eq 'י' and $m =~ m/^יי/o;
     return $m;
   }
 
@@ -823,7 +852,7 @@ while(<INFILE>){
     my $m = $w->_future_conj_chart4;
     return undef if ${$w->{opts}}{'אין_עתיד'};
     # no addition for some persons
-    return $m if $w->{guf} =~ m/^($ani|$ata|$hi|$hu|$anu)$/;
+    return $m if $w->{guf} =~ m/[$ani$ata$hi$hu$anu]/o;
 
     # case #2 - does $m end with segol?
     if ($w->_nakey_lh) {
@@ -835,8 +864,8 @@ while(<INFILE>){
       #action #4 - NNN
       # cond #5 - is the final vowel i/u TODO (*)
 #_cond_debug('V5');
-      if ($m =~ m/(י|ו).$/ && !${$w->{opts}}{"קל_אפעול"}
-		|| $m =~ m/^[תי].ו.$/) { # TODO: check rule
+      if ($m =~ m/[יו].$/o && !${$w->{opts}}{"קל_אפעול"}
+		|| $m =~ m/^[תי].ו.$/o) { # TODO: check rule
 #print "aaa $m\n";
         #case #7
 #_cond_debug('V7');
@@ -856,7 +885,7 @@ while(<INFILE>){
 	    #case #10
 #_cond_debug('V10');
 	  }
-	  $m =~ s/ו(.)$/$1/o if $w->{guf} !~ m/($hen|$aten)/; # is it good??
+	  $m =~ s/ו(.)$/$1/o if $w->{guf} !~ m/^($hen|$aten)$/o; # is it good??
 	}
       }
     }
@@ -869,7 +898,7 @@ while(<INFILE>){
       $m =~ s/י(.)$/$1/o if $w->{binyan} eq $hiqtil;
       # and also qal's yod (nakey ayin-yod) - but not double yod
       $m =~ s/(?<=[^י])י(?=[^י]$)//o if $w->{binyan} eq $qal 
-					&& $w->{t} =~ m/י/;
+					&& $w->{t} =~ m/י/o;
       $m =~ s/(?<=^ת.)ו(?=ח$)//o if $w->{t} eq 'ו'; # for נוח
       # remove double nun for 2pf and 3pf
       $m =~ s/נ?$/נה/o;
@@ -894,7 +923,7 @@ while(<INFILE>){
     # cond #2 - does $m begin with non-root he?
 #_cond_debug('2');
     #TODO: (**)
-    if ($w->{binyan} =~ m/^($niqtal|$hiqtil|$huqtal|$hitqatel)$/) {
+    if ($w->{binyan} =~ m/[$niqtal$hiqtil$huqtal$hitqatel]$/o) {
       # action #3
       $m =~ s/^לה/ל/;
       # jump to #10
@@ -902,7 +931,7 @@ while(<INFILE>){
     } else {
       # cond #4 - does $m begin with xiriq and end with xolam?
 #_cond_debug('4');
-      if ($w->{binyan} eq $qal && $m =~ m/^ל..ו?ו.$/) {
+      if ($w->{binyan} eq $qal && $m =~ m/^ל..ו?ו.$/o) {
 	# cond #5 - is one of the 2 last consonant gutteral?
 	#	is it an intransitive verb ??? TODO: what???
 	# TODO: (+)
@@ -919,7 +948,7 @@ while(<INFILE>){
       } else {
 	#cond #7 - is $m in list1?
 #_cond_debug('7');
-	# this list1 thing is soooo ugly: TODO: change it!
+	# Ornan's list1 is implemented using the עתיד1 tag!
 	if (${$w->{opts}}{'עתיד1'}) {
 	  #action #8 - convert according to list1
 	  $m = ${$w->{opts}}{'עתיד1'};
@@ -961,7 +990,7 @@ while(<INFILE>){
 	      $m = $fi.$m;
 	      $m =~ s/ייי*/יי/;
  	      # I hate triple yod
-	  #    $m = $fi.$m unless $fi eq 'י' and $m =~ m/^יי/;
+	  #    $m = $fi.$m unless $fi eq 'י' and $m =~ m/^יי/o;
 	    }
 	  }
 	}
@@ -977,7 +1006,7 @@ while(<INFILE>){
     my ($w, $m) = @_;
 #    $m = $w->{nistar};
     #cond #2 (+) - is it one syllable?
-    if ($m =~ m/^.[יו]?.$/) {
+    if ($m =~ m/^.[יו]?.$/o) {
       #case #5
     } else {
       #cond #3 - does $m begin with non-root nun? (***)
@@ -1013,7 +1042,7 @@ while(<INFILE>){
 		#cond #16 - is the fisrt vowel in nistar_abar is e/i
 		if ($w->{binyan} eq $qitel) { #is it a good rule?
 		  #case #17 - but I like to keep double yod
-		  $m =~ s/^מ(.'?)י/מ$1/o if $w->{t} ne 'י' && $w->{q} ne 'י';
+		  $m =~ s/^מ(.)[יi]/מ$1/o if $w->{q} ne 'י';
 		  # and to double constonant waw
 		  $m =~ s/^מו/מוו/o if $w->{q} eq 'ו';
 		} else {
@@ -1043,7 +1072,7 @@ while(<INFILE>){
       } #else continue to case #11
     } 
     #case #11 - check (**)
-    $m =~ s/ה$//o if !${$w->{opts}}{"שמור_מפיק"}; # remove final e if any.
+    $m =~ s/ה$//o; # remove final e if any.
     $m =~ s/$/ה/o if $w->{guf} eq $at || $w->{guf} eq $hi; 
     $m =~ s/וו$/ו/o if $w->{guf} eq $aten || $w->{guf} eq $hen 
 			|| $w->{guf} eq $anu; #no tripple waws, please!
@@ -1074,14 +1103,14 @@ while(<INFILE>){
       $m = $w->_present_cond8($m);
     } else {
       # case #3 - does m have 1 syllabe?
-      if ($m =~ m/^.(י|ו)?.$/) {
+      if ($m =~ m/^.[יו]?.$/o) {
         #jump to cond #8
         $m = $w->_present_cond8($m);
       } else {
 	#action #4
 	#cond #5 - does the first vowel in the form Xa/Xe ???
 	# TODO this rule is awful!!
-	if ($w->{binyan} eq $niqtal && $m =~ m/^ני?.ו.$/ ||
+	if ($w->{binyan} eq $niqtal && $m =~ m/^ני?.ו.$/o ||
 		(${$w->{opts}}{"בינוני_שמן"} && $w->{binyan} eq $qal)) {
 	  #action #6 - NNN
 	  #jump to cond #8
@@ -1098,13 +1127,12 @@ while(<INFILE>){
 	      #for check (***)
 	      $m =~ s/י(?=.$)// if $w->{binyan} eq$hiqtil && $w->{archaic_sf};
 	      #cond #13 - is the final consonant xet &ayin or he mapuqa
-	      if ($m =~ m/(ח|ע)$/ || 
-		  ($m =~ m/ה$/ && ${$w->{opts}}{"שמור_מפיק"})) {
+	      if ($m =~ m/[חעh]$/o) {
 		#case #14
 		$m = $m.'ת';
 	      } else {
 		#cod #15 - is it alep?
-	        if ($m =~ m/א$/) {
+	        if ($m =~ m/א$/o) {
 		  #case #16
 		  $m = $m.'ת';
 		} else {
@@ -1138,30 +1166,13 @@ while(<INFILE>){
 
     $w->{tense} = $adjective;
     $m = $w->_subst_root('qtוl');
-    $m =~ s/ה$/י/ if !${$w->{opts}}{"שמור_מפיק"};
+    $m =~ s/ה$/י/;
     $m = $m.'ות' if $w->{guf} eq $aten || $w->{guf} eq $hen 
 			|| $w->{guf} eq $anu;
     $m = $m.'ים' if $w->{guf} eq $atem || $w->{guf} eq $hem; 
     $m = $m.'ה' if ($w->{guf} eq $at || $w->{guf} eq $hi);
     return $m
   }
-
-#  sub pail_conj {
-#    my ($w, $guf) = @_;
-#    $w->{guf} = $guf;
-#    return undef if ${$w->{opts}}{"אין_בינוני"} ||${$w->{opts}}{"אין_פעול"};
-#    return undef if $w->{t} =~ m/[יו]/o || ${$w->{opts}}{"נסתר"}|| ${$w->{opts}}{"בינוני_שמן"};
-#    my $m;
-#
-#    $w->{tense} = $present;
-#    $m = $w->_subst_root('qtיl');
-#    $m =~ s/ה$/ת/ if !${$w->{opts}}{"שמור_מפיק"};
-#    $m = $m.'ות' if $w->{guf} eq $aten || $w->{guf} eq $hen 
-#			|| $w->{guf} eq $anu;
-#    $m = $m.'ים' if $w->{guf} eq $atem || $w->{guf} eq $hem; 
-#    $m = $m.'ה' if ($w->{guf} eq $at || $w->{guf} eq $hi);
-#    return $m
-#  }
 
   sub shempeula_conj {
     my ($w) = @_;
@@ -1170,7 +1181,7 @@ while(<INFILE>){
 	${$w->{opts}}{"אין_שם_פעולה"};
     my $m;
 
-    if ($w->{binyan} =~ m/^($niqtal|$hitqatel)$/) {
+    if ($w->{binyan} =~ m/[$niqtal$hitqatel]$/o) {
       $w->infinitive_conj unless $w->{infinitive};
       $m = $w->{infinitive};
       $m =~ s/^ל//;
@@ -1196,18 +1207,13 @@ while(<INFILE>){
     $m =~ s/י//o if (length($w->{t}) > 1 && $w->{binyan} eq $qitel);
 
     if ($w->_nakey_lh) {
-      $m =~ s/l/י/o if $w->{binyan} =~ m/^($qal|$hiqtil|$qitel)$/o;
-#      $m =~ s/l//o if $w->{binyan} =~ m/^($niqtal|$hitqatel)$/o;
+      $m =~ s/l/י/o if $w->{binyan} =~ m/^[$qal$hiqtil$qitel]$/o;
     }
 
     # nakey ayin waw
     if ($w->{t} =~ m/^[יו]$/o) {
-      $m =~ s/t// if $w->{binyan} =~ m/($qal|$hiqtil)/;
-      if (${$w->{opts}}{"שמור_עו"}) { # if it isn't nake
-        $m =~ s/t//o if $w->{binyan} eq $qitel && $w->{t} eq 'י';
-      } else {
-        $m =~ s/t/l/o if $w->{binyan} =~ m/($qitel)/;
-      }
+      $m =~ s/t// if $w->{binyan} =~ m/[$qal$hiqtil]/o;
+      $m =~ s/t/l/o if $w->{binyan} =~ m/$qitel/o;
     }
 
     # alep sopit - the more common form is with yod
@@ -1223,12 +1229,12 @@ while(<INFILE>){
     $w->{object} = $bj;
 
     # according to barkali, no kinuy khavur when obj=subj
-    if ($w->{tense} !~ m/($present|$infinitive)/){
+    if ($w->{tense} !~ m/[$present$infinitive]/o){
       return undef
-        if ($bj eq $w->{guf} && $bj =~ m/^($ani|$anu|$ata|$at|$atem|$aten)$/o);
-      return undef if "$bj $w->{guf}" =~ m/($ani|$anu) ($ani|$anu)/;
-      return undef if "$bj $w->{guf}" =~ m/($at|$ata) ($at|$ata)/;
-      return undef if "$bj $w->{guf}" =~ m/($aten|$atem) ($aten|$atem)/;
+        if ($bj eq $w->{guf} && $bj =~ m/[$ani$anu$ata$at$atem$aten]/o);
+      return undef if "$bj $w->{guf}" =~ m/[$ani$anu] [$ani$anu]/o;
+      return undef if "$bj $w->{guf}" =~ m/[$at$ata] [$at$ata]/o;
+      return undef if "$bj $w->{guf}" =~ m/[$aten$atem] [$aten$atem]/o;
     }
 
     if ($is_subj) {$suf = $subject_suf{$bj}} else {$suf = $object_suf{$bj}}
@@ -1243,7 +1249,7 @@ while(<INFILE>){
 #    if ($w->{binyan} eq $hiqtil &&
 #	$w->{t} eq $w->{l} && !${$w->{opts}}{"שמור_עע"}) {
 #      # add xiriq where there was ceire.
-#      $s =~ s/($w->{q})($w->{l}(ה|ו|י)?)$/$1י$2/;
+#      $s =~ s/($w->{q})($w->{l}[הוי]?)$/$1י$2/;
 #    }
     if ($w->{tense} eq $infinitive) {
       # nadav (and the aqademia rules) requires dropping the ו.
@@ -1252,7 +1258,7 @@ while(<INFILE>){
       # second person pronouns. TODO: this has to be sorted out some time, but
       # on the mean while I'll follow ravmilim.co.il and always drop the waw.
       $s =~ s/^ל(.)(.)ו(?=.$)/ל$1$2/ if $w->{binyan} eq $qal && 
-		!$w->_nakey_lh;# && ($is_subj || $bj !~ m/^($atem|$aten|$at|$ata)$/);
+		!$w->_nakey_lh;# && ($is_subj || $bj !~ m/[$atem$aten$at$ata]/o);
       # the nun stays since it has qamac!
       $s =~ s/^לי/לנ/o if $w->{binyan} eq $qal && $w->{q} eq 'נ';
       $suf =~ s/^הו$/ו/;
@@ -1260,10 +1266,10 @@ while(<INFILE>){
       # TODO barkali writes לדעתי and not לדעתני. why?
     } elsif ($w->{tense} eq $imperative) {
       return undef 
-	if "$bj $w->{guf}" =~ m/($at|$ata|$atem|$aten) ($at|$ata|$atem|$aten)/o;
+	if "$bj $w->{guf}" =~ m/[$at$ata$atem$aten] [$at$ata$atem$aten]/o;
       # in hifil, the dropped yod of second person returns
       if ($w->{binyan} eq $hiqtil && $w->{guf} eq $ata && 
-	  $w->{infinitive} =~ m/י.$/) {$s =~ s/(?=.$)/י/o}
+	  $w->{infinitive} =~ m/י.$/o) {$s =~ s/(?=.$)/י/o}
       $s =~ s/ה$//o if $w->_nakey_lh;
       $s =~ s/^(..)ו(?=.$)/$1/ if $w->{binyan} eq $qal;
     } elsif ($w->{tense} eq $past) {
@@ -1273,14 +1279,14 @@ while(<INFILE>){
       $s .= 'י' if $w->{guf} eq $at;
       # TODO: $suf = 'ו' if $bj==$hu && past_pael שנאו and not שנאהו
       # plural gufs don't have the second_bj_form
-      return undef if ($w->{second_bj_form} && $s =~ m/ו$/o);
+      return undef if ($w->{second_bj_form} && $s =~ m/[וw]$/o);
     } elsif ($w->{tense} eq $present) {
       #TODO why Barkaly does not show objectization of female plurals??
       #return undef if $w->{guf} =~ m/^($anu|$aten|$hen)$/o;
       return undef unless $w->{second_bj_form};
       $s =~ s/ה$/ת/o if $w->{guf} eq $at;
       $s =~ s/ה$//o if ($w->_nakey_lh && $bj ne $hu);
-      if ($w->{guf} =~ m/^($atem|$hem|$anu|$aten|$hen)$/o) {
+      if ($w->{guf} =~ m/[$atem$hem$anu$aten$hen]/o) {
         $s =~ s/ם$//o ;
         $s =~ s/ת$/תי/o ;
         $suf =~ s/^ני$/י/o;
@@ -1288,14 +1294,14 @@ while(<INFILE>){
         $suf = 'יך' if $bj eq $at;
       }
     } elsif ($w->{tense} eq $future) {
-      $s =~ s/^([אתינ]..)ו(?=.$)/$1/ if $w->{binyan} eq $qal;
+      $s =~ s/^([אתינ]..)ו(?=.$)/$1/o if $w->{binyan} eq $qal;
       $s =~ s/ה$//o if $w->_nakey_lh;
       # few gufs has a second legal form for hu/hi objects. 
       # return it when second_bj_form is requested.
       # for example אשמרנו/אשמרנה, aside to אשמרו/אשמרה
       if ($w->{second_bj_form}) {
 	#only few gufs have second_bj_form.
-        return undef unless $w->{guf} =~ m/($ani|$ata|$hu|$hi|$anu)/o;
+        return undef unless $w->{guf} =~ m/[$ani$ata$hu$hi$anu]/o;
         $suf =~ s/^(?=[הו]$)/נ/o; 
       }
     }
@@ -1312,24 +1318,17 @@ while(<INFILE>){
     return unless $s;
     if ($detailed_output) {
       my ($tense,$person,$bjtext)=('-','','');
-      my %gname = ($ani => 'אני', $ata => 'אתה', $at => 'את', $hu => 'הוא',
-  	     $hi => 'היא',  $anu => 'אנו', $atem => 'אתם', $aten => 'אתן',
-  	     $hem => 'הם', $hen => 'הן' );
-      # the following anonymous hash looks much better than the translation
-      # code it replaces.
-      $tense = ${ {$past=>'עבר', $present=>'הווה', $future=>'עתיד', 
-		$imperative=>'ציווי', $infinitive=>'מקור', 
-		undef=>'-' } }{ $w->{tense} };
+      # the anonymous hash looked much better than the translation
+      # code it replaces. However, the following name has is so much faster...
+      $tense = $tname{ $w->{tense} };
       if ($w->{guf}) {
-        $person = ','.$gname{$w->{guf}};
-        if ($w->{tense} eq $present || $w->{tense} eq $adjective) {
-          my %pname = ($ata => 'יחיד', $at => 'יחידה', 
-  		$aten => 'רבות', $atem => 'רבים');
-          $person = ','.$pname{$w->{guf}};
+        $person = ','.$Word::gname{$w->{guf}};
+        if ($w->{tense} =~ m/[$present$adjective]/o) {
+          $person = ','.$Word::pname{$w->{guf}};
         }
       }
       if ($w->{object}) {
-        $bjtext=",כינוי/".$gname{$w->{object}} if $w->{object};
+        $bjtext=",כינוי/".$Word::gname{$w->{object}} if $w->{object};
       }
       if ($w->{tense} eq $adjective) {
         $detail = " ת$person";
@@ -1338,19 +1337,23 @@ while(<INFILE>){
       }
       $detail .= ',סמיכות' if $s =~ m/-$/o;
     }
-     # this is for speedup (quite rare in my code)
-    if ($s =~ m/[Yw]/o) {
     # the following is only an oversimplification of deornanization!!!
-    $s =~ s/^wי/וי/o;
-    $s =~ s/wו/וו/o;
-    $s =~ s/(?<=[יו])w/ו/o;
+    $s =~ s/^w(?=[Iי])/ו/o;
+    $s =~ s/[wו][wו][wו]?/וו/o;
+    $s =~ s/(?<=[ו])w/ו/o;
     $s =~ s/w/וו/o;
-    $s =~ s/Y(?=[יו])/י/o;
-    $s =~ s/(?<=[יו])Y/י/o;
-    $s =~ s/Y/יי/o;
-    }
+    $s =~ s/y(?=[Iיו])/י/o;
+    $s =~ s/(?<=[Iיו])y/י/o;
+    $s =~ s/יIי/יI/o; # for יירה
+    $s =~ s/yה$/יה/o;
+    $s =~ s/y/יי/o;
+    $s =~ s/h/ה/o;
     $s =~ s/-$//o; # if nadav doesn't print this stupid -, so would I.
-    print finalize($s).$detail."\n";
+    $s =~ s/J/ג'/go;
+    $s =~ s/Z/ז'/go;
+    $s =~ s/C/צ'/go;
+    $s =~ s/([כמנפצ])$/$fin{$1}/;
+    print $s.$detail."\n";
   }
 }
 

@@ -10,17 +10,15 @@
 
 %if %{fat}
   %define fname hspell-fat
-  %define sedcmd 's/\+//'
-  %define target linginfo
+  %define conf --enable-fatverb --enable-linginfo
 %else
   %define fname hspell
-  %define sedcmd '/\+/d'
-  %define target all
+  %define conf ''
 %endif
 
 Summary: a hebrew spell checker
 Name: %fname
-Version: 0.7
+Version: 0.8
 Release: 1
 Vendor:	Ivrix
 Packager: Dan Kenigsberg <danken@cs.technion.ac.il>
@@ -29,7 +27,6 @@ Source: hspell-%{version}.tar.gz
 License: GPL
 Group: Applications/Text
 BuildRoot: %{_tmppath}/%{name}-root
-#Buildarch: i386
 Obsoletes: hspell-fat hspell
 
 %description
@@ -61,37 +58,28 @@ hspell הוא מאיית עברי, המספק (בינתיים) מנשק דמוי-spell - פולט רשימה של המילים
 %setup -q -n hspell-%{version}
 
 %build
-make SEDCMD=%{sedcmd} CFLAGS="$RPM_OPT_FLAGS \$(EXTRACFLAGS)" \
-          PREFIX=%{_prefix} MAN1=%{_mandir}/man MAN3=%{_mandir}/man %{target}
+./configure --prefix=%_prefix --mandir=%_mandir %conf
+make CFLAGS="$RPM_OPT_FLAGS"
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make PREFIX=$RPM_BUILD_ROOT%{_prefix} MAN1=$RPM_BUILD_ROOT%{_mandir}/man1 \
-  MAN3=$RPM_BUILD_ROOT%{_mandir}/man3 install
+rm -rf %buildroot
+make prefix=%buildroot%_prefix MAN1=%buildroot%_mandir/man1  \
+	MAN3=%buildroot%_mandir/man3 install
+
 ##for debuging the spec file - skip dictionary creation:
-#mkdir -p $RPM_BUILD_ROOT%{_prefix}/{bin,share/man/man1,share/man/man3,share/hspell,lib,include}
-#touch $RPM_BUILD_ROOT%{_prefix}/bin/hspell
-#touch $RPM_BUILD_ROOT%{_prefix}/bin/hspell-i
-#touch $RPM_BUILD_ROOT%{_prefix}/bin/multispell
-#touch $RPM_BUILD_ROOT%{_prefix}/lib/libhspell.a
-#touch $RPM_BUILD_ROOT%{_prefix}/include/hspell.h
-#touch $RPM_BUILD_ROOT%{_prefix}/share/hspell/hebrew.wgz
-#touch $RPM_BUILD_ROOT%{_prefix}/share/hspell/hebrew.wgz.desc
-#touch $RPM_BUILD_ROOT%{_prefix}/share/hspell/hebrew.wgz.prefixes
-#touch $RPM_BUILD_ROOT%{_prefix}/share/hspell/hebrew.wgz.sizes
-#touch $RPM_BUILD_ROOT%{_prefix}/share/hspell/hebrew.wgz.stems
-#touch $RPM_BUILD_ROOT%{_prefix}/share/man/man1/hspell.1
-#touch $RPM_BUILD_ROOT%{_prefix}/share/man/man3/hspell.3
+#mkdir -p %buildroot%{_prefix}/{bin,share/man/man1,share/man/man3,share/hspell,lib,include}
+#touch %buildroot%{_prefix}/{bin/hspell,bin/hspell-i,bin/multispell,lib/libhspell.a,include/hspell.h,share/hspell/hebrew.wgz,share/hspell/hebrew.wgz.desc,share/hspell/hebrew.wgz.prefixes,share/hspell/hebrew.wgz.sizes,share/hspell/hebrew.wgz.stems,share/man/man1/hspell.1,share/man/man3/hspell.3}
 
 # We don't need developers' stuff in the distribution RPM
-rm $RPM_BUILD_ROOT/usr/{include/*.h,lib/libhspell.a,share/man/man3/hspell.3}
+#rm %buildroot%_prefix/{include/*.h,lib/libhspell.a} \
+#	%buildroot%_mandir/man3/hspell.3
 
 echo -e "#\!/bin/sh\n/usr/lib/rpm/find-requires|grep -v perl" \
 	 >/tmp/noperl-find-requires
 chmod a+x /tmp/noperl-find-requires
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %buildroot
 
 %files
 %defattr(-,root,root)
@@ -102,11 +90,28 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/hspell.1*
 %{_datadir}/hspell/*
 
+#########################################################
+
+%package devel
+
+Summary: Library and include files for hspell, thehebrew spell checker
+Group: Applications/Text
+
+%description devel
+Library and include files for applications that want to use hspell.
+
+%files devel
+%_includedir/*.h
+%_libdir/libhspell.a
+%_mandir/man3/hspell.3*
+
 %changelog
+* Fri Jun  4 2004 Dan Kenigsberg <danken@cs.technion.ac.il> 0.8-1
+- Some cleanups, and a devel package
 * Fri Dec 20 2003 Dan Kenigsberg <danken@cs.technion.ac.il> 0.7-1
 - Changes for version 0.7
 * Tue Jul 29 2003 Dan Kenigsberg <danken@cs.technion.ac.il> 0.6-1
-- Tiny cahnges for the C frontend
+- Tiny changes for the C frontend
 * Fri May  2 2003 Dan Kenigsberg <danken@cs.technion.ac.il> 0.5-1
 - create the "fat" variant
 * Mon Feb 17 2003 Dan Kenigsberg <danken@cs.technion.ac.il> 0.3-2

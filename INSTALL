@@ -1,2 +1,52 @@
-For installation instructions, please refer to the "Using hspell" section
-of the README.
+The README file describes what Hspell is and what it includes. This file
+explains how to build and install it.
+
+Installing Hspell on a Unix-compatible system (Linux, Unix, Mac OS X) is
+usually as simple as running
+
+	./configure
+	make
+	make install
+
+Note that before running "make install", you won't be able to run the hspell
+executable from the build directory, because it expects the dictionary files
+to be installed in their final position. A workaround is available for those
+who want to test, but not to install, hspell: doing "./configure --enable-test"
+will create an executable that expects the dictionaries to be present in the
+current directory.
+
+By default, Hspell is built for installation in the /usr/local tree. If you
+want to install it somewhere else, use "./configure --prefix=/some/dir".
+
+The --prefix option is just one of configure's usual options that give
+you more control on the way that Hspell is compiled - run "configure -h"
+to see the entire list of these options.
+
+In addition to configure's usual options, Hspell's configure add a few
+options whose names start with "--enable-", that enable optional features
+in Hspell. We already described one of them, --enable-test. The rest are
+probably slightly more useful:
+
+  --enable-fatverb
+        Allow "objective kinuyim" on all forms of verbs. Because this adds
+        as many as 130,000 correct but rarely-used (in modern texts)
+        inflections, a compile-time option is present for enabling or
+        disabling these forms. The default in this version is not to enable
+        them.
+
+  --enable-linginfo
+        Include a full morphological analyzer in "hspell -l", explaining how
+        each correct word could be derived. This slows down the build and makes
+        the installation about 4 times larger, but doesn't slow hspell if "-l"
+        isn't used.
+
+  --enable-aspell
+        Build data files - he_affix.dat and he.cwl - suitable for use as
+        Aspell 0.6 dictionary for Hebrew. Probably not useful for anyone
+        but Aspell's dictionary package developers.
+
+These optional features are not turned on by default because they present
+a feature/performance tradeoff (you get more features but slower build,
+larger installation, and/or slower executable), or a feature/feature tradeoff
+(when you add more rare word forms, you're allowing more spelling mistakes
+to masquerade as real-looking).

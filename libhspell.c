@@ -1,4 +1,4 @@
-/* Copyright (C) 2003 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2004 Nadav Har'El and Dan Kenigsberg */
 
 #include <time.h>
 #include <stdio.h>
@@ -104,6 +104,18 @@ build_prefix_tree(int allow_he_hasheela){
 		if(hspell_debug)
 			fprintf(stderr,"mask=%d\n",(*n)->mask);
 	}
+}
+
+static void
+free_prefix_tree(struct prefix_node *n)
+{
+	/* free_prefix_tree recursively walk the tree, freeing all nodes */
+	int i;
+	if(!n)
+		return;
+	for(i=0; i< sizeof(n->next)/sizeof(n->next[0]); i++)
+		free_prefix_tree(n->next[i]);
+	free(n);
 }
 
 
@@ -405,8 +417,27 @@ hspell_init(struct dict_radix **dictp, int flags){
 
 /* TODO: hspell_init should use a new "hspell_context" structure, not
    dict_radix. Because we might want to add more things like user dictionary.
+   The prefix tree should also sit in the hspell_context, instead of
+   being a global variable: the current mishmash of globals and non-globals
+   is ugly.
+   Linginfo's global variables (see linginfo_init and linginfo_free)
+   should also be in this context.
 */
-/* TODO: the prefix tree should also sit in the hspell_context, instead of
-   being a global variable. Maybe. The current mishmash of globals and
-   non-globals is ugly. */
-/* TODO: add hspell_uninit! */
+
+/* hspell_uninit() undoes the effects of hspell_init, freeing memory that
+   was allocated during initialization. The dict pointer passed is no
+   longer valid after this call, and should not be used (i.e., hspell_uninit()
+   has similar semnatics to free()).
+*/
+void
+hspell_uninit(struct dict_radix *dict)
+{
+	delete_dict_radix(dict);
+	/* free prefix tree. Too bad this is a global variable, and not
+	   something in a "context" given to us as a paramter. */
+	free_prefix_tree(prefix_tree);
+	prefix_tree=0;
+#ifdef USE_LINGINFO
+	linginfo_free();
+#endif
+}

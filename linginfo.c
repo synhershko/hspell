@@ -1,4 +1,4 @@
-/* Copyright (C) 2003 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2004 Nadav Har'El and Dan Kenigsberg */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,6 +6,38 @@
 #include "linginfo.h"
 
 #include "dmask.c"
+
+
+/* For an explanation of this bizarre set of definitions, see the comment
+   in dict_radix.c, before a similar set. */
+#ifdef HAVE_ZLIB
+#define BUFFERED_ZLIB
+#undef FILE
+#undef pclose
+#undef pclose
+#undef getc
+#ifdef BUFFERED_ZLIB
+#include "gzbuffered.h"
+#undef gzopen
+#undef gzdopen
+#define FILE void /* void* can be either normal FILE* or gzbFile*. Eek. */
+#define popen(path,mode) gzb_open(path,mode)
+#define gzopen(path,mode) gzb_open(path,mode)
+#define gzdopen(path,mode) gzb_dopen(path,mode)
+#define pclose(f) (gzb_close((gzbFile *)(f)))
+#define getc(f) (gzb_getc(((gzbFile *)(f))))
+#define fgets(s,n,f) (gzb_gets((s),(n),((gzbFile *)(f))))
+#else
+#include <zlib.h>
+#define FILE void    /* FILE* is void*, a.k.a. voidp or gzFile */
+#define pclose(f) (gzclose((f)))
+#define popen(path,mode) (gzopen((path),(mode)))
+#define getc(f) (gzgetc((f)))
+#define fgets(s,n,f) (gzgets((s),(n),(f)))
+#endif
+#undef fgetc
+#define fgetc(f) getc(f)
+#endif /* HAVE_ZLIB */
 
 static char *flat, **lookup;
 static int lookuplen;
@@ -145,12 +177,12 @@ int linginfo_init(const char *dir) {
 
 	snprintf(s,sizeof(s),"%s.sizes",dir);
 	if(!(fp=fopen(s,"r"))){
-		fprintf(stderr,"can't open %s.\n",s);
+		fprintf(stderr,"Hspell: can't open %s.\n",s);
 		return 0;
 	}
 	fscanf(fp,"%*d %*d %*d"); /* ignore non linginfo sizes */
 	if(fscanf(fp,"%d %d",&flatsize,&lookuplen)!=2){
-		fprintf(stderr,"can't read from %s.\n",s);
+		fprintf(stderr,"Hspell: can't read from %s.\n",s);
 		return 0;
 	}
 	fclose(fp);
@@ -158,27 +190,39 @@ int linginfo_init(const char *dir) {
 	current = flat = (char *)malloc(flatsize);
 	lookup = (char **)malloc(sizeof(char *)*lookuplen);
 	if (!current || !lookup) {
-		fprintf (stderr, "alloc failed\n");
-		exit(1);
+		fprintf (stderr, "Hspell: alloc failed\n");
+		return 0;
 	}
 
 	/* read dictionary into memory */
 	
 	/* TODO: have better quoting for filename, or use zlib directly */
+#ifdef HAVE_ZLIB
+	snprintf(s,sizeof(s),"%s",dir);
+#else
 	snprintf(s,sizeof(s),"gzip -dc '%s'",dir);
+#endif
 	if(!(fp=popen(s,"r"))){
-		fprintf(stderr,"can't open %s.\n",s);
+		fprintf(stderr,"Hspell: can't open %s.\n",s);
 		return 0;
 	}
+#ifdef HAVE_ZLIB
+	snprintf(s,sizeof(s),"%s.stems",dir);
+#else
 	snprintf(s,sizeof(s),"gzip -dc '%s.stems'",dir);
+#endif
 	if(!(fpstems=popen(s,"r"))){ 
-		fprintf(stderr,"can't open %s.\n",s);
+		fprintf(stderr,"Hspell: can't open %s.\n",s);
 		pclose(fp);
 		return 0;
 	}
+#ifdef HAVE_ZLIB
+	snprintf(s,sizeof(s),"%s.desc",dir);
+#else
 	snprintf(s,sizeof(s),"gzip -dc '%s.desc'",dir);
+#endif
 	if(!(fpdesc=popen(s,"r"))){ 
-		fprintf(stderr,"can't open %s.\n",s);
+		fprintf(stderr,"Hspell: can't open %s.\n",s);
 		pclose(fp);
 		pclose(fpstems);
 		return 0;
@@ -200,11 +244,11 @@ int linginfo_init(const char *dir) {
 			lookup[i++] = current;
 			for(j=0; j<=slen; j++) current++[0]=sbuf[j];
 			if (!fgets(stem,sizeof(stem),fpstems)) {
-				fprintf(stderr, "linginfo: unexpected end of file in stems file\n");
+				fprintf(stderr, "Hspell: linginfo: unexpected end of file in stems file\n");
 				return 0;
 			}
 			if (!fgets(desc,sizeof(desc),fpdesc)) {
-				fprintf(stderr, "linginfo: unexpected end of file in description file\n");
+				fprintf(stderr, "Hspell: linginfo: unexpected end of file in description file\n");
 				return 0;
 			}
 			for (j=0; desc[j]!='\n' && desc[j]!=0; j++) {
@@ -226,16 +270,16 @@ int linginfo_init(const char *dir) {
 			} while ((c=fgetc(fp))!=EOF && c>='0' && c<='9');
 			slen-=n;
 			if(slen<0 || slen >= sizeof(sbuf)-1){
-				fprintf(stderr,"bad backlength %d... exiting.\n", slen);
-				exit(1);
+				fprintf(stderr,"Hspell: bad backlength %d... giving up.\n", slen);
+				return 0;
 			}
 			/* we got a new letter c - continue the loop */
 
 		} 
 		/* word letter - add it */
 		if(slen>=sizeof(sbuf)-1){
-			fprintf(stderr,"word too long... exiting.\n");
-			exit(1);
+			fprintf(stderr,"Hspell: word too long... giving up.\n");
+			return 0;
 		}
 		sbuf[slen++]=c;
 	} 

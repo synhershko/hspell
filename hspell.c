@@ -1,4 +1,4 @@
-/* Copyright (C) 2003 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2004 Nadav Har'El and Dan Kenigsberg */
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -248,7 +248,7 @@ main(int argc, char *argv[])
 			return 0;
 		case 'h': case '?':
 			fprintf(stderr,"hspell - Hebrew spellchecker\n"
-				"Usage: %s [-acinslV] [file ...]\n\n"
+				"Usage: %s [-acinslVH] [file ...]\n\n"
 				"See hspell(1) manual for a description of "
 				"hspell and its options.\n", progname);
 			return 1;
@@ -331,18 +331,6 @@ main(int argc, char *argv[])
 
 	for(;;){
 		c=getc(in);
-		if(c==EOF) {
-			/* in UNIX spell mode (!interpipe) we should read
-			   all the files given in the command line...
-			   Otherwise, an EOF is the end of this loop.
-			*/
-			if(!interpipe && argc>0){
-				in=next_file(&argc, &argv);
-				if(!in)
-					break;
-			} else
-				break;
-		}
 		if(ishebrew(c) || c=='\'' || c=='"'){
 			/* swallow up another letter into the word (if the word
 			 * is too long, lose the last letters) */
@@ -360,7 +348,7 @@ main(int argc, char *argv[])
 			 * of the word - used to signify "j" sound in Hebrew,
 			 * for example, and double quotes used to signify
 			 * acronyms. A single quote at the end of the word is
-			 * used to signify an abbreviate - or can be an actual
+			 * used to signify an abbreviation, or can be an actual
 			 * quote (there is no difference in ASCII...), so we
 			 * must check both possibilities. */
 			w=word;
@@ -461,6 +449,25 @@ main(int argc, char *argv[])
 			   a newline */
 			continue;
 		}
+		if(c==EOF) {
+			/* If we were in the middle of the line (no newline)
+			   we nevertheless need to finish with the old line */
+			if(offset){
+				offset=0;
+				if(interpipe && !slave)
+					printf("\n");
+			}
+			/* in UNIX spell mode (!interpipe) we should read
+			   all the files given in the command line...
+			   Otherwise, an EOF is the end of this loop.
+			*/
+			if(!interpipe && argc>0){
+				in=next_file(&argc, &argv);
+				if(!in)
+					break;
+			} else
+				break;
+		}
 		if(c=='\n'){
 			offset=0;
 			if(interpipe && !slave)  /*slave already outputs a newline...*/
@@ -473,7 +480,6 @@ main(int argc, char *argv[])
 		if(interpipe && slave)
 			putc(ishebrew(c) ? ' ' : c, slavefp);
 	}
-	/* TODO: check the last word in case of no newline at end of file? */
 
 	/* in spell-like mode (!interpipe) - list the wrong words */
 	if(!interpipe){

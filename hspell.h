@@ -1,4 +1,4 @@
-/* Copyright (C) 2003 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2004 Nadav Har'El and Dan Kenigsberg */
 
 /* This header file defines the Hspell Hebrew spellchecking API in C, as
    implemented by the libhspell.a library.
@@ -14,7 +14,7 @@
    between minor versions.
 */
 #define HSPELL_VERSION_MAJOR 0
-#define HSPELL_VERSION_MINOR 7
+#define HSPELL_VERSION_MINOR 8
 #define HSPELL_VERSION_EXTRA ""
 
 
@@ -34,6 +34,8 @@ int hspell_check_word(struct dict_radix *dict,
 void hspell_trycorrect(struct dict_radix *dict,
 		       const char *w, struct corlist *cl);
 int hspell_is_canonic_gimatria(const char *w);
+
+void hspell_uninit(struct dict_radix *dict);
 
 extern int hspell_debug;
 

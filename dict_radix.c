@@ -1,4 +1,4 @@
-/* Copyright (C) 2003 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2004 Nadav Har'El and Dan Kenigsberg */
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -11,6 +11,41 @@
    nightmare.
 */
 #include <inttypes.h>
+
+/* If the Zlib library is available, we use it for reading the compressed
+   dictionaries, rather than opening a pipe to an external gzip process.
+   In one measurement, this halved the loading time (0.1 sec to 0.05 sec).
+   It also allowed Hspell to be used on systems where the Zlib library
+   is available, but the gzip program is not (e.g., OpenOffice on MS-Windows).
+
+   The definitions which are pretty bizarre, but help us convert the existing
+   code into something that will work with zlib without ugly ifdefs
+   everywhere (further ifdefs are only needed in some places). Note that
+   when BUFFERED_ZLIB is enabled (and it is enabled by default here) we
+   enable speciall buffered version of zlib (gzbuffered.h) instead of the
+   normal zlib functions.
+*/
+#ifdef HAVE_ZLIB
+#define BUFFERED_ZLIB
+#undef FILE
+#undef pclose
+#undef getc
+#ifdef BUFFERED_ZLIB
+#include "gzbuffered.h"
+#undef gzopen
+#undef gzdopen
+#define FILE void /* void* can be either normal FILE* or gzbFile*. Eek. */
+#define gzopen(path,mode) gzb_open(path,mode)
+#define gzdopen(path,mode) gzb_dopen(path,mode)
+#define pclose(f) (gzb_close((gzbFile *)(f)))
+#define getc(f) (gzb_getc(((gzbFile *)(f))))
+#else
+#include <zlib.h>
+#define FILE void    /* FILE* is void*, a.k.a. voidp or gzFile */
+#define pclose(f) (gzclose((f)))
+#define getc(f) (gzgetc((f)))
+#endif
+#endif /* HAVE_ZLIB */
 
 /* Our radix tree has four types of "nodes": leaf nodes, small nodes
  * (carrying up to SMALL_NODE_CHILDREN children), medium nodes (carrying up to
@@ -104,8 +139,11 @@ inline int char_to_letter(unsigned char c)
 	} else if (c=='\''){
 		return 1;
 	} else {
-		fprintf(stderr,"unknown letter %c... exiting.\n",c);
-		exit(1);
+		fprintf(stderr,"Hspell: unknown letter %c...\n",c);
+		/* This is not a really sensible thing to do, but there's
+		   nothing we really can do if the dictionary contains bad
+		   letters. If we had exceptions, we could throw one here...*/
+		return 0;
 	}
 }
 
@@ -118,7 +156,8 @@ inline unsigned char letter_to_char(int l)
 	} else if(l==1){
 		return '\'';
 	} else {
-		fprintf(stderr,"internal error: unknown letter %d... "
+		/* this will never happen in the current code: */
+		fprintf(stderr,"Hspell: internal error: unknown letter %d... "
 				"exiting.\n",l);
 		exit(1);
 	}
@@ -133,7 +172,7 @@ do_print_tree(struct node *nodes, struct node_small *nodes_small,
            struct node_index head, char *word, int len, int maxlen){
 	int i;
 	if(len>=maxlen){
-		fprintf(stderr,"do_print_tree(): warning: buffer overflow.\n");
+		fprintf(stderr,"Hspell: do_print_tree(): warning: buffer overflow.\n");
 		return;
 	}
 	if((head.val_or_index & HIGHBITS) == HIGHBITS_FULL){
@@ -219,6 +258,10 @@ new_dict_radix(void)
 	return dict;
 }
 
+/* Note that delete_dict_radix frees everything inside a dict_radix, and
+   the dict_radix structure itself. The pointer given to it is no longer
+   a valid pointer after this call.
+*/
 void
 delete_dict_radix(struct dict_radix *dict)
 {
@@ -230,6 +273,7 @@ delete_dict_radix(struct dict_radix *dict)
 		free(dict->nodes_medium);
 	if(dict->nodes)
 		free(dict->nodes);
+	free(dict);
 }
 
 int
@@ -258,6 +302,11 @@ allocate_nodes(struct dict_radix *dict, int nsmall, int nmedium, int nfull)
 
 /* Efficiently read a compressed dictionary from the given directory.
    Use memory pre-allocation hints from another file in this directory.
+
+   returns 1 on success, 0 on failure.
+
+   TODO: there are too many printouts here. We need to return error
+   numbers instead of all those printouts.
 */
 
 #define PREFIX_FILE
@@ -281,26 +330,44 @@ read_dict(struct dict_radix *dict, const char *dir)
 
 		snprintf(s,sizeof(s),"%s.sizes",dir);
 		if(!(fp=fopen(s,"r"))){
-			fprintf(stderr,"can't open %s.\n",s);
+			fprintf(stderr,"Hspell: can't open %s.\n",s);
 			return 0;
 		}
 		if(fscanf(fp,"%d %d %d",&small,&medium,&full)!=3){
-			fprintf(stderr,"can't read from %s.\n",s);
+			fprintf(stderr,"Hspell: can't read from %s.\n",s);
 			return 0;
 		}
 		fclose(fp);
+
+#ifdef HAVE_ZLIB
+		if(!(fp=gzopen(dir,"r"))){
+			fprintf(stderr,"Hspell: can't open %s.\n",dir);
+			return 0;
+		}
+#else
 		snprintf(s,sizeof(s),"gzip -dc '%s'",dir);
 		if(!(fp=popen(s,"r"))){
-			fprintf(stderr,"can't run %s.\n",s);
+			fprintf(stderr,"Hspell: can't run %s.\n",s);
 			return 0;
 		}
+#endif /* HAVE_ZLIB */
+
 #ifdef PREFIX_FILE
+#ifdef HAVE_ZLIB
+		snprintf(s,sizeof(s),"%s.prefixes",dir);
+		if(!(prefixes=gzopen(s,"r"))){
+			fprintf(stderr,"Hspell: can't open %s.\n",s);
+			return 0;
+		}
+#else
 		snprintf(s,sizeof(s),"gzip -dc '%s.prefixes'",dir);
 		if(!(prefixes=popen(s,"r"))){
-			fprintf(stderr,"can't run %s.\n",s);
+			fprintf(stderr,"Hspell: can't run %s.\n",s);
 			return 0;
 		}
+#endif /* HAVE_ZLIB */
 #endif
+
 		allocate_nodes(dict,small,medium,full);
 #ifdef PREFIX_FILE
 		ret=do_read_dict(fp, prefixes, dict);
@@ -311,11 +378,23 @@ read_dict(struct dict_radix *dict, const char *dir)
 		pclose(fp);
 		return ret;
 	} else {
+#ifdef HAVE_ZLIB
+		/* note that gzopen also works on non-gzipped files */
+		FILE *in=gzdopen(fileno(stdin),"r");
+#ifdef PREFIX_FILE
+		FILE *zero=gzopen("/dev/zero","r");
+#endif
+#else
+		FILE *in=stdin;
 #ifdef PREFIX_FILE
 		FILE *zero=fopen("/dev/zero","r");
-		return do_read_dict(stdin, zero, dict);
+#endif
+#endif /* HAVE_ZLIB */
+
+#ifdef PREFIX_FILE
+		return do_read_dict(in, zero, dict);
 #else
-		return do_read_dict(stdin, dict);
+		return do_read_dict(in, dict);
 #endif
 	}
 }
@@ -338,14 +417,14 @@ static int do_read_dict(FILE *fp, struct dict_radix *dict)
 
 	if(dict->nnodes||dict->nnodes_small||dict->nnodes_medium||
 	   dict->nwords){
-		fprintf(stderr, "do_read_dict(): called for a non-empty "
-			"dictionary\n");
-		return -1;
+		fprintf(stderr, "Hspell: do_read_dict(): called for a non-"
+			"empty dictionary\n");
+		return 0;
 	}
 	if(!nodes||!nodes_small||!nodes_medium){
-		fprintf(stderr, "do_read_dict(): allocate_nodes() must be "
-			"called first\n");
-		return -2;
+		fprintf(stderr, "Hspell: do_read_dict(): allocate_nodes() must"
+			" be called first\n");
+		return 0;
 	}
 
 	memset(&nodes[nnodes], 0, sizeof(nodes[nnodes]));
@@ -371,15 +450,15 @@ static int do_read_dict(FILE *fp, struct dict_radix *dict)
 			} while ((c=getc(fp))!=EOF && c>='0' && c<='9');
 			sdepth-=n;
 			if(sdepth<0 || sdepth >= (sizeof(stack)/sizeof(stack[0]))-1){
-				fprintf(stderr,"bad backlength %d... exiting.\n", sdepth);
-				exit(1);
+				fprintf(stderr,"Hspell: bad backlength %d... giving up\n", sdepth);
+				return 0;
 			}
 			/* we got a new letter c - continue the loop */
 		} 
 		/* word letter - add it */
 		if(sdepth>=sizeof(stack)/sizeof(stack[0])-1){
-			fprintf(stderr,"word too long... exiting.\n");
-			exit(1);
+			fprintf(stderr,"Hspell: word too long... giving up\n");
+			return 0;
 		}
 		cc=char_to_letter(c);
 		/* make sure previous node is a small or full node, not just a
@@ -392,8 +471,8 @@ static int do_read_dict(FILE *fp, struct dict_radix *dict)
 			} else {
 				chosen=nnodes_small;
 				if(nnodes_small>=dict->size_nodes_small){
-					fprintf(stderr,"Realloc needed (small) - failing.\n");
-					exit(1);
+					fprintf(stderr,"Hspell: Realloc needed (small) - failing.\n");
+					return 0;
 				}
 				nnodes_small++;
 			}
@@ -423,8 +502,8 @@ static int do_read_dict(FILE *fp, struct dict_radix *dict)
 				} else {
 					chosen=nnodes_medium;
 					if(nnodes_medium>=dict->size_nodes_medium){
-						fprintf(stderr,"Realloc needed (medium) - failing.\n");
-						exit(1);
+						fprintf(stderr,"Hspell: Realloc needed (medium) - failing.\n");
+						return 0;
 					}
 					nnodes_medium++;
 				}
@@ -432,8 +511,8 @@ static int do_read_dict(FILE *fp, struct dict_radix *dict)
 				if(dict->nfree_nodes_small>=
 				   sizeof(dict->free_nodes_small)/
 				   sizeof(dict->free_nodes_small[0])){
-					fprintf(stderr,"overflow in free_nodes_small.\n");
-					exit(1);
+					fprintf(stderr,"Hspell: overflow in free_nodes_small.\n");
+					return 0;
 				}
 				dict->free_nodes_small
 					[(dict->nfree_nodes_small)++]=
@@ -468,16 +547,16 @@ static int do_read_dict(FILE *fp, struct dict_radix *dict)
 			if(j==MEDIUM_NODE_CHILDREN){
 				/* medium node full! convert it to full node */
 				if(nnodes>=dict->size_nodes){
-					fprintf(stderr,"Realloc needed (full) - failing.\n");
-					exit(1);
+					fprintf(stderr,"Hspell: Realloc needed (full) - failing.\n");
+					return 0;
 				}
 				memset(&nodes[nnodes], 0, sizeof(nodes[nnodes]));
 				nodes[nnodes].value = n->value;
 				if(dict->nfree_nodes_medium>=
 				   sizeof(dict->free_nodes_medium)/
 				   sizeof(dict->free_nodes_medium[0])){
-					fprintf(stderr,"overflow in free_nodes_medium.\n");
-					exit(1);
+					fprintf(stderr,"Hspell: overflow in free_nodes_medium.\n");
+					return 0;
 				}
 				dict->free_nodes_medium
 					[(dict->nfree_nodes_medium)++]=

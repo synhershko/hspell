@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# Copyright (C) 2002-2003 Nadav Har'El and Dan Kenigsberg
+# Copyright (C) 2002-2004 Nadav Har'El and Dan Kenigsberg
 #
 # converts the textual linguistic information in wolig-d-dictionaries,
 # into binary data.
@@ -77,9 +77,9 @@ sub text2mask {
 	my $dmask = 0;
 	my $desc = shift;
 	return 0 if !$desc;
-	if($desc=~m/^([^א-ת]|^)פ,/o) {$dmask |= $D_VERB}
+	if($desc=~m/^([^א-ת]|^)פ([^א-ת]|$)/o) {$dmask |= $D_VERB}
 	elsif($desc=~m/([^א-ת]|^)ע([^א-ת]|$)/o) {$dmask |= $D_NOUN}
-	elsif($desc=~m/([^א-ת]|^)ת,/o) {$dmask |= $D_ADJ}
+	elsif($desc=~m/([^א-ת]|^)ת([^א-ת]|$)/o) {$dmask |= $D_ADJ}
 
 	if($desc=~m/,עבר([^א-ת]|$)/o) {$dmask |= $D_PAST}
 	elsif($desc=~m/,הווה([^א-ת]|$)/o) {$dmask |= $D_PRESENT}
@@ -87,7 +87,7 @@ sub text2mask {
 	elsif($desc=~m/,ציווי([^א-ת]|$)/o) {$dmask |= $D_IMPERATIVE}
 	elsif($desc=~m/,מקור([^א-ת]|$)/o) {$dmask |= $D_INFINITIVE}
 
-	if($dmask & $D_TYPEMASK & $D_VERB) {
+	if(($dmask & $D_TYPEMASK) == $D_VERB) {
 		if($desc=~m/,יחיד([^א-ת]|$)/o) {$dmask |= $D_MASCULINE | $D_SINGULAR}
 		elsif($desc=~m/,יחידה([^א-ת]|$)/o) {$dmask |= $D_FEMININE | $D_SINGULAR}
 		elsif($desc=~m/,רבים([^א-ת]|$)/o) {$dmask |= $D_MASCULINE | $D_PLURAL}
@@ -96,12 +96,13 @@ sub text2mask {
 
 	# currently, wolig and woo have confusing -d output with regards
 	# to gender.
-	if($dmask & $D_TYPEMASK & ($D_NOUN | $D_ADJ)) {
+	if((($dmask & $D_TYPEMASK) == $D_NOUN) || 
+	   (($dmask & $D_TYPEMASK) == $D_ADJ)) {
 		if($desc=~m/,יחיד([^א-ת]|$)/o) {$dmask |= $D_SINGULAR}
 		elsif($desc=~m/,רבים([^א-ת]|$)/o) {$dmask |= $D_PLURAL}
 
-		if($desc=~m/([^א-ת]|^)ז,/o) {$dmask |= $D_MASCULINE};
-		if($desc=~m/([^א-ת]|^)נ,/o) {$dmask |= $D_FEMININE};
+		if($desc=~m/([^א-ת]|^)ז([^א-ת]|$)/o) {$dmask |= $D_MASCULINE};
+		if($desc=~m/([^א-ת]|^)נ([^א-ת]|$)/o) {$dmask |= $D_FEMININE};
 	}
 
 	if($desc=~m/,אני/o) {$dmask |= $D_FIRST | $D_SINGULAR}

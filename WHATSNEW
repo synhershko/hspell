@@ -1,3 +1,50 @@
+Release 0.8 (June 21, 2004):
+
+ * Some incorrect words purged or fixed, and many more words added: almost
+   2,000 base words added.
+
+ * Reorganized and simplified directory structure of source distribution,
+   and added "autoconf" configuration (use "configure" before "make").
+
+   See "configure --help" for a list of build-time options, such as to enable
+   more verb forms and to enable a morphological analyzer for the "-l" option.
+   See the INSTALL file for more instructions.
+
+   The old Perl "hspell.pl", deprecated in release 0.6, is now gone.
+
+ * If available, use zlib instead of an external gzip process to read the
+   compressed dictionaries. On our tests, this reduced startup time 2-6 fold.
+   It also allows the Hspell API to be used on systens where pipes or
+   gzip are not available, but zlib is (namely, Windows).
+
+ * Improved Hspell's C api. There is a new function hspell_uninit() for
+   reclaiming memory allocated by hspell_init(), and all exit() calls
+   were purged from the Library (printouts are still there, unfortunately).
+
+   NOTE: Because Hspell now uses zlib (see above), when using the libhspell.a
+   library you must now also link with the zlib (-lz) library. This is
+   especially important to remember when looking for libhspell in your own
+   configure scripts.
+
+ * Fixed a few bugs: in morphological analyzer, handling of files without
+   a newline, and more.
+
+ * It is now possible to use Hspell's Hebrew word list (and valid prefix
+   information) in the upcoming versions of the Aspell spell-checker.
+   A new build option, "configure --enable-aspell", creates the two files
+   "he.cwl" and "he_affix.dat" which can then be used to build Aspell's
+   Hebrew dictionary.
+
+   We would like to thank Kevin Atkinson and Kevin Patrick Scannell for
+   their efforts in fixing Aspell's affix support, and making Aspell a
+   viable multi-lingual spell-checker.
+
+ * Vocabulary: 425,709 words (when including kinuyim on verbs)
+               based on 8935 nouns, 2181 adjectives, 5192 verb stems, and
+	       2289 other words
+
+
+-----------------------------------------------------------------------------
 Release 0.7 (December 22, 2003):
 
  * Some incorrect words purged or fixed, and many more words added: over

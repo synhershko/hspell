@@ -1,12 +1,14 @@
 '\" t
-.\" Copyright (c) 2001-2003, Nadav Har'El and Dan Kenigsberg
-.TH hspell 3 "22 December 2003" "Hspell 0.7" "Ivrix"
+.\" Copyright (c) 2001-2004, Nadav Har'El and Dan Kenigsberg
+.TH hspell 3 "21 June 2004" "Hspell 0.8" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker (C API)
 .SH SYNOPSIS
 .B #include <hspell.h>
 .PP
 \fBint hspell_init(struct dict_radix **\fRdictp\fB, int \fRflags\fB);\fR
+.PP
+\fBvoid hspell_uninit(struct dict_radix *\fRdictp\fB);\fR
 .PP
 \fBint hspell_check_word(struct dict_radix *\fRdict\fB, const char *\fRword\fB, int *\fRpreflen\fB);\fR
 .PP
@@ -60,11 +62,16 @@ Hspell's default behavior; Turning on HSPELL_OPT_HE_SHEELA allows Hspell
 to recognize the interrogative He prefix (he ha-she'ela). HSPELL_OPT_DEFAULT
 is a synonym for turning on no special flag, i.e., it evaluates to 0.
 
-
 .B hspell_init()
 returns 0 on success, or negative numbers
 on errors. Currently, the only error is -1, meaning the dictionary files
 could not be read.
+
+The
+.B hspell_uninit()
+function undoes the effects of
+.BR hspell_init() ,
+freeing any memory that was allocated during initialization.
 
 The
 .B hspell_check_word()
@@ -149,6 +156,17 @@ returns the number represented as
 gimatria in 'word' if it is indeed proper gimatria (in canonic form),
 or 0 otherwise.
 
+.SH "LINKING"
+On most systems, the Hspell library is compiled to use the Zlib library
+for reading the compressed dictionaries. Therefore, a program linking with
+the Hspell library must also be linked with the Zlib library (usually, by
+adding "-lz" to the compilation line).
+
+Programs that use
+.I autoconf
+to search for the Hspell library, should remember to tell AC_CHECK_LIB
+to also link with the -lz library when checking for -lhspell.
+
 .SH CAVEATS
 Before Hspell reaches maturity with release 1.0, the API described here
 is to be considered unstable, and may change considerably even between
@@ -162,11 +180,6 @@ expected by the writer of the program. A third macro,
 .B HSPELL_VERSION_EXTRA
 contains a string which can describe subrelease modifications (e.g., beta
 versions).
-
-Currently there is no
-.BR hspell_uninit .
-Once the Hebrew dictionary is loaded into memory, there is no way to
-unload it and reclaim the memory it uses.
 
 The current Hspell C API is very low-level, in the sense that it leaves
 the user to implement many features that some users take for granted
@@ -205,14 +218,19 @@ more types of corrections,
 needs a better way to order the likelihood of the corrections, as an
 unordered list of 100 corrections would be just as useful as none.
 
+In some cases of errors during
+.BR hspell_init() ,
+warning messages are printed to the standard errors. This is a bad thing for
+a library to do.
+
 There are too many CAVEATS in this manual.
 
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 0.7 (December 22, 2003)
+described by this manual page is 0.8 (June 21, 2004)
 .SH "COPYRIGHT"
-Copyright (C) 2000-2003, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2004, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
 Hspell is free software, released under the GNU General Public License (GPL).
