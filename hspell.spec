@@ -1,6 +1,6 @@
 # notice: you must --define either 'fat 0' or 'fat 1' in order to build this rpm
 # second notice: in order to force the rpm not to require perl (although it
-# contains Moofie's multispell), you should build it with:
+# contains Mooffie's multispell), you should build it with:
 
 %define __find_requires /tmp/noperl-find-requires
 %define _use_internal_dependency_generator 0
@@ -18,7 +18,7 @@
 
 Summary: a hebrew spell checker
 Name: %fname
-Version: 0.8
+Version: 0.9
 Release: 1
 Vendor:	Ivrix
 Packager: Dan Kenigsberg <danken@cs.technion.ac.il>

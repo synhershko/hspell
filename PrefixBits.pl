@@ -1,7 +1,7 @@
 # Prefix specifiers currently generated:
- $PS_ALL=63;    # All legal prefixes are allowed for this word
- $PS_B=1;      # like B in hspell.pl
- $PS_L=3;      # like L in hspell.pl (note that L is more general than B)
+ $PS_ALL=63;   # All legal prefixes are allowed for this word
+ $PS_B=1;      # only certain prefixes ending in bet are allowed.
+ $PS_L=2;      # only prefixes ending in bachla"m are allowed (note that if genprefixes.pl gives a certain prefix PS_L, it should also give it PS_B).
  $PS_VERB=4;
  $PS_NONDEF=8;    # accept prefixes w/o ä
  $PS_IMPER=16;    # accept nothing/å
@@ -10,6 +10,6 @@
 # can get prefixes of two types, it will have one combined prefix specifier
 # that describes the prefixes.
 #
-# These prefixe spesifiers are used by genprefixes.pl to create prefixes.c 
+# These prefix specifiers are used by genprefixes.pl to create prefixes.c
 # that is used by hspell.c
 

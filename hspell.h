@@ -14,7 +14,7 @@
    between minor versions.
 */
 #define HSPELL_VERSION_MAJOR 0
-#define HSPELL_VERSION_MINOR 8
+#define HSPELL_VERSION_MINOR 9
 #define HSPELL_VERSION_EXTRA ""
 
 
@@ -36,6 +36,9 @@ void hspell_trycorrect(struct dict_radix *dict,
 int hspell_is_canonic_gimatria(const char *w);
 
 void hspell_uninit(struct dict_radix *dict);
+
+const char *hspell_get_dictionary_path(void);
+void hspell_set_dictionary_path(const char *path);
 
 extern int hspell_debug;
 

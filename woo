@@ -52,12 +52,8 @@ while(<INFILE>){
 
     $opts{"קל_אפעל"}=1 if $opts{"קל_אפעל+"};
     $opts{"קל_אפעול"}=1 if $opts{"קל_אפעול+"};
-    $opts{"נפ"}=1 if ($opts{"נפ+"});
     $opts{"הפ"}=1 if ($opts{"הפ+"});
-    $opts{"הו"}=1 if ($opts{"הו+"});
     $opts{"פי"}=1 if ($opts{"פי+"});
-    $opts{"פו"}=1 if ($opts{"פו+"});
-    $opts{"הת"}=1 if ($opts{"הת+"});
 
     push @binyanim, $Word::qal if ($opts{"קל_אפעל"}||$opts{"קל_אפעול"});
     push @binyanim, $Word::niqtal if ($opts{"נפ"});
@@ -74,11 +70,6 @@ while(<INFILE>){
     $w->{opts}= \%opts; #TODO pass only relevant options.
  
     foreach $b (@binyanim) {
-      # if perl had constants, here I'd use it. When $SUBJECTIZE is passed to
-      # the objectize funtion, it creates the kinnuy xabur that signifies the
-      # subject of a sentence, rather than the object. In some (few) cases it
-      # makes a difference.
-      my $SUBJECTIZE = 1;
       $w->binyan($b);
 
       # When the options נסתר is given, $word is not the root to conjugate, but
@@ -106,7 +97,7 @@ while(<INFILE>){
 	if (defined($s) && $transitive{$w->{binyan}}) {
 	  next if $g eq $Word::aten; # $aten's transitivisation is as $atem's
 	  $w->{second_bj_form} = 0;
-          foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hu,$Word::hi,
+          foreach $bj ($Word::ani,$Word::ata,$Word::at,$Word::hu,$Word::hu,$Word::hi,
 		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
 	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj eq $Word::hu;
 	    my $n = $w->objectize($s, $bj);
@@ -146,17 +137,17 @@ while(<INFILE>){
       # form, as done by rav-millim.
       if (defined($s)) {
         if ($transitive{$w->{binyan}} ) {
- 	  foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hi,
+ 	  foreach $bj ($Word::ani,$Word::ata,$Word::at,$Word::hu,$Word::hi,
 		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
             my $n = $w->objectize($s, $bj);
             $w->outword($n) if $n;
           }
-          my $n = $w->objectize($s, $Word::ani, $SUBJECTIZE);
+          my $n = $w->objectize($s, $Word::ani, SUBJECTIZE);
           $w->outword($n) if $n;
 	} else { # output only subjectizations for intransitive verbs.
  	  foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hi,
 		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
-            my $n = $w->objectize($s, $bj, $SUBJECTIZE);
+            my $n = $w->objectize($s, $bj, SUBJECTIZE);
             $w->outword($n) if $n;
           }
 	}
@@ -170,7 +161,7 @@ while(<INFILE>){
         $w->outword($s);
 	if (defined($s) && $transitive{$w->{binyan}}) {
 	  next if $g eq $Word::aten; # TODO do $aten have objectization??
-          foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hi,
+          foreach $bj ($Word::ani,$Word::ata,$Word::at,$Word::hu,$Word::hi,
 		$Word::anu,$Word::atem,$Word::aten,$Word::hem,$Word::hen) {
 	    my $n = $w->objectize($s, $bj);
 	    $w->outword($n) if $n;
@@ -187,7 +178,7 @@ while(<INFILE>){
       	if (defined($s) && $transitive{$w->{binyan}}) {
 	  next if $g eq $Word::aten || $g eq $Word::hen;
 	  $w->{second_bj_form} = 0;
-          foreach $bj ($Word::ani,$Word::ata,$Word::hu,$Word::hi,$Word::hu,
+          foreach $bj ($Word::ani,$Word::ata,$Word::at,$Word::hu,$Word::hi,$Word::hu,
 		$Word::hi,$Word::anu,$Word::atem,$Word::aten,
 		$Word::hem,$Word::hen) {
 	    # a trick to flip second_bj_form for the second time of bj=hu/hi
@@ -216,19 +207,26 @@ while(<INFILE>){
 	    $w->outword($n) if $n;
           }
         }
-	if ($s && $g eq $Word::at) {
-	  if ($s =~ s/ה$/ת-/) {$w->outword($s);}
-	  # create the other form of the present female if both are requested
-	  if (${$w->{opts}}{"בינונית_תה"} || 
+        $w->{object} = undef; #clear objectization
+	if ($s) {
+	  if ($g eq $Word::at) {
+	    # output the nismach form, even if identical to the nifrad:
+	    $s =~ s/ה$/ת/o; $s =~ s/$/-/o; $w->outword($s);
+	    # create the other form of the present female if both are requested
+	    if (${$w->{opts}}{"בינונית_תה"} || 
 		$w->_nakey_lh && $w->{binyan} eq $Word::huqtal) {
-	    ${$w->{opts}}{"בינונית_ארכאית"} = 1;
-            $s = $w->present_conj($g);
-            $w->outword($s);
-	    if ($s =~ s/ה$/ת-/) {$w->outword($s);}
-	    ${$w->{opts}}{"בינונית_ארכאית"} = 0;
+	      ${$w->{opts}}{"בינונית_ארכאית"} = 1;
+              $s = $w->present_conj($g);
+              $w->outword($s);
+	      $s =~ s/ה$/ת/o; $s =~ s/$/-/o; $w->outword($s);
+	      ${$w->{opts}}{"בינונית_ארכאית"} = 0;
+	    }
+	  } elsif ($g eq $Word::atem) {
+	    $s =~ s/ם$/-/; $w->outword($s);
+	  } else {
+	    $s =~ s/$/-/; $w->outword($s);
 	  }
 	}
-	if ($s && $g eq $Word::atem) {$s =~ s/ם$/-/; $w->outword($s);}
       }
 
       $s = $w->shempeula_conj;
@@ -259,8 +257,11 @@ while(<INFILE>){
       {
         $s = $w->paul_conj($g);
         $w->outword($s);
-        if ($s && $g eq $Word::at) {$s =~ s/ה$/ת-/; $w->outword($s);}
-        if ($s && $g eq $Word::atem) {$s =~ s/ם$/-/; $w->outword($s);}
+	if ($s) {
+          if ($g eq $Word::at) {$s =~ s/ה$/ת-/; $w->outword($s);}
+          elsif ($g eq $Word::atem) {$s =~ s/ם$/-/; $w->outword($s);}
+	  else {$w->outword($s.'-')}
+	}
       }
       print "-----\n" if $s;
     }
@@ -271,6 +272,11 @@ while(<INFILE>){
   package Word;
 
   our (@all_binyan,@all_guf,%mishqal_abar,%coran_abar);
+
+  # When SUBJECTIZE is passed to the objectize funtion, it creates the kinnuy
+  # xabur that signifies the subject of a sentence, rather than the object. 
+  # In some (few) cases it makes a difference.
+  use constant SUBJECTIZE => 1;
 
   sub INIT {
     @all_binyan = 
@@ -302,8 +308,8 @@ while(<INFILE>){
     %gname = ($ani => 'אני', $ata => 'אתה', $at => 'את', $hu => 'הוא',
   	     $hi => 'היא',  $anu => 'אנו', $atem => 'אתם', $aten => 'אתן',
   	     $hem => 'הם', $hen => 'הן');
-    %pname = ($ata => 'יחיד', $at => 'יחידה', 
-  		$aten => 'רבות', $atem => 'רבים');
+    %pname = ($ata => 'יחיד,ז', $at => 'יחיד,נ', 
+  		$aten => 'רבים,נ', $atem => 'רבים,ז');
     %tname = ($past=>'עבר', $present=>'הווה', $future=>'עתיד', 
 		$imperative=>'ציווי', $infinitive=>'מקור', undef=>'-');
   }
@@ -414,8 +420,7 @@ while(<INFILE>){
       $w->{mishqal} =~ s/י// if $w->{binyan} eq $hiqtil;
     }
 
-    my $s = $w->{mishqal};
-    $w->{nistar} = $w->_subst_root($s);
+    $w->{nistar} = $w->_subst_root($w->{mishqal});
   }
 
   sub _nakey_lh {
@@ -470,6 +475,7 @@ while(<INFILE>){
 	  #case #18 - remove last vowel
           $hataya =~ s/ה$//;
       } elsif ($coran eq 'ה') {
+	  $hataya =~ s/יה$/yת/; # this yod is consonental. only for נהייתה
 	  #case #19 - replace last vowel with t
 	  #TODO: check subcase (b)(d)
           $hataya =~ s/ה$/ת/;
@@ -1319,7 +1325,7 @@ while(<INFILE>){
     if ($detailed_output) {
       my ($tense,$person,$bjtext)=('-','','');
       # the anonymous hash looked much better than the translation
-      # code it replaces. However, the following name has is so much faster...
+      # code it replaces. However, the following named hashs are much faster...
       $tense = $tname{ $w->{tense} };
       if ($w->{guf}) {
         $person = ','.$Word::gname{$w->{guf}};

@@ -1,4 +1,16 @@
-#### some useful nouns that wolig.pl can't inflect yet
+# The following are unique ways to inflect nouns that wolig.pl doesn't yet
+# support.
+# In all these cases, wolig.pl already produces a bunch of more "normal"
+# inflections, but we want to add here one useful, exceptional, inflection.
 -----
-מים
-מי-
+מים ע,ז,רבים
+מי ע,ז,רבים,סמיכות
+-----
+רע ע,ז,יחיד
+רעהו ע,ז,יחיד,של/הוא
+-----
+אב ע,ז,יחיד
+אביהו ע,ז,יחיד,של/הוא
+-----
+קצה ע,ז,יחיד
+קצווי ע,ז,רבים,סמיכות

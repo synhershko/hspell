@@ -19,12 +19,21 @@
    Empty lines starting with # are ignored. Lines containing non-Hebrew
    characters aren't ignored, but they won't be tried as questioned words
    anyway.
+
+   If a non-null int pointer is given as a second parameter, the pointed
+   value is set to 1 if a personal dictionary was found in the current
+   directory, or to 0 otherwise (it was found in the user's home directory,
+   or none was found). This knowledge is useful when a modified personal
+   wordlist is to be saved, and we want to know if to save it in the
+   current directory, or home directory.
 */
 static void
-load_personal_dict(hspell_hash *personaldict)
+load_personal_dict(hspell_hash *personaldict, int *currentdir_dictfile)
 {
 	int i;
 	hspell_hash_init(personaldict);
+	if (currentdir_dictfile)
+		*currentdir_dictfile = 0;
 	for(i=0; i<=1; i++){
 		char buf[512];
 		FILE *fp;
@@ -37,6 +46,8 @@ load_personal_dict(hspell_hash *personaldict)
 			snprintf(buf, sizeof(buf), "./hspell_words");
 		fp=fopen(buf, "r");
 		if(!fp) continue;
+		if (i == 1 && currentdir_dictfile)
+			*currentdir_dictfile = 1;
 		while(fgets(buf, sizeof(buf), fp)){
 			int l=strlen(buf);
 			if(buf[l-1]=='\n')
@@ -48,14 +59,72 @@ load_personal_dict(hspell_hash *personaldict)
 	}
 }
 
+/* save_personal_dict() saves the personal dictionary to disk. It does this
+   by appending the words in personaldict_new_words to the dictionary file
+   (the one in the current directory, if that had been read, otherwise
+   the one in the home directory)..
+   Returns non-zero on success.
+*/
+static int
+save_personal_dict(hspell_hash *personaldict,
+		   hspell_hash *personaldict_new_words,
+		   int currentdir_dictfile)
+{
+	FILE *fp;
+	hspell_hash_keyvalue *new_words_array;
+	int new_words_number, i;
+	char dict_filename[512];
+
+	char *home = getenv("HOME");
+	if (currentdir_dictfile || !home)
+		snprintf(dict_filename, sizeof(dict_filename),
+			 "./hspell_words");
+	else
+		snprintf(dict_filename, sizeof(dict_filename),
+			 "%s/.hspell_words", home);
+	
+	fp = fopen(dict_filename, "a");
+	if (!fp)
+		return 0; /* signal error */
+
+	/* We append the new words to the file.
+	   We also move them from personaldict_new_words to personaldict
+	   so that subsequent calls to this function won't write them again
+	   and again.
+	*/
+	/* NOTE: currently, we assume that the personal dictionary we
+           originally read, or last wrote, is the current state of the
+	   user's personal dictionary file. This may be wrong if several
+	   hspell processes are running concunrrently and adding words or the
+	   user has been manually editing the file while hspell is running.
+	   It might be safer, perhaps, to load the personal dictionary again
+	   to see its really current state? In any case, the current
+	   behavior isn't likely to cause any serious problems, just the
+	   occasional words listed more than once, perhaps.
+	*/
+	new_words_array = hspell_hash_build_keyvalue_array(
+		personaldict_new_words, &new_words_number);
+	if (hspell_debug) {
+		fprintf(stderr, "Saving %d words to %s\n",
+				new_words_number, dict_filename);
+	}
+	for (i = 0; i < new_words_number; i++) {
+		fprintf(fp, "%s\n", new_words_array[i].key);
+		hspell_hash_incr_int(personaldict, new_words_array[i].key);
+	}
+	hspell_hash_free_keyvalue_array(personaldict_new_words,
+			new_words_number, new_words_array);
+
+	hspell_hash_destroy(personaldict_new_words);
+	hspell_hash_init(personaldict_new_words);
+
+	return (fclose(fp) == 0);
+}
+
 /* load_spelling_hints reads the spelling hints file (for the -n option).
-   This is done in a somewhat ad-hoc manner. In particular, the repeat
-   of the DICTIONARY_BASE here, also present in libhspell.c, is unfortunate.
+   This is done in a somewhat ad-hoc manner.
 */
 
-#ifndef DICTIONARY_BASE
-#define DICTIONARY_BASE "./hebrew.wgz"
-#endif
 char *flathints;
 int flathints_size;
 void load_spelling_hints(hspell_hash *spellinghints) {
@@ -70,7 +139,8 @@ void load_spelling_hints(hspell_hash *spellinghints) {
 	flathints = (char *)malloc(flathints_size);
 	/*flathints[0]=0;*/
 
-	snprintf(s,sizeof(s),"gzip -dc '%s.hints'",DICTIONARY_BASE);
+	snprintf(s,sizeof(s),"gzip -dc '%s.hints'",
+		 hspell_get_dictionary_path());
 	fp = popen(s, "r");
 	if(!fp) {
 		fprintf(stderr,"Failed to open %s\n",s);
@@ -147,12 +217,13 @@ next_file(int *argcp, char ***argvp)
 
 #define ishebrew(c) ((c)>=(int)(unsigned char)'א' && (c)<=(int)(unsigned char)'ת')
 
+static int uglyuglyflag = 0;
+
 int notify_split(const char *w, const char *baseword, int preflen, int prefspec)
 {
 	char *desc,*stem;
 	if(preflen>0){
-		printf("צירוף חוקי: %.*s+%s\n",
-		       preflen, w, baseword);
+		printf("צירוף חוקי: %.*s+%s\n", preflen, w, baseword);
 	} else if (!preflen){
 		printf("מילה חוקית: %s\n",w);
 	}
@@ -163,7 +234,7 @@ int notify_split(const char *w, const char *baseword, int preflen, int prefspec)
 			char buf[80];
 			if (!linginfo_desc2text(buf, desc, j)) break;
 			if (linginfo_desc2ps(desc, j) & prefspec) {
-				printf("\t%s(%s)",linginfo_stem2text(stem,j),buf);
+				printf("\t%s(%s%s)",linginfo_stem2text(stem,j),buf,uglyuglyflag ? ",##שגיאה##" : "");
 				if (hspell_debug) printf("\t%d",linginfo_desc2ps(desc, j));
 				printf("\n");
 			}
@@ -172,7 +243,7 @@ int notify_split(const char *w, const char *baseword, int preflen, int prefspec)
 #endif
 	return 1;
 }
-	
+
 int
 main(int argc, char *argv[])
 {
@@ -186,8 +257,19 @@ main(int argc, char *argv[])
 	int terse_mode=0;
 	hspell_hash wrongwords;
 	int preflen; /* used by -l */
-	hspell_hash personaldict;
 	hspell_hash spellinghints;
+
+	/* Following Ispell, we keep three lists of personal words to be
+	   accepted: "personaldict" is the user's on-disk personal dictionary,
+	   "personaldict_new_words" are words that the user asked to add to
+	   the personal dictionary but which we haven't saved to disk yet,
+	   and "sessiondict" are words that the user asked to accept during
+	   this session, but not add to the on-disk personal dictionary.
+	*/
+	hspell_hash personaldict;
+	hspell_hash personaldict_new_words;
+	hspell_hash sessiondict;
+	int currentdir_dictfile = 0;  /* file ./hspell_words exists? */
 
 	/* command line options */
 	char *progname=argv[0];
@@ -205,7 +287,7 @@ main(int argc, char *argv[])
 	FILE *in=stdin;
 
 	/* Parse command-line options */
-	while((c=getopt(argc, argv, "clnsviad:BmVhT:CSPp:w:W:H"))!=EOF){
+	while((c=getopt(argc, argv, "clnsviad:BmVhT:CSPp:w:W:HD:"))!=EOF){
 		switch(c){
 		case 'a':
 			interpipe=1;
@@ -240,6 +322,9 @@ main(int argc, char *argv[])
 			break;
 		case 'v':
 			opt_v++;
+			break;
+		case 'D':
+			hspell_set_dictionary_path(optarg);
 			break;
 		case 'V':
 			printf("Hspell %d.%d%s\nWritten by Nadav Har'El and "
@@ -301,7 +386,9 @@ main(int argc, char *argv[])
 			"was probably installed improperly.\n");
 		return 1;
 	}
-	load_personal_dict(&personaldict);
+	load_personal_dict(&personaldict, &currentdir_dictfile);
+	hspell_hash_init(&personaldict_new_words);
+	hspell_hash_init(&sessiondict);
 
 	if(opt_n)
 		load_spelling_hints(&spellinghints);
@@ -375,7 +462,9 @@ main(int argc, char *argv[])
 			}
 			/* as last resort, try the user's personal word list */
 			if(res!=1)
-				res=hspell_hash_exists(&personaldict, w);
+			   res = hspell_hash_exists(&personaldict, w)
+			      || hspell_hash_exists(&personaldict_new_words, w)
+			      || hspell_hash_exists(&sessiondict, w);
 
 			if(res){
 				if(hspell_debug)
@@ -421,29 +510,103 @@ main(int argc, char *argv[])
 					fprintf(stderr,"mispelling: %s\n",w);
 				hspell_hash_incr_int(&wrongwords, w);
 			}
+			/* We treat the combination of the -l (linguistic
+			   information) and -c (suggest corrections) option
+			   as special. In that case we suggest "corrections"
+			   to every word (regardless if they are in the
+			   dictionary or not), and show the linguistic
+			   information on all those words. This can be useful
+			   for a reader application, which may also want to
+			   be able to understand mispellings and their possible
+			   meanings.
+			*/
+			if (opt_l && opt_c) {
+				struct corlist cl;
+				int i;
+				if(hspell_debug)
+					fprintf(stderr,"misspelling: %s\n",w);
+				corlist_init(&cl);
+				hspell_trycorrect(dict, w, &cl);
+				uglyuglyflag = 1;
+				for(i=0;i<corlist_n(&cl);i++){
+					hspell_enum_splits(dict,corlist_str(&cl,i),notify_split);
+				}
+				uglyuglyflag = 0;
+				corlist_free(&cl);
+			}
 			/* we're done with this word: */
 			wordlen=0;
 		} else if(interpipe && 
 			  offset==0 && (c=='#' || c=='!' || c=='~' || c=='@' ||
 					c=='%' || c=='-' || c=='+' || c=='&' ||
 					c=='*')){
-			if(c=='!')
-				terse_mode=1;
-			else if(c=='%')
-				terse_mode=0;
-			/* In the future we should do something about the
-			   other ispell commands (see the ispell manual
-			   for their description).
-			   For now, ignore this line, or send it to a slave
-			   ispell. Does this make sense? Probably not... */
-			if(slave){
-				putc(c,slavefp);
-				while((c=getc(in))!=EOF && c!='\n')
-					putc(c,slavefp);
-				if(c!=EOF) putc(c,slavefp);
+			/*
+			   Summary of ispell's commands:
+			   -----------------------------
+			   ! - enter terse mode
+			   % - exit terse mode
+		
+			   * <word> - add to personal dict
+			   & <word> - ditto
+			   @ <word> - accept, but leave out of dict
+			   # - save personal dict
+			*/
+			char rest[512];
+			int  isheb = 0;
+
+			/* Read rest of line, to get the command parameters. */
+			fgets(rest, sizeof(rest), in);
+			if (rest[strlen(rest)-1] == '\n') {
+				rest[strlen(rest)-1] = '\0';
 			} else {
-				while((c=getc(in))!=EOF && c!='\n')
+				/* We shouldn't arrive here, but if we do:
+				   Eat up rest of line. */
+				int rc;
+				while ((rc = getc(in)) != EOF && rc != '\n')
 					;
+			}
+		
+			switch (c) {
+			case '!': terse_mode = 1; break;
+			case '%': terse_mode = 0; break;
+			case '*': case '&': case '@':
+				isheb = ishebrew((int)(unsigned char)rest[0]);
+				/* We don't handle non-Hebrew words */
+				if (isheb) {
+					if (c == '@') {
+					/* Add word to the session dictionary,
+					   which is never saved to disk. */
+					  if (hspell_debug)
+					    fprintf(stderr, "hspell_add_to_session(%s)\n", rest);
+					  hspell_hash_incr_int(
+					    &sessiondict, rest);
+					} else {
+					/* Add word to personaldict_new_words,
+					   which is saved to disk when the '#'
+					   command is issued. */
+					   if (hspell_debug)
+					     fprintf(stderr, "hspell_add_to_personal(%s)\n", rest);
+					   if (!hspell_hash_exists(
+					     &personaldict, rest) &&
+					       !hspell_hash_exists(
+					     &personaldict_new_words, rest)) {
+					     hspell_hash_incr_int(
+                                                &personaldict_new_words, rest);
+					   }
+					}
+				}
+				break;
+			case '#':
+				save_personal_dict(&personaldict,
+						   &personaldict_new_words,
+						   currentdir_dictfile);
+				break;
+			}
+
+			/* Pass the command to ispell only if it
+			   doesn't involve a Hebrew word. */
+			if (slave && !isheb) {
+				fprintf(slavefp, "%c%s\n", c, rest);
 			}
 			/* offset=0 remains but we don't want to output
 			   a newline */
