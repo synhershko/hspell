@@ -19,6 +19,9 @@ BIN = $(PREFIX)/bin
 SHARE = $(PREFIX)/share/hspell
 LIBEXEC = $(PREFIX)/lib/hspell
 MAN1 = $(PREFIX)/man/man1
+MAN3 = $(PREFIX)/man/man3
+LIBDIR = $(PREFIX)/lib
+INCLUDEDIR = $(PREFIX)/include
 
 all: cfrontend
 
@@ -118,12 +121,22 @@ clean:
               c/corlist.o c/dict_radix.o c/find_sizes.o c/gimatria.o \
 	      c/hspell.o c/tclHash.o c/hebrew.wgz c/hebrew.wgz.sizes \
 	      c/hebrew.wgz.prefixes c/dout.nouns.shemp.gz c/shemp.dat \
-	      c/dout.nouns.wolig.gz c/dout.verbs.gz c/hspell c/find_sizes
+	      c/dout.nouns.wolig.gz c/dout.verbs.gz c/hspell c/find_sizes \
+	      c/prefixes.c c/libhspell.o c/libhspell.a \
+	      c/hebrew.wgz.desc c/hebrew.wgz.stems
 
 ################################################
 # for the C front-end
 cfrontend:
-	(cd c; $(MAKE) EXTRACFLAGS='-DDICTIONARY_BASE=\"$(DESTDIR)/$(SHARE)/hebrew.wgz\"')
+	(cd c; $(MAKE) EXTRACFLAGS='-DDICTIONARY_BASE=\"$(SHARE)/hebrew.wgz\"')
+
+
+# To include a full morphological analyzer in "hspell -l", run "make linginfo"
+# instead of just "make". But watch out - this slows down the build, and the
+# installed data files will be 4 times as large. But don't worry - this feature
+# has no speed impact on hspell unless the -l option is actually used.
+linginfo:
+	(cd c; $(MAKE) EXTRACFLAGS='-DDICTIONARY_BASE=\"$(SHARE)/hebrew.wgz\" -DUSE_LINGINFO' EXTRAOBJECTS='linginfo.o' dolinginfo)
 
 install: install_cfrontend
 CHSPELL=hspell
@@ -136,17 +149,29 @@ install_cfrontend: cfrontend
 	chmod 755 $(DESTDIR)/$(BIN)/multispell
 	test -d $(DESTDIR)/$(SHARE) || mkdir -m 755 -p $(DESTDIR)/$(SHARE)
 	cp c/hebrew.wgz c/hebrew.wgz.prefixes c/hebrew.wgz.sizes $(DESTDIR)/$(SHARE)/
-	(cd $(DESTDIR)/$(SHARE); chmod 644 hebrew.wgz hebrew.wgz.prefixes hebrew.wgz.sizes)
+	gzip -9 < spellinghints > $(DESTDIR)/$(SHARE)/hebrew.wgz.hints
+	(cd $(DESTDIR)/$(SHARE); chmod 644 hebrew.wgz hebrew.wgz.prefixes hebrew.wgz.sizes hebrew.wgz.hints)
+	test ! -f c/hebrew.wgz.stems || cp c/hebrew.wgz.stems c/hebrew.wgz.desc $(DESTDIR)/$(SHARE)/
+	(cd $(DESTDIR)/$(SHARE); test ! -f hebrew.wgz.stems || chmod 644 hebrew.wgz.stems hebrew.wgz.desc)
 	-rm -f $(DESTDIR)/$(BIN)/hspell-i
 	-ln -s $(CHSPELL) $(DESTDIR)/$(BIN)/hspell-i
 	test -d $(DESTDIR)/$(MAN1) || mkdir -m 755 -p $(DESTDIR)/$(MAN1)
 	cp hspell.1 $(DESTDIR)/$(MAN1)/
 	chmod 644 $(DESTDIR)/$(MAN1)/hspell.1
+	test -d $(DESTDIR)/$(MAN3) || mkdir -m 755 -p $(DESTDIR)/$(MAN3)
+	cp c/hspell.3 $(DESTDIR)/$(MAN3)/
+	chmod 644 $(DESTDIR)/$(MAN3)/hspell.3
+	test -d $(DESTDIR)/$(LIBDIR) || mkdir -m 755 -p $(DESTDIR)/$(LIBDIR)
+	cp c/libhspell.a $(DESTDIR)/$(LIBDIR)/
+	chmod 644 $(DESTDIR)/$(LIBDIR)/libhspell.a
+	test -d $(DESTDIR)/$(INCLUDEDIR) || mkdir -m 755 -p $(DESTDIR)/$(INCLUDEDIR)
+	cp c/hspell.h c/linginfo.h $(DESTDIR)/$(INCLUDEDIR)/
+	chmod 644 $(DESTDIR)/$(INCLUDEDIR)/hspell.h $(DESTDIR)/$(INCLUDEDIR)/linginfo.h
 
 ################################################
 # for creating an hspell distribution tar
 PACKAGE = hspell
-VERSION = 0.6
+VERSION = 0.7
 DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	Makefile stats wunzip.c wzip \
 	hspell.pl hspell.1 \
@@ -154,11 +179,13 @@ DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	woo woo.dat biza-verbs \
 	likelyerrors spellinghints \
 	hspell.spec \
-	c/Makefile c/README c/corlist.c c/corlist.h c/dict_radix.c \
-	c/dict_radix.h c/find_sizes.c c/gimatria.c c/gimatria.h c/hspell.c \
+	c/Makefile c/README c/corlist.c c/dict_radix.c \
+	c/dict_radix.h c/find_sizes.c c/gimatria.c c/hspell.c \
+	c/hspell.h c/libhspell.c \
 	c/pmerge c/PrefixBits.pl c/genprefixes.pl \
 	c/hash.h c/tclHash.c c/tclHash.h \
-	multispell
+        c/binarize-desc.pl c/pack-desc.pl c/linginfo.c c/linginfo.h \
+	multispell c/hspell.3
 
 DISTDIR = $(PACKAGE)-$(VERSION)
 

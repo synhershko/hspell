@@ -39,7 +39,7 @@
 #          Keep the ת (or ה) that would normally be removed during
 #          pluralization. For example, compare חניתות / מכוניות - the former
 #          needs שמור_ת. This is a rare case (see [1], page 12). For ה it's
-#          even rarer - see נוגה.
+#          even rarer - see אמה.
 #  אבד_ו -
 #          Loose ktiv-male em-kria (ו) in some of the plural inflections,
 #          because it was changed into shva. See [1, page 48]. Exactly
@@ -83,7 +83,7 @@
 #          Keep the ה that would normally be removed during the inflection.
 #          For example compare גבוה / יפה - the former needs שמור_ה because
 #          the original word had a "mapik" in the ה.
-#  נקבה_ת, נקבה_ה, נקבה_ית
+#  נקבה_ת, נקבה_ה, נקבה_ית, יחידה=...
 #          Usually making an adjective feminine requires adding a final ה,
 #          except when the adjective ends with י in which case ת is added
 #	   to make it feminine. But in some other exceptional cases, ת needs
@@ -92,6 +92,8 @@
 #          נקבה_ית is similar to נקבה_ת, but an extra י is added to the
 #          feminine form. This case is useful in some cases when it's not
 #          even clear whether the word in question is an adjective or a noun.
+#          The יחידה=... option is used to define a non-standard feminine
+#          form, as in ממאיר to ממארת. (the plural feminine remains standard).
 #  ם -
 #          The plural should be done by adding only ם, not ים as usual. See
 #          for example זכאי (ending with patach-aleph-yud).
@@ -180,6 +182,7 @@
 #have chirik before shva nach, like:
 צבא ע,ות
 צבאי ת
+צמא ע,יחיד # צימאון should probably be preferred
 יום ע,רבים=ימים,יים # TODO: the possesives of the יים plural are useless..
 יומי ת
 יומיומי ת
@@ -221,7 +224,7 @@
 # This is a really weird case. Note that אריה has tsere, not segol before
 # the he! The form אריהו should perhaps be removed...
 אריה ע,ות,סגול_ה
-########################### מילים שכרגע נותנות תוצאות שגויות ##################
+########################### מילים שפעם נתנו תוצאות שגויות #####################
 ########################### ראה גם "ODOT" בטקסט ###############################
 
 # TODO: For some words that take יים plural *and* another type of plural, the
@@ -246,13 +249,15 @@
 # CASE 344
 # The plural of קושי is based on the segoliim shleming - with shva... See
 # [1, page 55].
-# But the problem is that our nismach yachid is wrong - [1, case 344] says
+# But the problem is the default nismach yachid is wrong - [1, case 344] says
 # it should be with shva (no vav). I'm not sure why...
-קושY ע,נסמך=קשי,רבים=קשיים  # קושי
-שwY ע,יחיד   # should be written שowי, perhaps, or in another manner...
-יופY ע,נסמך=יפי,יחיד    # יופי
 # note extra vav added
-בורY ע,נסמך=ברי,יחיד   # בורי (most inflections rarely ever used)
+קושY ע,נסמך=קשי,רבים=קשיים  # קושי
+שwY ע,יחיד   # שווי should be written שowי, perhaps, or in another manner...
+יופY ע,נסמך=יפי,יחיד    # יופי
+בורY ע,נסמך=ברי,יחיד   # בורי (בוריו, etc).
+רואY ע,יחיד,אין_נטיות_יחיד   # רואי (usually used as "קצר רואי". inflections useless)
+שונY ע,יחיד # שוני
 
 # case ?
 דY ע,יחיד
@@ -278,8 +283,9 @@
 # CASE 301
 גברת ע,רבים=גברות,נסמכים=גבירות
 
-# feminine of שמנמן is שמנמונת (vav added for ktiv male)...
-#שמנמן ת
+# feminine of ממאיר is ממארת
+ממאיר ת,יחידה=ממארת
+מדמיע ת,יחידה=מדמעת,נקבה_ה
 
 # This is a bizarre adjective. I added "ם" because [3] claims יפהפיים is
 # wrong, and it should be יפהפים.
@@ -291,11 +297,10 @@
 נשוא ת,יחיד=נשוי
 נשוא ת
 
-# TODO: most inflections of סומא as noun aren't useful, but if we try
-# סומא ת we currently have no way to say the plural is סומים, סומות.
-#סומא ת
-סומא ע,רבים=סומים
-סומאה ע,רבים=סומות
+# The inflection of סומא is exceptional: סומאה, סומים, סומות.
+סומ ת,יחיד=סומא,יחידה=סומאה
+#סומא ע,רבים=סומים
+#סומאה ע,רבים=סומות
 
 ##############################################################################
 # Words for which stem spelling differs in ktiv male from ktiv chaser,
@@ -324,6 +329,7 @@
 סירוב ע
 שירות ע,ים
 גירוש ע,ים,רבים=גירושין
+אירוס ע,ים,רבים=אירוסין,אין_יחיד
 צירוף ע
 תירוץ ע
 חירות ע
@@ -333,11 +339,24 @@
 חירוק ע # in the phrase חירוק שיניים
 אירוע ע
 עירוי ע
+פירור ע
+פירוש ע
+# words like זיכרון:
 דיראון ע,ות
 גירעון ע,ות
 פירעון ע,ות
-עיזבון ע,ות # note: according to [3], the ain has chirik, not tsere.
-זירעון ע,ות # note: the resh here has shva, not tsere.
+# the word סירחון is debated. [1] and [2] spell it with chirik-chaser and
+# shva (and so should have been סרחון) but [3] and rav-millim spell it with
+# tsere in the samech, and a yod should be added for tashlum dagesh, as in
+# היריון (and without the tashlum dagesh: עיפרון).
+סירחון ע,ות
+# words like עיפרון:
+היריון ע,ות,אבד_י
+עירבון ע,ות,אבד_י
+תיאבון ע,ות,אבד_י
+ריאיון ע,ות,אבד_י
+
+זירעון ע # note: the resh here has shva, not tsere.
 
 היכר ע
 היתר ע
@@ -362,10 +381,6 @@
 תיאורי ת
 סירוג ע,רבים=סירוגין # most inflections of this aren't used...
 ניחן ת
-היריון ע,ות,אבד_י
-עירבון ע,ות,אבד_י
-תיאבון ע,ות,אבד_י
-ריאיון ע,ות,אבד_י
 # שינה - in this word, the tsere does not persist through the inflections,
 # so a yud should have NOT been added. However, the academia decided to add
 # a yud in this case (and only in the nifrad form) so as not to confuse it
@@ -391,8 +406,11 @@
 ברווזה ע
 תאווה ע
 תאוותן ת,נקבה_ית
-תאוותנות ע
+תאוותנות ע,יחיד
 תאוותני ת
+ראוותן ת,נקבה_ית
+ראוותנות ע,יחיד
+ראוותני ת
 שעווה ע,יחיד
 פרווה ע
 אורווה ע
@@ -406,6 +424,9 @@
 נוודה ע # this is the feminine form prefered by Dan and accepted by Rav Millim.
 נוודת ע # this is the feminine form of נווד prefered by [2]
 נוודות ע,יחיד
+נווט ע
+נווטת ע
+נווטות ע,יחיד
 סוור ע
 סוורית ע
 סוורות ע,יחיד
@@ -480,6 +501,15 @@
 זוויגי ת
 צווחה ע
 סנוור ע,אין_יחיד # סנוורים
+משווה ת
+משווני ת # not recognized by [3]...
+אוויל ע
+אווילה ע
+אווילות ע
+אווילי ת
+אווה ע # usually used only in the phrase אוות נפש - "כאוות נפשו".
+
+
 # CASE 331
 און ע,נפרד=אוון
 מות ע,נפרד=מוות,יחיד,זכר
@@ -504,6 +534,8 @@
 # words with consonant yud that get double yud under academia rules:
 סייג ע
 שייר ע
+סייח ע
+סייחה ע
 בניין ע
 מניין ע
 # קניין with chirik or patach in kuf:
@@ -539,7 +571,9 @@
 סיירית ע
 סיירות ע,יחיד
 סיירת ע # this is both female of סייר, and a group for סיור (e.g., in the army)
-חייב ת
+#חייב ת,נקבה_ת
+חייב ע
+חייבת ע
 דייר ע
 דיירת ע
 דייג ע
@@ -608,6 +642,7 @@
 חיידק ע
 חייזר ע
 שיירה ע
+מאפיין ע # [3] doesn't acknowledge this is a noun. Rav-milim does.
 
 # words with chirik followed by "ya" sound, that get double yud under
 # academia rules:
@@ -634,6 +669,7 @@
 תחייה ע
 ברייה ע # the singular exists but very literary-looking. the plural is more common.
 שכייה ע
+ארייה ע # rare word, meaning picking of figs
 עגבנייה ע
 פייה ע
 ענייה ע
@@ -679,15 +715,21 @@
 תושייה ע
 מאפייה ע
 מסגרייה ע
+מרכזייה ע
+קונכייה ע # note cholam, not shuruk also: קונכית.
 
 
 # words with u sound that got an extra vav in ktiv male:
 סוכה ע
+גולה ע
 גומה ע
 בובה ע
 חופה ע
 אונה ע
+מהלומה ע
 אגודה ע
+אחוזה ע
+כבודה ע
 פלוגה ע
 קדושה ע
 המולה ע
@@ -711,12 +753,14 @@
 פעולה ע
 פקודה ע
 קבוצה ע
+קבורה ע
 קבוצתי ת
 אלומה ע
 שותף ע
 שותפה ע
 שותפות ע
 מושג ע
+דוכס ע
 מוצב ע
 מוצג ע
 עובר ע
@@ -767,6 +811,9 @@
 מהוקצע ת,נקבה_ת
 מצועצע ת,נקבה_ת
 מרומזר ת,נקבה_ת
+מכופתר ת,נקבה_ת
+מכורכם ת,נקבה_ת
+מהופך ת,נקבה_ת
 מבוגר ת,נקבה_ת
 משופם ת,נקבה_ת
 ממוצק ת,נקבה_ת
@@ -783,6 +830,8 @@
 מגושם ת,נקבה_ת
 מחויך ת,נקבה_ת
 מדויק ת,נקבה_ת
+מצויץ ת,נקבה_ת
+מצוין ת,נקבה_ת
 מפוכח ת,נקבה_ת
 מטופש ת,נקבה_ת
 מכונף ת,נקבה_ת
@@ -838,6 +887,8 @@
 מעופש ת,נקבה_ת
 ממושך ת,נקבה_ת
 מעובד ת,נקבה_ת
+מנוכר ת,נקבה_ת
+מנוגד ת,נקבה_ת
 
 מובטל ת,נקבה_ת
 מובחר ת,נקבה_ת
@@ -848,18 +899,26 @@
 מוגזם ת,נקבה_ת
 מושכל ת,נקבה_ת
 מוכרח ת,נקבה_ת,נקבה_ה
+
+ממונה ע,ים,סגול_ה
+ממונה ע,ות
+מרובה ת
+מעולה ת
+
 מועט ת,נקבה_ת,נקבה_ה
 מתוחכם ת,נקבה_ת
 מומחה ע,ים,סגול_ה
 מומחית ע
 מומחיות ע
-ממונה ע,ים,סגול_ה
-ממונה ע,ות
 פולחן ע
 פולחני ת
+פורקן ע
+אונקל ע # rare word. אנקול is a little more common.
 פורענות ע
+מוגבלות ע
 מורכבות ע
 מורכב ת,נקבה_ת
+דוכסות ע
 דובה ע
 דובון ע
 דובי ת
@@ -871,6 +930,8 @@
 אומה ע
 מוזמן ע
 לאומי ת
+לאומיות ע
+לאומני ת
 בינלאומי ת
 נקודה ע,ות,יים
 נקודתי ת # note recognized by [3]
@@ -889,7 +950,8 @@
 בולבוס ע
 בולמוס ע # [1] and [3] disagree wether the last vav is cholam or shuruk...
 קולמוס ע
-מרובה ת
+פולמוס ע
+פולמוסי ת
 קופסה ע,ות,אות
 כורסה ע,ות,אות
 כופתה ע,ות,אות
@@ -911,12 +973,14 @@
 חוצפה ע
 חולדה ע
 חופשה ע
+מורסה ע
 חולצה ע
 סורגה ע # rare and new word for sweater ([3] has it, [1] does not)
 חורבה ע
 יומרה ע # TODO: [3] says this word has kubuts, but [1] and rav-milim insist on kamats katan!
 יומרנות ע
 יומרני ת
+אומדן ע
 חוצפן ת,נקבה_ית
 חוצפנות ע
 חוצפני ת
@@ -925,6 +989,7 @@
 דוגמנות ע,יחיד
 מתורגמן ע
 מתורגמנית ע
+קורקבן ע
 # note that אמן with kubuts is a craftsman, not an artist. see אמן with
 # kamats katan. Maybe this should be commented out, because it is relatively
 # rare and only encourages errors?
@@ -932,10 +997,10 @@
 אומנית ע
 אומנות ע
 חלודה ע
-עצום ת
 מוצלח ת,נקבה_ת
 קורטוב ע,יחיד,אין_נטיות_יחיד # note קרטב (with kamatz katan) is also correct.
 יוהרה ע,יחיד  # shuruk; note יהרה (with kamatz katan) is also correct in [3].
+זוהמה ע,יחיד  # shuruk; note זהמה with kamatz katan & chataf-kamtz is also correct
 יוקרה ע,יחיד  # shuruk.
 יוקרתי ת
 אולפן ע
@@ -965,6 +1030,12 @@
 פוזמק ע,אות # [2] also allows ות, while [1] allows ים
 בוסתן ע
 מוסכמה ע
+קובלנה ע
+קומקום ע # the first waw was added by ktiv male
+הולדת ע,יחיד
+יוחס ע,אין_יחיד,רבים=יוחסין # [1] says the singular is יוחס with cholam
+אוכלוס ע,אין_יחיד,רבים=אוכלוסין # [1] prefers the plural אוכלוסים
+אצטרובל ע
 
 # words with i sound that got an extra yud in ktiv male:
 עילי ת
@@ -982,6 +1053,7 @@
 גיבור ע
 גיבור ת
 מילון ע
+מילוני ת
 שיכור ת
 ריבון ע
 ריבוני ת
@@ -991,6 +1063,17 @@
 קיפודי ת
 
 סיפור ע
+תימוך ע,אין_יחיד,רבים=תימוכין
+שיתוף ע
+שיתופי ת
+שיפול ע,אין_יחיד # usually used in plural, though [3] acknowledges the signular.
+ריכוז ע
+ריכוזי ת
+ריכוזיות ע
+פיקוד ע
+פיקודי ת
+חיסון ע
+חיסוני ת # not recognized by [3], I don't know why.
 ניהול ע
 ניהולי ת
 לימוד ע
@@ -1021,8 +1104,11 @@
 דיפון ע
 מיאוס ע
 כישור ע
+דיוור ע,יחיד
 איסוף ע,יחיד
 עילום ע,יחיד # inflections aren't useful
+רישול ע,יחיד
+ריהוט ע,יחיד
 היתוך ע
 סיפון ע
 שיפוד ע
@@ -1030,11 +1116,11 @@
 סיעודי ת
 ליהוק ע
 איתות ע,ים
-ריהוט ע,יחיד
 בימוי ע
 ניכוי ע
 כיסוף ע  # [3] says it is usually used in plural
 שיפוט ע
+שיפוטי ת
 עידון ע
 מיזוג ע
 # אינוס ע # is this a real word?
@@ -1097,6 +1183,7 @@
 שיקוץ ע
 תיקון ע
 סידור ע
+סידורי ת
 דילוג ע
 דימום ע
 דיקור ע
@@ -1141,6 +1228,8 @@
 זיכרון ע,ות
 פיתיון ע,ות
 שיגעון ע,ות
+שיגיון ע,ות
+שיגיוני ת
 שיגרון ע,ות
 שיטפון ע,ות
 דיכאון ע,ות
@@ -1157,6 +1246,9 @@
 ביטחון ע,ות
 ביטחוני ת  # yes, this is the academia spelling, not בטחוני, because of ביטחון
 ביזיון ע,ות
+עיזבון ע,ות # note: the ain has chirik, not tsere as sometimes pronounced.
+שיממון ע,יחיד # ות
+שידפון ע,יחיד # ות
 ריקבון ע,יחיד # ות
 שיכרון ע,יחיד # ות
 קיפאון ע,יחיד # ות
@@ -1164,9 +1256,12 @@
 תימהוני ת
 תימהונות ע,יחיד
 צימאון ע,יחיד # ות
+כיליון ע,יחיד # ות
+ביטאון ע # [3] and I think ים, but [1] thinks ות, like other things in this mishqal
 עיתון ע
 עיתונאי ע
 עיתונאית ע
+עיתונאי ת
 עיתונות ע,יחיד
 צינור ע,ות
 צינורית ע
@@ -1174,6 +1269,7 @@
 ניצול ת # [3] says also נקבה_ת, but I never heard that used in this sense.
 שיעור ע
 ביטוח ע
+ביטוחי ת
 ויכוח ע
 קישוא ע
 ביצוע ע
@@ -1214,6 +1310,7 @@
 ניצב ע
 ניצבת ע
 תפילה ע,ות,רבים=תפילין
+נחייה ע # בביטוי: כלב נחייה
 כלימה ע
 מגילה ע
 מחילה ע # באדמה
@@ -1223,6 +1320,8 @@
 מסיבה ע
 נסיבה ע
 תחילה ע
+תחיקה ע
+תחינה ע
 תהילה ע
 קהילה ע
 קהילתי ת
@@ -1243,6 +1342,7 @@
 זימה ע,יחיד
 ביצה ע
 מיטה ע
+כיפה ע
 מידה ע
 פינה ע
 צינה ע
@@ -1279,6 +1379,9 @@
 מיטלטל ע,אין_יחיד # מיטלטלים
 אימונית ע
 הילולה ע
+מיקח ע,יחיד # shortened form of מלקח, לקיחה, used in phrases like מיקח וממכר, עמד על המיקח. The form מקח (segol) is considered wrong by [3] but accepted by ravmilim.
+סיגל ע
+סיגלית ע
 
 חיזיון ע,ות,אבד_י
 חיסרון ע,ות,אבד_י
@@ -1290,6 +1393,7 @@
 עילפון ע,ות,אבד_י
 חיפזון ע,ות,אבד_י
 חילזון ע,ות,אבד_י
+#עישרון ע,ות,ים,אבד_י # a rare word. so rare, I or rav-milim never heard of it. But עשרוני comes from it.
 # TODO: maybe delete the words אשתנו, אשתכם, אשתכן, אשתה אשתן, נשייך, נשיכן...
 אשת ע,נפרד=אישה,רבים=נשים
 אשת ע,נפרד=אישה,רבים=נשות # nifradim is useless, but same as nismachim anyway.
@@ -1305,6 +1409,7 @@
 מקורב ת,נקבה_ת 
 מקורב ע # this is an adjective, which lately became a noun, as in "מקורביו".
 מעורה ת  # [3] says this word has a cholam chaser. but usually spoken with "u".
+שופך ע,אבד_ו,אין_יחיד # שפכים TODO: perhaps add plural שפכין as well.
 קותל ע,אבד_ו
 קוטב ע,אבד_ו
 קוטבי ת
@@ -1357,6 +1462,9 @@
 חוקן ע
 אודם ע # TODO: inflections are useless, if not wrong...
 חודשי ת
+עונג ע
+אונס ע
+אומץ ע,יחיד
 אוטם ע
 חופן ע,ים,יים
 עושר ע,יחיד
@@ -1370,7 +1478,7 @@
 חורף ע
 חורפי ת
 חורש ע
-עונש ע
+עונש ע,ים,רבים=עונשין # TODO: if עונשין is not a plural but rather a separate word, it should be spelt with a waw... rav-milim lists this as a separate word, I think, but I don't know how it spells it.
 אופק ע
 אופקי ת
 חופש ע
@@ -1384,6 +1492,9 @@
 שורשי ת
 
 שחור ת
+אפור ת
+צחור ת
+
 צהוב ת
 אדום ת
 ורוד ת
@@ -1391,8 +1502,6 @@
 תכול ת
 כתום ת
 סגול ת
-אפור ת
-צחור ת
 עגול ת
 ארוך ת
 ענוג ת
@@ -1400,11 +1509,13 @@
 עמוק ת
 חסון ת
 עבות ת
+איום ת
 ערום ת # this is ערם, patach cholam-chaser. see also עירום, also valid...
 עירום ת # this is עירם, tsere-male cholam-chaser. see also ערום - valid...
 
 מעוז ע
 תוף ע
+חול ע,רבים=חולין
 עול ע
 רוך ע,יחיד
 גוב ע
@@ -1433,6 +1544,7 @@
 חרטום ע
 קרדום ע,ות,ים
 מערום ע
+מדחום ע
 
 עוז ע
 רון ע
@@ -1493,6 +1605,7 @@
 # chaser in the base word, we don't write a vav there.
 רוחב ע,אבד_ו
 רוחבי ת
+דוחק ע,אבד_ו,יחיד
 # CASE 300
 # TODO: Judging from [1], these words should NOT have אבד_ו. However, looking
 # at אורח in [3], it explicitly says ארחות with chataf-kamatch but no vav,
@@ -1520,6 +1633,10 @@
 אוזן ע,יים,נקבה
 כתובת ע
 יכולת ע
+קטורת ע,יחיד
+פסולת ע,יחיד
+נסורת ע,יחיד
+נשורת ע,יחיד
 חרושת ע,יחיד
 חרוסת ע,יחיד # traditional food in Seder Pesach
 סבולת ע  # see also: סיבולת!
@@ -1531,6 +1648,7 @@
 משקולת ע
 מכמורת ע
 מעבורת ע
+מחרוזת ע
 מחפורת ע
 תזמורת ע
 תחמושת ע
@@ -1571,6 +1689,8 @@
 מפולת ע  # [1] suggests the plural is מפלות, but [2] and [3] disagree.
 מסורת ע  # [1] suggests the plural is מסרות, but [2] and [3] disagree.
 מסורתי ת
+מכולת ע
+פרוכת ע
 מתכונת ע
 # note: אלוה, אלוהים,אלוהי can be written either with or with ו in ktiv chaser.
 # The one without vav is considered (by [3]) bible spelling.
@@ -1578,6 +1698,7 @@
 אלוהי ת
 אלוהות ע
 מאורע ע,ות
+פתלתול ת # [1], [3] and rav-milim all insist that this is correct, and פתלתל isn't. Oh, well...
 
 # words with more than one letter added by ktiv male:
 עיוור ת,נקבה_ת
@@ -1599,6 +1720,8 @@
 ביקורת ע
 ביקורתי ת
 ביקורתיות ע
+ניצולת ע,יחיד # Ravmilim lists the meaning "utilization", but [3] lists a different meaning not used in modern Hebrew.
+שיבולת ע,רבים=שיבולים
 סיפורת ע,יחיד,אין_נטיות_יחיד # prose
 # People usually say "סיבולת" (chirik chaser, cholam chaser) meaning endurance,
 # stamina. However, [2] says that this word means something else (a picknick!)
@@ -1610,6 +1733,7 @@
 # definition, and not the useful definition.
 סיבולת ע # see also: סבולת
 סיומת ע
+גיורת ע # feminine of גר
 קידומת ע
 קיבולת ע
 חווייתי ת
@@ -1692,6 +1816,7 @@
 יזמה ע
 ישרה ע
 יהרה ע,יחיד  # note that יוהרה (shuruk) is also correct, according to [3].
+זהמה ע,יחיד  # note that זוהמה (shuruk) is also correct.
 טהרה ע
 עצמה ע
 ערמה ע
@@ -1709,8 +1834,10 @@
 אפנה ע
 אפנתי ת
 קרבן ע,ות
+דרבן ע,ות # means spur or porcupine quill - not porcupine! see דרבן with patach.
 אבדן ע
 אזנית ע # TODO: This is according [3]. But everyone spells אוזנייה !!
+גפרית ע,יחיד,אין_נטיות_יחיד
 אשיה ע
 חגלה ע
 ערלה ע
@@ -1763,6 +1890,7 @@
 #חיץ ע,רבים=חyצים,נסמכים=חיצי
 חיץ ע
 שיט ע,יחיד # these inflections are rather useless...
+שיש ע,יחיד # these inflections are rather useless...
 עיט ע
 # some of the following plural forms are correct according to [1, page 53-54],
 # but not according to [3] that says the plural must be גאיות, not גיאות or
@@ -1788,6 +1916,11 @@
 יונה ע,ים
 חוגה ע
 תשובה ע
+פרוסה ע
+פרוצה ע
+משובה ע
+משוגה ע # rare, should not be confused with משוגע...
+עמודה ע
 לסוטה ע # the rare hebrew word for a sleave-less coat (vest).
 מזוזה ע
 משורה ע # used to measure volumes of liquids. rare word.
@@ -1795,6 +1928,7 @@
 כמורה ע,יחיד
 מבוכה ע
 הפוגה ע
+עזובה ע
 פרודה ע # molecule
 מאורה ע
 פלומה ע
@@ -1828,6 +1962,7 @@
 שכונתי ת
 חלודה ע
 חלוצה ע
+ארוסה ע
 אפונה ע,ים
 חלופה ע
 כפולה ע
@@ -1845,6 +1980,7 @@
 תגובה ע
 תהודה ע
 תזונה ע
+תזונתי ת
 תזוזה ע
 תחולה ע
 תחושה ע
@@ -1863,6 +1999,7 @@
 תנופה ע
 תעודה ע
 תעופה ע
+תעופתי ת # not recognized by [3]
 תעוקה ע
 תפוגה ע
 תפוסה ע
@@ -1873,13 +2010,18 @@
 תקומה ע
 תעוזה ע
 תקופה ע
+תקופתי ת
 תרומה ע
 תרופה ע
 תשוקה ע
+תקורה ע # Overhead. not recognized by [3], but exists in Rav-Milim.
 ממגורה ע
 מהמורה ע
+מקצועה ע # according to [3] and ravmilim, this and not מקצוע is the proper word
 
 סליחה ע
+פצירה ע
+קרינה ע
 לביבה ע
 לביאה ע
 כתיתה ע # שניצל
@@ -1953,6 +2095,7 @@
 בדיחה ע
 בדיקה ע
 אכילה ע
+חקיקה ע
 חליפה ע
 עניבה ע
 ענישה ע
@@ -2000,6 +2143,11 @@
 צורה ע
 תוגה ע
 אימה ע,ות,ים
+נימה ע,ות,ים # [1] says ות only, [3] says ים only and [2] allows both. [2] also says that another meaning of this noun - sleep - takes only ות. Note that the singular of נימים is נימה - there is no singular "נים" for one tiny blood vessle. Also, this means (and [3] explicitly says) that נימים is feminine. I find this a little odd and archaic :(
+ציצה ע # rarely used in modern text.
+בימה ע
+גישה ע
+בימתי ת
 בינה ע
 צידה ע
 פחמימה ע
@@ -2023,6 +2171,12 @@
 ביצה ע,ים
 
 שמלה ע
+שנאה ע
+שדרה ע # [1] also lists the bizarre plural שדראות
+יתרה ע
+ספרה ע
+ספרתי ת
+אבחה ע # rare literary word: flash, blade.
 בטנה ע
 בקעה ע
 אמרה ע
@@ -2069,6 +2223,7 @@
 גרסה ע,ות,אות
 חזקה ע
 עגלה ע
+עדנה ע
 המיה ע
 חרפה ע
 חברה ע
@@ -2091,7 +2246,9 @@
 נערה ע
 תחנה ע
 מחלה ע
+
 משרה ע
+תגרה ע
 מחיה ע,יחיד
 מרמה ע
 מקשה ע,ות,אות # אות according to [3], but ות according to [1].
@@ -2100,7 +2257,7 @@
 אשפה ע,ות,רבים=אשפתות
 מראה ע # mirror
 שקמה ע,ים
-פרשה ע,ות,יות
+פרשה ע,ות,יות # Note: פרשייה is considered, according to [3], to be an incorrect back-derivation from the plural פרשיות
 גמלה ע,אות
 מלגה ע,אות,ות
 פתקה ע,אות
@@ -2115,6 +2272,7 @@
 דסקה ע,ות,אות # found in [1], but not in [3].
 מכסה ע,ים,ות
 אלונקה ע
+אצטבה ע
 חלה ע
 דקה ע
 גבה ע
@@ -2134,6 +2292,7 @@
 הגנתי ת
 נאקה ע # Female camel
 רמה ע
+עקה ע
 עגה ע
 מנה ע
 אלה ע
@@ -2145,6 +2304,7 @@
 מעה ע
 נפלאה ע,אין_יחיד # נפלאות
 נדבה ע
+כברה ע
 שממה ע
 רננה ע # rarely used nowadays
 דממה ע
@@ -2196,6 +2356,7 @@
 תלאה ע
 נמלה ע,ים
 אהבה ע
+אהדה ע
 אדמה ע
 ערבה ע
 אנפה ע
@@ -2224,6 +2385,7 @@
 תימרה ע # E.g., דם ואש ותימרות עשן.
 לולאה ע
 מקראה ע
+מובאה ע
 
 דק ת
 דקיק ת
@@ -2242,11 +2404,13 @@
 חכם ת
 עקר ת # Note: I decided not to add the word "עקרת" explicitly, despite [3] claiming it is a seperate word - I think it's just the nismach of עקרה...
 אבק ע,יחיד
+עמל ע,יחיד
 חתן ע
 חסך ע # חוסר
 אטד ע # kind of plant.
 חגב ע
 הדר ע,יחיד
+הדר ע # citrus
 עפר ע,יחיד  # [1] says the plural is עפרות.
 אסם ע
 חלל ע
@@ -2267,9 +2431,6 @@
 לבבי ת
 נחש ע
 שערה ע
-שער ע
-# שער with tsere
-שער ע,יחיד
 צלע ע,ות,נקבה
 אקראי ת
 כעס ע
@@ -2334,10 +2495,14 @@
 מערב ע,יחיד
 מערבי ת
 מערביות ע
+מחסן ע
 מאכל ע
+מעמס ע
+מחנק ע,יחיד
 מעקב ע
 מעלל ע
 מענק ע
+מעקף ע
 מערך ע
 מאמר ע
 מארב ע
@@ -2353,28 +2518,41 @@
 מהלך ע
 נאמן ע
 נאמן ת
+נאמנות ע
 נאשם ת,נקבה_ת
 # this is also moamad, with kamats katan and chataf-kamats, candidate. see
 # also מועמד (vav replaces kubutz).
 מעמד ע
+מעמדי ת
 מזגן ע
 סרטן ע
+דרבן ע # porcupine. Note patch in dalet! (see also דרבן with kamats katan).
+סרטני ת
 מדבר ע,יות,ים,ות # I prefer יות, [3] prefers ות, and [1] prefers ים. Weird.
 מדברי ת
 תריסר ע
 עגורן ע
 חזרן ע # bamboo
 מזרן ע # NOTE: מזרון, the commonly used variant, is considered wrong.
+לפתן ע
+כיסן ע # NOTE: The form כיסון is recognized as an alternative by Rav-Milim, but not by [1] or [3]. It is not even listed as wrong alternative in [3].
+פשתן ע,יחיד
 עקרב ע
+חשמן ע
 משמן ע # In my experience usually used in plural, as משמניו (sort of "his fat body parts"). In [3] slightly different explanations are given...
 ברנש ע
 מרבד ע
 מעמק ע,אין_יחיד # מעמקים
 מעדן ע
 שנהב ע
+אתנן ע
+בקר ע # controller or cow farmer.
+סמן ע
 נפץ ע
 יזם ע
 יזמת ע
+גשש ע
+גששית ע
 ספן ע
 ספנית ע
 ספנות ע,יחיד
@@ -2388,6 +2566,15 @@
 נגר ע
 נגרית ע
 נגרות ע
+אנס ע
+טבח ע
+טבחית ע
+טבחות ע,יחיד
+קשב ע
+קשבת ע # Also adjective in the phrase: אוזן קשבת
+סבל ע
+סבלית ע
+סבלות ע
 נחת ע,ים # strangely, [3] says that the nun has segol here...
 שמש ע
 ספר ע
@@ -2438,8 +2625,11 @@
 ספקית ע
 משפט ע
 משפטי ת
+ממש ע,יחיד,אין_נטיות_יחיד
+ממשי ת
+ממשות ע
 מסע ע,ים,ות
-מצע ע,ים,ות
+מצע ע,ים,ות # ות is archaic.
 מבע ע
 אגן ע  # [1] says ות.
 מגע ע  # [1] says ות.
@@ -2451,6 +2641,7 @@
 מפל ע
 מפץ ע
 מדד ע
+מגש ע
 מרחץ ע,אות
 קטר ע
 סיגר ע
@@ -2467,9 +2658,11 @@
 נרחב ת,נקבה_ת
 נמרץ ת,נקבה_ת
 נזעם ת,נקבה_ת
+נרגז ת,נקבה_ת
 נמהר ת,נקבה_ת
 נסער ת,נקבה_ת
 נרגן ת,נקבה_ת
+נפסד ת,נקבה_ת
 נרגנות ע,יחיד
 לכלוך ע
 אולר ע
@@ -2492,13 +2685,19 @@
 דמות ע
 תלות ע
 עלות ע
+שוטטות ע
 התמודדות ע
 התמוטטות ע
 
 איכות ע
 איכותי ת
+שנינות ע
+שביעות ע,יחיד,אין_נטיות_יחיד,נסמך=שביעות # only used as שביעות-רצון
 זילות ע,יחיד # [1] and [2] have this useful word, but [3] doesn't have it.
-אריכות ע
+עצירות ע
+קדימות ע # [3] doesn't have this word, but [1] and rav-milim do.
+נכונות ע,יחיד
+אריכות ע,יחיד
 רטיבות ע
 ערירות ע,יחיד
 ערירי ת
@@ -2510,7 +2709,7 @@
 בהיר ת
 אטימות ע
 אטים ת
-אטום ת
+קביעות ע
 שכירות ע
 חריצות ע
 עמימות ע
@@ -2565,6 +2764,8 @@
 חמים ת
 אמיץ ת
 אמיצות ע
+אמיד ת
+אמידות ע,יחיד
 תדיר ת
 תדירות ע
 בקיא ת
@@ -2603,7 +2804,6 @@
 שחיתות ע
 רצינות ע
 רציני ת
-רצינות ע
 כפילות ע
 יציבות ע
 יציב ת
@@ -2623,6 +2823,11 @@
 אנין ת
 אנינות ע
 תשישות ע
+נחיצות ע
+שקיפות ע
+רדידות ע,יחיד
+רהיטות ע,יחיד
+
 אביונות ע,יחיד
 אביון ע
 אביונה ע
@@ -2634,7 +2839,7 @@
 חשוך ת
 זקוק ת
 ספור ת
-עלול ת
+עלול ת # hmm, is this really an adjective?
 אבוד ת
 נעול ת
 נמוך ת
@@ -2645,6 +2850,8 @@
 הדוק ת
 חמוש ת
 עצוב ת
+עצום ת
+עגון ת # The feminine is more commonly used.
 המום ת
 פזור ת
 רצוף ת
@@ -2669,6 +2876,7 @@
 חמוד ת
 שכוח ת
 עלום ת
+הלום ת
 קטום ת
 שכור ת
 חפוז ת
@@ -2707,20 +2915,42 @@
 חסוד ת
 חרוף ת # rarely used in modern text, easily confused for חירוף...
 טחוב ת
+קבוע ת
+קדום ת
+אטום ת
+אסור ת
+רדוד ת
+נחוץ ת
+שקול ת
+שקוף ת
+רדום ת
+רהוט ת
+שנון ת
+כבוד ת # literary, more often used in feminine
+מרוד ת
+תמוה ת,שמור_ה
+צרוי ת,נקבה_ה # has צירי niqqud. Mostly used in feminine, because letter names are feminine.
+שפוף ת
 
+זקון ע,אין_יחיד # זקונים
 
 כמות ע
 כמותי ת
+קוממיות ע,יחיד
 כפיות ע,יחיד # mainly in the expression: כפיות טובה
 רעננות ע
 רענן ת
 אישיות ע
+קטנוניות ע
+קטנוני ת
 אפלוליות ע
 אפלולי ת
 אפרוריות ע
 אפרורי ת
 ערמומיות ע
 ערמומי ת
+סהרוריות ע
+סהרורי ת
 ודאיות ע
 ודאי ת
 צחות ע
@@ -2760,18 +2990,28 @@
 בוא ע,יחיד
 דעת ע,יחיד
 לכת ע,ים
+רדת ע,יחיד
 # and these also have changed spelling for ktiv maleh:
 היווסד ע,יחיד
 היוולד ע,יחיד
+הימצא ע,יחיד
 
 #
 יחיד ת
+יחידי ת
+יחידאי ת
+יחידני ת # translation of the adjective "individual"
 שביר ת
+שכיר ת
+שפיר ת
+ישים ת
 בחיר ת # בחיר-לבה, וכו'. Nifrad is useless, and should not be confused with בכיר...
 דליק ת
 זעיר ת
 צחיח ת
 צחיחות ע
+נגיש ת
+נגישות ע # [3] doesn't recognize this word. But [1] does.
 דליל ת
 דלילות ע
 בריא ת
@@ -2788,6 +3028,11 @@
 יהיר ת
 כשיר ת
 כשירות ע
+צמיג ת
+צמיגי ת
+צמיגות ע,יחיד
+צפיד ת
+צפידות ע,יחיד
 ישיר ת
 עקיף ת
 כשר ת
@@ -2814,6 +3059,8 @@
 אוננות ע # note kamats in first nun.
 סבלנות ע
 אחריות ע
+ריקנות ע,יחיד
+ריקן ת,נקבה_ית
 כללות ע,יחיד
 רשות ע
 ראשות ע
@@ -2821,11 +3068,18 @@
 גזען ת,נקבה_ית
 כבאות ע,יחיד
 גזעני ת # [3] doesn't recognize this form, but Rav-milim does.
+אבהות ע,יחיד
+אבהי ת
+קדחתנות ע,יחיד
+קדחתני ת
 עדות ע
 לאות ע
 לאה ת
 הוללות ע
+רוממות ע,יחיד
 הולל ת,נקבה_ת
+עודף ת,נקבה_ת
+#עודפות ע,יחיד # doesn't sound very useful to me. [3] has it but rav-milim doesn't.
 שלמות ע
 שלם ת
 בשלות ע
@@ -2842,6 +3096,7 @@
 רעות ע
 # עד with tsere
 עד ע
+לץ ע
 זד ע # אויב מרושע. Not useful in modern texts...
 מת ע,ים
 מתה ע
@@ -2856,6 +3111,10 @@
 ראשיתיות ע
 מלית ע
 זכוכית ע
+כרוכית ע # strudel
+פסוקית ע
+כתובית ע
+שקופית ע
 זגוגית ע
 סנונית ע
 שלולית ע
@@ -2865,12 +3124,20 @@
 מפוחית ע
 כדורית ע
 שפירית ע
+צפיחית ע # arachic, used in phrase "צפיחית בדבש".
+אדמומית ע
+אדמומי ת
+גבשושית ע
 אפלולית ע
+זרבובית ע
 גחלילית ע
 משרוקית ע
 קיסוסית ע # kind of plant
 צנונית ע
+צלוחית ע
+קרונית ע
 פנימית ע
+קונכית ע # note cholam, not shuruk also: קונכייה.
 ביצית ע
 כוסית ע
 מונית ע
@@ -2884,9 +3151,12 @@
 דוגית ע # a slightly archaic term...
 בועית ע
 מקבילית ע
-קטנית ע # according to [1] and [3], the word קטנייה does not exist.
+קטנית ע # according to [1] and [3] and Rav-Millim, the word קטנייה does not exist.
 דסקית ע
+רשתית ע
 תבנית ע
+קרצית ע # according to [1] and [3], the word קרצייה does not exist. Rav-Millim calls קרצייה a "non-standard form".
+מרבית ע,יחיד
 מטלית ע
 מראית ע
 צלמית ע
@@ -2903,6 +3173,7 @@
 קשית ע
 שקית ע
 כפית ע
+מפית ע
 ציצית ע
 תחתית ע
 תגלית ע
@@ -2930,6 +3201,7 @@
 תחזית ע
 צללית ע
 תזזית ע
+תגית ע
 דלית ע
 חבית ע
 מרית ע
@@ -2946,6 +3218,7 @@
 קורנית ע  # this is "thyme", in Hebrew
 לחמנית ע
 מרגלית ע
+אספלנית ע # פלסטר
 שממית ע
 חצאית ע
 כונן ע
@@ -2991,6 +3264,8 @@
 פרט ע
 פרטי ת
 פרטיות ע
+סבב ע # not recognized by [1], but [3] does have it and it is commonly used. Note niqqud like פרט )shwa kamats(, not two segols.
+דחק ע,יחיד,אין_נטיות_יחיד
 סתם ע,יחיד,אין_נטיות_יחיד
 סתמי ת
 סתמיות ע
@@ -3065,6 +3340,7 @@
 מוסף ע
 מוסד ע,ות
 מוסדי ת
+אוצר ע,ות
 חותם ע,ות # yes, [1], [2] and [3] agree on ות.
 גורל ע,ות
 גורלי ת
@@ -3072,6 +3348,7 @@
 שועל ע
 תושב ע
 סימן ע
+עמילן ע
 ביתן ע
 ליצן ע
 ליצנית ע
@@ -3083,7 +3360,8 @@
 סולנית ע
 אילן ע,ות
 קיסר ע
-איתן ע
+איתן ע # inflections used in phrases like הוא חזר לאיתנו, איתני הטבע.
+איתן ת
 היכל ע,ות,ים
 מיתר ע
 דיוקן ע,אות # [1] says ים, but [3] and my experience say אות.
@@ -3094,8 +3372,10 @@
 מיטב ע
 מיטבי ת
 מוצא ע
+אמורא ע
 צאצא ע
 ממצא ע
+מבטא ע
 מורא ע
 נורא ת
 נוראי ת
@@ -3110,7 +3390,23 @@
 מקק ע
 אמונה ע
 פרוזדור ע
+גגון ע
 מכשול ע
+שלמון ע,אין_יחיד # שלמונים. [1] thinks the singular exists too.
+הגמון ע
+הגמוניה ע,יחיד
+אנקול ע # see also אונקל
+שרטון ע,ות,ים # [1] says ות, [3] prefers ים but also allows ות
+חציון ע
+המנון ע,ות,ים # [3] says only ים, [1] mentions ות as a possible alternative. see also: הימנון
+הימנון ע,ות,ים # Strangely, [2] says הימנון has yod (and allows both ות and ים). [3] and [1] and Rav-Milim all disagree, and only list המנון. TODO: consider dropping this word.
+# [2] and [3] list קלשון with dagesh in lamed, and therefore an added yod.
+# But [1] and Rav-Millim list קלשון without dagesh in lamed! Which one is
+# correct?
+קלשון ע,ות,ים
+קילשון ע,ות,ים
+צביון ע,יחיד # [1] prefers ים over ות. [2] and [3] say there is no plural.
+גלשון ע
 כפתור ע
 מכאוב ע # an archaic word which doesn't even appear in [3].
 ספרון ע
@@ -3119,6 +3415,7 @@
 תחתון ע,אין_יחיד # תחתונים
 נחשול ע
 רמקול ע
+רשמקול ע
 משקוף ע
 מסתור ע
 מסתורי ת
@@ -3142,13 +3439,17 @@
 פטרון ע
 פטרונית ע
 פטרונות ע
+עגלון ע
+עגלונית ע
+עגלונות ע,יחיד
 מרכול ע
 דחפור ע
 דרכון ע
 ירחון ע
 קרחון ע
 אגמון ע # rare word
-מדרון ע,ות # ות according to common usage and [3], but not [1].
+מדרון ע,ות,ים # ות only according to my preference, [3] and rav-milim, but ים only according to [1] and [2].
+מדרוני ת
 שסתום ע
 קרטון ע
 חלבון ע
@@ -3169,8 +3470,15 @@
 תרנגול ע
 תליון ע
 בריון ע
+אצטגנין ע
+אצטגנינות ע,יחיד
 תלמיד ע
 תלמידה ע
+תרשים ע
+תכסיס ע
+אורלוגין ע,ים,רבים=אורלוגיות # the bizarre plural אורלוגיות is mentioned in [3] as an alternative.
+דחליל ע
+גלעין ע
 סרדין ע # Note a Hebrew word, but has a nice Hebrew mishkal.
 סגריר ע,יחיד,אין_נטיות_יחיד
 סגרירי ת
@@ -3185,8 +3493,11 @@
 שרביט ע
 תרסיס ע
 קברניט ע
+קברניטה ע
 מלחין ע
 מלחינה ע
+מפעיל ע
+מפעילה ע
 גרגיר ע # see also גרגר
 צפריר ע
 נקניק ע
@@ -3198,6 +3509,7 @@
 מדריך ע
 מדריכה ע
 אקלים ע
+סמליל ע # Hebrew word for Logo, not commonly used.
 תפקיד ע
 תצליל ע
 תרמיל ע
@@ -3222,6 +3534,7 @@
 תמריץ ע
 תחביב ע
 תחביר ע
+תחבירי ת
 תבליט ע
 טבלית ע # note: this means a pill, not a relief artwork (תבליט).
 תבלין ע
@@ -3260,7 +3573,10 @@
 # this is for feminine מורה:
 מורה ע
 חשבון ע,ות
+עשתון ע,ות,אין_יחיד # Archaic forms ים, and also the singular, do exist.
+משכון ע,ות # [1] also allows ים as an alternative, but [3] and I don't like it.
 שריון ע,ות,ים # ים is more modern, and [3] allows only it.
+הדיוט ע,ות
 אשכול ע,ות
 עלבון ע,ות
 שלטון ע,ות
@@ -3275,13 +3591,17 @@
 פגיון ע,ות
 פדיון ע,ות
 פריון ע,יחיד
+רפיון ע,ות
 לגיון ע,ות
 ארמון ע,ות
 הרמון ע,ות
 מסדרון ע,ות,ים # I and [1] prefer ים, but [3] says ות is also valid
 מצביא ע
+תחלוא ע,אין_יחיד # תחלואים
 מחבוא ע
 שעשוע ע
+מצביע ע # TODO: consider if this noun (as a noun) should have אין_יחיד?
+מצביעה ע
 פעמון ע
 מערכון ע
 תחנון ע
@@ -3293,6 +3613,8 @@
 תאגיד ע
 תאריך ע
 מאזין ע
+מעביד ע
+מעסיק ע
 תעריף ע
 תענוג ע,ות
 תעלול ע
@@ -3310,7 +3632,9 @@
 חלוץ ע
 חלוצי ת
 חלוציות ע
+ארוס ע
 הדור ע,אין_יחיד # הדורים
+עלום ע,אין_יחיד # עלומים
 חלוק ע # robe
 אפון ע
 עגור ע
@@ -3321,11 +3645,13 @@
 אסור ע
 פצוע ע
 צבוע ע # [3] says the correct spelling is cholam male (not shuruk)
+מנוע ע # cholam male (not shuruk)
 יצוע ע
 #פצועה ע
 פצוע ת
 ספון ת
-פקוד ת # TODO: maybe noun?
+פקוד ע
+פקודה ע
 שדוף ת
 שבוי ע
 שבויה ע
@@ -3372,6 +3698,7 @@
 רקיק ע # עוגייה
 חריש ע,יחיד
 חציר ע,יחיד
+כפיס ע
 עטין ע
 דגיג ע
 גביש ע
@@ -3403,6 +3730,7 @@
 קשישה ע
 חניך ע
 חניך ע,יים,אין_יחיד,נקבה  # חניכיים
+חליף ע,אין_יחיד,רבים=חליפין # חליפין TODO: are the inflections useful?
 חניכה ע
 קצין ע
 קצינה ע
@@ -3413,6 +3741,8 @@
 נתיב ע
 סדין ע
 קציר ע
+בציר ע
+גדיד ע # rare word, meaning harvest of dates. not recognized by [3].
 קטיף ע
 אסיף ע
 שמיר ע # שמיר isn't commonly inflected...
@@ -3422,6 +3752,7 @@
 צעיף ע
 צמיג ע
 צמיד ע
+צמידות ע,יחיד
 צמית ע,ים
 צמיתות ע
 חתיך ע
@@ -3486,6 +3817,7 @@
 רקיע ע
 #קמיע ע,ים,ות # קמיע (tsere male or chirik) is alternative spelling to קמע (tsere), but [3] says it is considered wrong nowadays.
 קמע ע,ים,ות
+אריח ע
 פתיח ע
 ספיח ע
 שליח ע
@@ -3533,6 +3865,7 @@
 מפיץ ע
 מליציות ע
 כדור ע
+כדורי ת
 אבוב ע
 בלוט ע
 דבור ע
@@ -3541,11 +3874,14 @@
 טבור ע
 חלוק ע # pebble
 סכין ע,נקבה,זכר # [3] prefers נקבה
+ספיר ע
 מציל ע # lifeguard
 תנין ע # [1] says the plural is תנים (with chirik), but that makes no sense!
 טפיל ע
 טפיל ת
 טפילות ע
+תקיף ת
+תקיפות ע,יחיד
 מדיד ע
 אביר ע
 אבירי ת
@@ -3573,11 +3909,29 @@
 אופנוען ע
 אופנוענית ע
 קעקוע ע
+
+גדול ת
+נדוש ת
+מנוח ת
+נבון ת
+קדוש ת
+נאות ת
+טהור ת
+נלוז ת
+רחוק ת
+נכוח ת
+נכון ת # note that the adjective ("correct") has different meanings from the verb ("ready").
+קרוב ע
+קרובה ע
+
 גאון ע
 גאון ת,נקבה_ית
 גאונות ע
 גאוני ת
 גאוניות ע
+מעוף ע,יחיד # note that [3] claims the nifrad has cholam while the nismach has shuruk. in [1] these are two different words. strange...
+משוט ע
+משוב ע
 מנוף ע
 מטול ע
 מטוס ע
@@ -3615,6 +3969,7 @@
 קרון ע,ות
 קלון ע,ות
 מעון ע,ות
+לצון ע,ות # [1] and ravmilim say ות, [3] says no plural.
 זדון ע,ות # [1] says ות, [3] says no plural.
 זדוני ת
 זדוניות ע
@@ -3643,6 +3998,7 @@
 אתון ע,ות,נקבה
 ארון ע,ות
 אסון ע,ות
+יגון ע,ות,ים # [1] prefers ות, [2] ים, and [3] says there is no plural.
 שפתון ע
 # according to Milon Hahove [3], and to my experience, the singular
 # inflections of אחור should be avoided.
@@ -3665,7 +4021,7 @@
 חלום ע,ות
 חלומי ת
 הדום ע
-עבות ע,ות,ים # rare word (meaning rope)
+עבות ע,ות,ים,שמור_ת # rare word (meaning rope)
 יסוד ע,ות
 יסודי ת
 יסודיות ע
@@ -3676,15 +4032,25 @@
 חתולה ע
 חתולי ת
 צנובר ע
+עוקדן ע # binder
+#אוגדן ע # [3] says this is non-standard, Rav-millim calls it colloquial. Should be עוקדן
 עכבר ע
 עכברה ע
 עכברי ת
+ערפד ע
+מקצת ע,יחיד
+נדבך ע,ים,ות # the ות is an archaic alternative mentioned by [1] and [2], but not [3]. Perhaps we should not accept it.
+אלמן ע
 מרכב ע # with segol in mem
 סרבל ע
 צנתר ע
 זמזם ע
 צמצם ע
 מרקם ע
+מטרד ע
+משדר ע
+ממכר ע,יחיד,אין_נטיות_יחיד # Not normally used inflected.
+מצרך ע
 מפקד ע
 פתגם ע
 סרפד ע
@@ -3770,9 +4136,11 @@
 מבזק ע
 מספר ע
 מספרי ת
+מספר ע,יים,אין_יחיד # מספריים
 מסגד ע
 מרכז ע
 מרכזי ת
+מרכזיות ע
 גמד ע
 גמדי ת
 סוס ע
@@ -3780,6 +4148,8 @@
 סוסי ת
 זוז ע # מטבע ארמית
 לוז ע,יחיד,אין_נטיות_יחיד # Originally meaning "almond", now only used in nifrad form in the phrase: "אגוז לוז".
+פוך ע,יחיד # blue eyelid color. For "down", see מוך or פלומה!
+בור ת
 מום ע
 צוק ע
 אוד ע # גחל
@@ -3797,6 +4167,7 @@
 חוטי ת
 שום ע
 טור ע
+טורי ת # not recognized by [3], but is recognized by rav-milim.
 נול ע
 נור ע
 שול ע,יים
@@ -3818,6 +4189,7 @@
 מינות ע,יחיד # infidel-ism
 מיני ת
 מיניות ע # sexuality
+שיג ע,יחיד,אין_נטיות_יחיד # in the expression שיג ושיח
 סיג ע
 כיב ע
 כיבי ת
@@ -3861,6 +4233,8 @@
 קול ע,ות
 קולי ת
 קולני ת
+חול ע,ות # sand
+חולי ת
 אוב ע,ות # oracle
 בור ע,ות
 עוף ע,ות
@@ -3907,6 +4281,9 @@
 ברית ע,שמור_ת
 תרבות ע
 תרבותי ת
+קדמות ע,יחיד
+אלמנות ע,יחיד
+עבדות ע,יחיד
 בגרות ע,יחיד # the plural "בגרויות" is colloquial for "בחינות בגרות".
 קדרות ע,יחיד
 קודר ת,נקבה_ת
@@ -3926,6 +4303,7 @@
 יהדות ע
 אפסות ע
 שכרות ע
+סכלות ע # stupidity
 ספרות ע
 ספרותי ת
 התכנסות ע
@@ -3940,10 +4318,12 @@
 ילד ע
 ילדות ע
 ילדותי ת
+רחצה ע
 פרסה ע
 אשמה ע
 ארכה ע
 אסלה ע
+אסדה ע
 קסדה ע
 דרגה ע
 עפרה ע
@@ -3952,8 +4332,14 @@
 אשרה ע
 # that's בוקר, cowboy.
 בוקר ע
+שוגג ע,יחיד,אין_נטיות_יחיד
+אוגד ע
 שומר ע
 שומרת ע
+אוצר ע
+אוצרת ע
+שופט ע
+שופטת ע
 קוסם ע
 קוסמת ע
 כורם ע
@@ -4032,6 +4418,11 @@
 # inflections, hence the אין_נטיות_יחיד below.
 # TODO: but there should be a singular nismach!
 יושב ע,אין_נטיות_יחיד,נסמך=יושב
+# another beinoni:
+שומע ע
+שומעת ע
+מחליף ע
+מחליפה ע
 
 יובל ע,ות
 יוגב ע
@@ -4043,7 +4434,6 @@
 טבלה ע,ות,אות
 טבלאי ת
 ססמה ע,ות,אות
-גדול ת
 קטן ת
 לבן ת
 חום ת
@@ -4060,6 +4450,7 @@
 # "דתייה".
 דתי ת,נקבה_ת,נקבה_ה
 רץ ע
+עב ע # ות,נקבה is also correct, but archaic (according to [3]; see also [2], [1])
 סב ע
 סבה ע
 רז ע
@@ -4075,16 +4466,13 @@
 תו ע
 פן ע
 פן ע,אין_יחיד,זכר,נקבה # פנים
-# The word שמים is an explicit exception in the Academia's niqqud-less spelling
-# rules - it should be spelt שמים, not שמיים as the generic rules dictate.
-# so we say the plural is ים, not יים...
-שם ע,אין_יחיד # שמים
 דם ע
 ים ע
 ימה ע
 ימי ת
 דמעה ע
 תם ע
+תם ת
 צב ע
 פז ע # inflections aren't useful...
 תא ע
@@ -4103,6 +4491,8 @@
 שביל ע
 שביב ע
 בכור ע
+סכום ע
+יקום ע
 טריז ע
 תריס ע
 גביר ע # archaic word.
@@ -4111,8 +4501,12 @@
 רסיס ע # note shva in resh, not kamats.
 רדיד ע
 הגיג ע # This is [3]'s spelling with chataf-patach in he. [1] and [2] spell with kamats in he!
+וריד ע # note that [1] and [3] disagree on the niqqud of the waw: kamats or shwa.
+זקיק ע # note that [1] and [3] disagree on the niqqud of the waw: kamats or shwa.
 אליל ע
 אלילי ת
+אלילות ע,יחיד
+אלילה ע
 ספוג ע
 ספוגי ת
 חגור ע
@@ -4195,6 +4589,8 @@
 צריח ע
 רביע ע
 כידון ע
+יומון ע
+שיחון ע
 צינוק ע
 אישון ע
 קיסוס ע # kind of plant
@@ -4203,6 +4599,7 @@
 טירונות ע
 זבובון ע
 עפיפון ע
+אסימון ע
 נימוס ע,ים,רבים=נימוסין
 נימוסי ת
 נימוסיות ע
@@ -4215,6 +4612,16 @@
 סביבון ע
 
 ילקוט ע
+גבשוש ע # the word גבשושית is also correct, and more commonly used
+גבשושי ת
+גבנון ע
+גבנוני ת
+גבנוניות ע
+תפנוק ע # literary
+קמצוץ ע
+להטוט ע
+מצפון ע,יחיד
+מצפוני ת
 תלמוד ע
 תלמודי ת
 יבחוש ע
@@ -4231,6 +4638,8 @@
 יסעור ע
 פטפוט ע
 הנהון ע
+תפקוד ע
+תפקודי ת
 דקדוק ע
 דקדוקי ת
 דמדום ע
@@ -4242,6 +4651,7 @@
 זאטוטה ע
 גפרור ע
 תנחום ע,אין_יחיד
+תמלוג ע,אין_יחיד # [1] thinks the singular exists. [3] disagrees.
 שרוול ע
 תמרור ע
 חתלתול ע
@@ -4249,6 +4659,8 @@
 סמרטוטי ת
 תמרון ע
 מצמוץ ע
+מכשור ע
+מלכוד ע
 בלבול ע
 תרגול ע
 תרגום ע
@@ -4260,6 +4672,7 @@
 אבחון ע
 פסטור ע
 עדכון ע
+תדרוך ע
 בקבוק ע
 תשלום ע
 תצלום ע
@@ -4274,6 +4687,7 @@
 # דוד עם חולם
 דוד ע
 דודה ע
+פול ע
 מוך ע,יחיד # inflections not normally used.
 הוד ע,יחיד
 הון ע,יחיד
@@ -4288,6 +4702,8 @@
 חגורה ע
 בשורה ע
 בכורה ע
+מכורה ע
+סחורה ע
 חומה ע
 עולה ע
 נוצה ע
@@ -4302,6 +4718,7 @@
 צואה ע
 בושה ע
 מכונה ע
+מדוכה ע
 קוץ ע
 קוצני ת
 קוצניות ע
@@ -4348,11 +4765,14 @@
 הודאה ע
 הודיה ע
 הכנסה ע
+הנעלה ע
+התראה ע
+התרעה ע
 הסברה ע
 הסברתי ת
 הכפשה ע
 הפגנה ע
-הפגנתי ע
+הפגנתי ת
 הפגנתיות ע # [1] recognizes this, but [3] doesn't...
 מחמאה ע
 הקשחה ע
@@ -4401,6 +4821,7 @@
 החמצה ע
 החמרה ע
 אזעקה ע
+אלמנה ע
 אסכלה ע # grill
 אשכבה ע # inflections are not useful...
 אכזבה ע
@@ -4409,6 +4830,7 @@
 אפליה ע
 אזכרה ע
 אבטלה ע
+אבטחה ע
 #אחזקה ע # note: [3] considers this an error - should be תחזוקה
 אזהרה ע
 אבחנה ע
@@ -4427,13 +4849,20 @@
 הצצה ע
 עטרה ע
 מורשה ע
+מורשת ע # alternative form for מורשה
 תובלה ע
+תורשה ע
+תורשתי ת
+מכבסה ע # chirik in mem!
+מנסרה ע
 מלמלה ע
 מחלפה ע
 מחלבה ע
 מחשבה ע
 מחשבתי ת
 מעצמה ע
+מעברה ע
+מעמסה ע,יחיד
 מעטפה ע
 מסלקה ע
 מתקפה ע
@@ -4467,6 +4896,7 @@
 מסעדה ע
 מזללה ע # TODO: [3] and [1] don't recognize this word!
 מנהרה ע
+מנהלה ע
 מפלה ע
 מלתחה ע
 מלתעה ע # not normally used in singular, but singular does appear in [3].
@@ -4474,6 +4904,9 @@
 מרכבה ע
 סלסלה ע
 מפשעה ע
+מפרעה ע
+תשבחה ע # Mostly used in plural, תשבחות. The form "תשבוחות" is an error.
+צפצפה ע # kamats in tsadi: kind of tree. see also tsere in stadi (horn)
 להבה ע
 פאה ע
 מאה ע
@@ -4519,6 +4952,7 @@
 # Note: the followig words have tsere, and should not get any extra letters
 # according the the academia - but many people mistakenly add yud
 ברכה ע
+גנבה ע
 אספה ע
 גזרה ע
 עברה ע
@@ -4529,11 +4963,16 @@
 מגפה ע
 מסכה ע
 אפלה ע
+אבדה ע
+שרפה ע
 נקבה ע
 נקבי ת
+כרשה ע
 כמהה ע,ים,ות,רבים=כמהין # the common plural nowadays is כמהין.
 
 מדרגה ע
+צפצפה ע # instrument that makes noise
+מגלשה ע
 משאבה ע
 מסחטה ע
 מחרשה ע
@@ -4599,6 +5038,8 @@
 מועד ע
 בוחר ע
 רופא ע
+רופאה ע
+קורא ע
 רוצח ע
 רוצחת ע
 רוקח ע
@@ -4606,7 +5047,16 @@
 אורח ע
 נושא ע
 משורר ע
+משוררת ע
+מחולל ע # cause, generator.
 מסמר ע
+מצמד ע # clutch (in a car)
+משבר ע
+משגר ע
+משדר ע
+מגבר ע
+מצפן ע
+מחבט ע
 מסנן ע # filter
 מכבש ע
 מרזב ע
@@ -4632,6 +5082,9 @@
 פשפש ע
 משמש ע
 פלפל ע
+#משען ע
+מדחף ע
+מדחס ע
 מפתח ע,ות
 מתנע ע # סטארטר
 מטבע ע,ות # זכר, but [3] comments that נקבה is almost also common.
@@ -4672,8 +5125,10 @@
 רגל ע,ים,יים,נקבה
 רגלי ת
 קרן ע,יים,ות,נקבה
+גרש ע,יים # Most inflections are useless... Note that [1] disputes the existance of a singular form.
 מזבח ע,ות
 הבדל ע
+הכשר ע
 הרכב ע
 הדפס ע
 הבזק ע
@@ -4686,9 +5141,12 @@
 הרגל ע
 הסבר ע
 הסגר ע  # [1] says the plural here is ות. why??
+הלחם ע  # recognized by [1] but not by [3]. Used in Linguistics.
 הספד ע
 הספק ע
 העדר ע,יחיד
+הפקר ע,יחיד
+הפקרות ע
 הקדם ע,יחיד,אין_נטיות_יחיד # in the expression בהקדם.
 הסדר ע
 העתק ע
@@ -4758,6 +5216,8 @@
 עקבי ת
 עקביות ע
 דבר ע
+רפא ע,אין_יחיד # רפאים. singular used in bible but not in modern language.
+בקר ע,יחיד # cattle
 נדן ע
 צלף ע # kind of plant
 שלל ע,יחיד
@@ -4827,15 +5287,14 @@
 תוספת ע
 תודה ע
 תובנה ע # TODO: note that milon hahove says this is a wrong word.
-קרוב ע
-קרובה ע
-רחוק ת
 תחום ע
 זמן ע
 עיר ע,רבים=ערים,נקבה
 גדר ע,ות,נקבה,זכר # [3] says זכר is only in literature.
 משרת ע,ים
 משרתת ע
+מארח ע
+מארחת ע
 כבד ע
 ספק ע,ות
 יתד ע,ות,נקבה
@@ -4851,10 +5310,15 @@
 ענף ת
 ערל ת
 אפל ת
+דשן ת
+יתר ת # used in idioms like יתר על כן, יתר על המידה, יתרה מזו
+
+נקל ת # usually used as בנקל.
 
 מפר ע
 מרע ע
 רב ת
+רב ע,ות # TODO: plural only used inflection: רבותיי, רבותיהם, etc.
 רב ע,רבים=רבנים
 רבנית ע
 רבני ת
@@ -4927,6 +5391,8 @@
 הגדרה ע
 טענה ע
 מחמד ע
+שרעף ע # rare, literary word
+גנזך ע
 כרפס ע
 קרנף ע
 חדף ע
@@ -4945,6 +5411,7 @@
 קבקב ע
 דרדק ע
 גלגל ע
+שרפרף ע
 בצלצל ע
 שרברב ע
 אמצע ע
@@ -4963,6 +5430,7 @@
 מרבי ת
 מצר ע
 מסב ע
+שער ע,יחיד
 
 ממתק ע
 חרצן ע
@@ -4972,13 +5440,12 @@
 # Note that in the following adjectives (ירקרק, ..., עגלגל) [3] says both a
 # ת and ה feminine are correct. But I consider only the ה one useful. The
 # ת one will be accepted too, by the way, as the nishmechet form :(
-#ירקרק ע
 ירקרק ת
 צהבהב ת
 אפרפר ת
 אדמדם ת
 ורדרד ת
-שחרחר ת # TODO: feminine of שחרחר is also שחרחורת.
+שחרחר ת # TODO: feminine of שחרחר is also שחרחורת. See [3]
 כחלחל ת
 כתמתם ת
 לבנבן ת
@@ -4989,6 +5456,18 @@
 חמצמץ ת
 חלקלק ת
 חמקמק ת
+עקלקל ת
+# פתלתל ת # this is considered wrong by every dictionary. see פתלתול.
+# Feminine of שמנמן is שמנמונת (not waw added for ktiv male). This exceptional
+# situation is as given in [3]. In [1], on the other hand, they suggest
+# more regular inflection of either שמנמן or שמנמון (cholam chaser), but
+# most of those results are really bizarre.
+# TODO: Think about adding an extra נקבה_ה to שמנמן contrary to [3]'s
+# recomendation (and to the bizarre inflections in [1]) because Rav-Millim
+# allows שמנמנה in addition to שמנמונת, and I also think it's commonly used
+# by people and should not be viewed erronous.
+שמנמן ת,יחידה=שמנמונת #,נקבה_ה
+קטנטן ת,יחידה=קטנטונת,נקבה_ה
 חמקמקות ע,יחיד
 חלקלקות ע,יחיד
 חמצמצות ע,יחיד # this word is not found in [3]
@@ -5015,6 +5494,10 @@
 בעיה ע
 נדוניה ע
 אכסניה ע
+אכסדרה ע
+שאילתה ע
+אנדרטה ע,ות,אות # [1] says ות, [3] אות
+ערבוביה ע # note shva in second nun, hence yod is not doubled
 אצטלה ע,ות,אות # [1] says ות, [3] אות
 בליסטרה ע,ות,אות # [1] says ות or אות, [3] says only אות
 סלמנדרה ע
@@ -5022,10 +5505,13 @@
 אמבטיה ע
 הרפתקה ע,רבים=הרפתקאות
 משכנתה ע,רבים=משכנתאות
+אסמכתא ע,רבים=אסמכתאות,נקבה # [1] prefers אסמכתה but [3] goes with א. I don't understand why (see also דוגמה). Rav-milim also prefers א but accepts ה as כתיב חלופי. The fact that [3] says this word is נקבה makes me think that [3] made here an error in judgement. so, TODO: consider reversing my decision here.
 קנוניה ע # note shva in second nun, hence yud is not doubled
 סיגריה ע
 גלויה ע
 מניה ע
+כסיה ע
+בדיה ע
 ראיה ע
 הנחיה ע
 הדמיה ע
@@ -5041,12 +5527,19 @@
 חדשני ת
 חדשנות ע
 ישן ת
+
+דבש ע
+סבך ע
+
 דגל ע
+שטף ע # plural perhaps useful only in science
 משך ע
 כתם ע
 נזם ע
 גדם ע
 קדם ע,יחיד,אין_נטיות_יחיד
+רכש ע,יחיד,אין_נטיות_יחיד
+גלם ע,יחיד,אין_נטיות_יחיד
 קדמי ת
 פלס ע
 שתל ע
@@ -5073,9 +5566,9 @@
 קשב ע,יחיד # inflections aren't useful?
 מלל ע,יחיד # inflections aren't useful?
 כשל ע
-לבט ע,אין_יחיד # [3] says the singular is "literary".
-כבס ע,אין_יחיד
-שפט ע,אין_יחיד
+לבט ע,אין_יחיד # לבטים [3] says the singular is "literary".
+כבס ע,אין_יחיד # כבסים
+שפט ע,אין_יחיד # שפטים
 שקף ע
 לפת ע,שמור_ת # [1] says the plural is ים, but [3] and [2] say ות.
 דלק ע
@@ -5117,6 +5610,7 @@
 שמץ ע
 סקר ע
 שקר ע
+שקרי ת
 קמט ע
 כבש ע
 בלם ע
@@ -5151,7 +5645,7 @@
 טקסי ת
 טקסיות ע
 גבס ע
-פטל ע
+פטל ע # TODO: do inflections of this make sense?
 מזג ע
 משק ע
 רכס ע
@@ -5167,18 +5661,16 @@
 פרס ע
 זבל ע
 יתר ע
-יתרה ע
 ישר ע
 ישר ת
 עצם ע,ות,נקבה
 עצם ע,ים
 עצמי ת
 סרט ע
-דבש ע
 גבר ע
 גברי ת
 גבריות ע
-פלא ע
+פלא ע,ים,ות # ות is rarer and not recognized by [3], but is recognized by [1] and [2] and is commonly used, esp. in עליזה בארץ הפלאות.
 פלאי ת
 דשא ע
 כלא ע
@@ -5188,9 +5680,10 @@
 שמש ע,ות,נקבה,זכר # [3] says in זכר is only in literature.
 רגש ע,ות
 רגשי ת
-דרך ע
+שנת ע,ות,שמור_ת # שנתות, tick marks in graphs or measuring containers
+דרך ע,נקבה # [3] says in literature, also זכר
 תלם ע
-פילגש ע
+פילגש ע,נקבה
 טלף ע,יים,נקבה
 קרס ע
 קרש ע
@@ -5224,8 +5717,9 @@
 לתת ע,שמור_ת,יחיד
 נפש ע,ות,נקבה
 נפשי ת
-כרס ע,ות,נקבה # Dan says rav-milim also accepts the ים plural. [1], [2] and [3] don't
+כרס ע,ות,ים,נקבה # Dan says rav-milim also accepts the ים plural. [1], [2] and [3] don't. Given the feminine gender and the confusion with קרסים, I'd also prefer ות only. But Dan cast the deciding vote to allow ים.
 עבד ע
+הדק ע
 אשך ע,ים,יים # [3] mentions יים and [1] recommends it. I consider it archaic.
 חדק ע
 אטב ע
@@ -5239,6 +5733,7 @@
 הרג ע,יחיד,אין_נטיות_יחיד,נסמך=הרג
 הרף ע,יחיד,אין_נטיות_יחיד,נסמך=הרף
 הרס ע,יחיד,אין_נטיות_יחיד,נסמך=הרס
+עצר ע,יחיד,אין_נטיות_יחיד
 חרק ע
 חבל ע
 חבק ע
@@ -5266,9 +5761,14 @@
 גלל ע
 הבל ע
 פתח ע
+קדח ע
+ספח ע
 גבע ע,יחיד # rare, literary.
 ידע ע,יחיד,אין_נטיות_יחיד,נסמך=ידע
 רצח ע,יחיד,אין_נטיות_יחיד,נסמך=רצח
+בצע ע,יחיד,אין_נטיות_יחיד,נסמך=בצע
+צנע ע,יחיד,אין_נטיות_יחיד
+קבע ע,יחיד,אין_נטיות_יחיד
 פסח ע
 צדע ע,יים
 צפע ע
@@ -5317,10 +5817,16 @@
 קלע ע # ביחיד רוגטקה, ברבים וילון...
 אלח ע
 קרח ע
+
 בעל ע
+געש ע,יחיד
+געשי ת
+סעד ע,יחיד # no plural, according to [2] and [3].
+סחף ע,יחיד # no plural, according to [2] and [3].
 כעך ע
 לחן ע
 להג ע
+להט ע
 לעג ע
 לעז ע
 תער ע
@@ -5399,7 +5905,11 @@
 מחשבון ע
 אהב ע,אין_יחיד # actually, singular exists but is very obscure.
 ספר ע
+שכל ע,יחיד
+שכלי ת
+נטל ע
 קפל ע # [1] and [3] disagree on whether this has tsere or segol...
+כפל ע,יים # [1] and [3] disagree on whether this has tsere or segol... TODO: most inflections of this word are not useful, and only creates a confusion with inflection of קפל :(
 נצר ע
 פשר ע
 נפל ע
@@ -5417,6 +5927,7 @@
 יצר ע
 סבל ע,ות
 עדר ע
+עדן ע,יחיד,אין_נטיות_יחיד # inflections archaic, and easily confused with אדן
 אשל ע
 אגל ע
 עבר ע
@@ -5436,9 +5947,9 @@
 כנסת ע,יות,ות # the plural "כנסות" is used for our parliament.
 עצרת ע
 כותרת ע
+תועלת ע
 כותפת ע
 תוחלת ע
-חותמת ע
 חותמת ע
 שושלת ע
 מולדת ע,יחיד
@@ -5447,6 +5958,8 @@
 שפופרת ע
 חטוטרת ע
 ארנבת ע
+קרקפת ע
+פרפרת ע,אות,ות # אות is prefered. In fact, both the singular and the "ות" variant plural are pretty useless...
 שבשבת ע
 גלגלת ע
 גלגשת ע # skateboard
@@ -5459,6 +5972,9 @@
 מזחלת ע
 משענת ע
 משמרת ע
+מפצלת ע
+מחתרת ע
+מחתרתי ת
 מסננת ע
 נבחרת ע
 מצנפת ע
@@ -5481,9 +5997,11 @@
 מדפסת ע
 משחתת ע
 מערכת ע
+מערכתי ת
 מברשת ע
 נברשת ע
 מקלדת ע
+מקצפת ע # meringue
 תוכחת ע
 תולע ע
 תולעת ע,רבים=תולעים
@@ -5492,9 +6010,15 @@
 מקלחת ע
 מרקחת ע
 מגבעת ע
+משמעת ע,יחיד
+משמעתי ת
 מגרעת ע
 מרשעת ע
+פקעת ע
+
 צמרת ע
+סחבת ע,יחיד
+רחפת ע
 צלקת ע
 בזלת ע,יחיד
 בזלתי ת
@@ -5553,6 +6077,7 @@
 טבעת ע
 דלעת ע,רבים=דלועים # unfortunately, the plural דלעות that everybody uses, is considered wrong...
 חותנת ע
+צוללת ע
 משבצת ע
 בוטחת ע
 אורחת ע
@@ -5614,16 +6139,20 @@
 בונה ע,ים,סגול_ה
 רועה ע,ים,סגול_ה
 רועה ע
-אופה ע,ים_סגול_ה
+אופה ע,ים,סגול_ה
 אופה ע
 חולה ע,ים,סגול_ה
 חולה ע
 #חולה ת # can be used instead of the two nouns above
 נושה ע,ים,סגול_ה
 נושה ע
+גולה ע,ים,סגול_ה
+גולה ע
 מקרה ע,ים,סגול_ה
 מקרי ת
 מקריות ע
+משגה ע,ים,סגול_ה
+משחה ע,ים,סגול_ה
 מנחה ע,ים,סגול_ה
 מנחה ע
 מרצה ע,ים,סגול_ה
@@ -5662,6 +6191,7 @@
 #מכבה ע,ים,סגול_ה
 #מכבה ע,ות
 מכבה ת
+מהנה ת
 #משתאה ע,ים,סגול_ה
 #משתאה ע,ות
 משתאה ת
@@ -5689,8 +6219,10 @@
 # this word anyway... Besides the inflections קצה-, קצהו, קצה (with kamats in
 # the ה) I don't recognize any of the singular inflections I invented here...
 # But because those inflection *do* make sense, and because most of them
-# are legal words anyway (as inflections of קץ), I'm not adding אין_נטיות_יחיד.
-קצה ע,סגול_ה,רבים=קצוות
+# are legal words anyway (as inflections of קץ), and because [2] lists these
+# forms, I'm not adding אין_נטיות_יחיד.
+#קצה ע,סגול_ה,רבים=קצוות
+קצה ע,סגול_ה,רבים=קצוות,נסמכים=קצות
 
 # CASE 226
 # The inflections are absolutely crazy. But it would be a shame to comment them
@@ -5756,6 +6288,9 @@
 רגזן ת,נקבה_ית
 רגזנות ע
 רגזני ת
+רגשן ת,נקבה_ית
+רגשנות ע
+רגשני ת
 אימתן ת,נקבה_ית
 אימתנות ע
 אימתני ת
@@ -5818,11 +6353,86 @@
 גזלן ת,נקבה_ית
 גזלני ת
 גזלנות ע
+זללן ת,נקבה_ית
+זללנות ע,יחיד
+לקקן ת,נקבה_ית
+לקקנות ע,יחיד
+בזבזן ת,נקבה_ית
+בזבזני ת
+בזבזנות ע,יחיד
+טורדן ת,נקבה_ית
+טורדני ת
+טורדנות ע,יחיד
+סחטן ת,נקבה_ית
+סחטני ת
+סחטנות ע,יחיד
+פשרן ת,נקבה_ית
+פשרני ת
+פשרנות ע,יחיד
+צדקן ת,נקבה_ית # note chirik in tsadi!
+צדקני ת # note chirik in tsadi!
+צדקנות ע,יחיד # note chirik in tsadi!
+קמצן ת,נקבה_ית
+קמצני ת
+קמצנות ע,יחיד
+קשקשן ת,נקבה_ית # Colloquial word not used formally.
+קשקשני ת
+קשקשנות ע,יחיד
+רברבן ת,נקבה_ית
+רברבני ת
+רברבנות ע,יחיד
+שאפתן ת,נקבה_ית
+שאפתני ת
+שאפתנות ע,יחיד
+שחצן ת,נקבה_ית
+שחצני ת
+שחצנות ע,יחיד
+שכלתן ת,נקבה_ית
+שכלתני ת
+שכלתנות ע,יחיד
+גברתן ת,נקבה_ית
+גברתני ת
+גברתנות ע,יחיד
+דעתן ת,נקבה_ית
+דעתני ת
+דעתנות ע,יחיד
+שתלטן ת,נקבה_ית
+שתלטני ת
+שתלטנות ע,יחיד
+תועלתן ת,נקבה_ית
+תועלתני ת
+תועלתנות ע,יחיד
+תתרן ת,נקבה_ית
+תתרנות ע,יחיד
+מרדן ת,נקבה_ית
+מרדנות ע,יחיד
+מרדני ת
+עתידן ע # in [2], but not [3]
+עתידנית ע # not in [2] or [3]
+עתידני ת # not in [2] or [3]
+עתידנות ע,יחיד
+סממן ע
 למדן ע
 למדנית ע
+שדכן ע
+שדכנית ע
+שדכנות ע,יחיד
+קלדן ע
+קלדנית ע
+קלדנות ע,יחיד
+להטוטן ע
+להטוטנית ע
+פרדסן ע
+פרדסנית ע
+פרדסנות ע,יחיד
+ספרן ע
+ספרנית ע
+ספרנות ע,יחיד
+מנהלן ע
+מנהלנית ע
 חשפן ע
 חשפנית ע
-חשפנות ע
+חשפנות ע,יחיד
 דקדקן ע
 דקדקנית ע
 דקדקנות ע
@@ -5865,6 +6475,8 @@
 ישבן ע
 תותחן ע
 תותחנית ע
+צוללן ע
+צוללנית ע
 חבלן ע
 חבלנית ע
 חבלני ת
@@ -5914,16 +6526,12 @@
 נוכחי ת
 נוכחות ע
 נוסחה ע,ות,אות
-נחוץ ת
-נחיצות ע
-שקול ת
-שקוף ת
-שקיפות ע
 נע ת
 נקבע ת
 קודם ע
 קודמת ע
 תנאי ע
+טלאי ע
 מלאי ע
 גנאי ע,יחיד # inflections aren't useful, but [3] oks them...
 גבאי ע
@@ -5931,11 +6539,17 @@
 שקנאי ע
 טוראי ת,ם
 עתודאי ת,ם
+מדינאי ע
+מדינאי ת
+מדינאות ע,יחיד
 ימאי ע
 ימאית ע
 ימאות ע
 יומנאי ע
 יומנאית ע
+מחסנאי ע
+מחסנאית ע
+מחסנאות ע,יחיד
 מזנונאי ע
 מזנונאית ע
 מלונאי ע
@@ -5953,7 +6567,10 @@
 במאי ע
 במאית ע
 רמאי ע
+רמאית ע
+רמאות ע
 חקלאי ע
+חקלאית ע
 חקלאי ת
 פרסומאי ע
 פרסומאית ע
@@ -5962,6 +6579,7 @@
 חשמל ע
 חשמלי ת
 חשמלאי ע
+חשמלאית ע
 פיזיקאי ע
 פיזיקאית ע
 אמודאי ע
@@ -6006,7 +6624,6 @@
 מותג ע
 מלהיב ת
 מרהיב ת
-ממשי ת
 מסיס ת
 מסיסות ע
 # מעט isn't a normal adjective; I'm not sure what inflections exactly make
@@ -6032,6 +6649,7 @@
 מוזרות ע
 מוזל ת,נקבה_ת
 מודע ת,נקבה_ת
+מודעות ע
 זול ת
 ביתי ת
 ביתיות ע
@@ -6040,15 +6658,12 @@
 מוחשיות ע
 הרסני ת
 הרסנות ע
+צורמני ת
 נפלא ת
 מוכה ת
 יאה ת
 מועדון ע
 מסד ע
-צמחוני ת
-צמחונות ע,יחיד
-טבעוני ת
-טבעונות ע,יחיד
 תקליטון ע
 תקליטור ע
 בלעדי ת
@@ -6058,7 +6673,9 @@
 #נא ת
 בינוני ת
 בינוניות ע
+# Adjectives from nouns like חיזיון:
 חסכוני ת
+עשרוני ת
 הגיוני ת
 עקרוני ת
 # Note: according to [1, page 52-55], cases like גדי,כלי,צבי, עדי accept
@@ -6118,9 +6735,14 @@
 חY ת
 #WORDS WITHOUT SINGULAR:
 כיר ע,אין_יחיד,יים  # כיריים
-שמ  ע,אין_יחיד,יים  # שמיים
 משקף ע,אין_יחיד,יים # משקפיים
 מאזן ע,אין_יחיד,יים # מאזניים
+# The word שמים is an explicit exception in the Academia's niqqud-less spelling
+# rules - it should be spelt שמים, not שמיים as the generic rules dictate.
+# so we say the plural is ים, not יים...
+#שמ  ע,אין_יחיד,יים  # שמיים
+שם ע,אין_יחיד # שמים
+שמימי ת
 #
 עזיז ת
 קולנוע ע
@@ -6164,7 +6786,6 @@
 עתיר ת
 חב ת
 חבות ע
-מנוח ת
 מודיעיני ת
 רשמי ת
 רשמיות ע
@@ -6178,28 +6799,27 @@
 פסקול ע
 זריז ת
 זריזות ע
+פזיז ת
+פזיזות ע
 תוקפני ת
 תוקפנות ע
 ערכה ע  # with segol in ayin
-ערכה ע,אות # with patach in ayin
+ערכה ע,אות # with patach in ayin. see also ערכאה.
+ערכאה ע # See also ערכה. NOTE: [3] doesn't recognize this word. [2] recognizes only this, not ערכה as the singular of ערכאות. [1] and rav-milim recognize both. TODO: personally, I think this word is an error, just as the slang "הרפתקאה". Too bad some dictionaries have it, and people use it :(
 אדיר ת
 תורנות ע
 רודנות ע
 בוטה ת
 מד ע,אין_יחיד  # מדים
-נבון ת
 שושנה ע,ים,ות
 חניון ע # in [1], חניון is like חשבון (ות, and segol). But not in [3].
-אלמוני ת,ם # I'm not sure about the ם...
+אלמוני ת,עם,ארץ= # Both the plural form with ם and ים are correct.
 עצבני ת
 עתק ת # the inflections aren't very useful...
 עוין ת,נקבה_ת
 עוינות ע
 פסטוק ע
 כהה ת
-דאבון ע,יחיד
-קדוש ת
-נאות ת
 מזערי ת
 אדיש ת
 קליל ת
@@ -6224,6 +6844,7 @@
 בזוי ת,נקבה_ה
 חפוי ת,נקבה_ה
 חבוי ת,נקבה_ה
+עשוי ת,נקבה_ה # hmm, is this really an adjective?
 רwוי ת,נקבה_ה
 הדדי ת,נקבה_ת
 הדדיות ע
@@ -6235,6 +6856,7 @@
 זכות ע
 כסות ע,יחיד # [2],[3] say יחיד. [1] and rav-milim disagree (כסויות).
 גנות ע,יחיד
+כשות ע,יחיד # kind of plant. inflections are probably useless.
 פריך ת
 פריכות ע
 סלון ע
@@ -6245,7 +6867,6 @@
 הפיך ת
 תיכון ת
 תיכוני ת
-טהור ת
 כיור ע
 אכזר ת,נקבה_ית
 אכזרי ת
@@ -6278,6 +6899,10 @@
 תקף ת
 תקפות ע
 מסמר ת,נקבה_ת
+מאסף ת,נקבה_ת
+מרצד ת,נקבה_ת
+ממכר ת,נקבה_ת
+משכר ת,נקבה_ת
 קלוקל ת,נקבה_ת
 מר ת
 שקט ת
@@ -6285,18 +6910,16 @@
 עשן ת
 תפלות ע
 בקיע ע
-חוצץ ת
 נוגה ת
-זורח ת,נקבה_ת
 אדנית ע
 ארעי ת # NOTE: עראי is also valid, but for now I decided not to accept it...
 ארעיות ע
-בוקק ת,נקבה_ת # a very rare adjective meaning empty, barren.
 מפגן ע
 מרדף ע
 משיבון ע
 
 אפרוח ע
+אפרוחית ע
 קטנוע ע
 משלוח ע
 מקצוע ע,ות
@@ -6309,7 +6932,6 @@
 אבדון ע
 אכיל ת
 מרעיד ת
-מרצד ת,נקבה_ת
 חצוצרה ע
 שלומיאל ת,נקבה_ית
 שלומיאלי ת
@@ -6332,7 +6954,6 @@
 קנקן ע
 רש ת
 מהביל ת
-נוגד ת,נקבה_ת
 נזעף ת,נקבה_ת
 נכבד ת,נקבה_ה,נקבה_ת
 נכזב ת,נקבה_ת
@@ -6356,26 +6977,31 @@
 מסטיק ע
 בננה ע
 אדמוני ת
-בורק ת,נקבה_ת
 חולני ת
 חולניות ע
 חולמני ת
 חולמניות ע
 נאלח ת,נקבה_ת
 שומם ת,נקבה_ה,נקבה_ת
-רופס ת
 מלעילי ת
 מלרעי ת
 גוץ ת
 גופיף ע
 מקף ע
 מוג ת # חלש, רק בצירוף מוג-לב.
+
+בוקק ת,נקבה_ת # a very rare adjective meaning empty, barren.
+חוצץ ת,נקבה_ת
+זורח ת,נקבה_ת
+נוגד ת,נקבה_ת
+בורק ת,נקבה_ת
 כוזב ת,נקבה_ת
+שוחר ת,נקבה_ת
+צונן ת,נקבה_ת
+רופף ת,נקבה_ת
+
 שובב ת
 שובבות ע
-שוחר ת,נקבה_ת
-שכיר ת
-שפיר ת
 מחפיר ת
 מכלאה ע
 קרטוב ע,יחיד,אין_נטיות_יחיד # Kamatz katan in kuf. Note that kubutz (קורטוב) is also correct.
@@ -6391,7 +7017,6 @@
 זוטר ת,נקבה_ית # [3] says ית. [2] says ת. I think ה...
 טבק ע,יחיד
 כס ע,אין_נטיות_יחיד,יחיד,נסמך=כס
-מאסף ת,נקבה_ת
 טיסן ע
 טיסנאות ע
 מדרחוב ע
@@ -6399,9 +7024,30 @@
 מהימנות ע
 משמים ת
 נואל ת,נקבה_ה,נקבה_ת
-נלוז ת
 נדוד ע,אין_יחיד # נדודים
 גלמוד ת
+מאבטח ע
+דולפין ע
+דרקון ע # Watch out not to cofuse with דרכון...
+דרקוני ת
+מרכה ע,אות
+מרכא ע,אין_נטיות_יחיד,יחיד,נקבה # alternative spelling of מרכה. If I understand correctly from [2], the inflections of מרכא (with the aleph) aren't used. Also מרכא is feminine like מרכה...
+עתיקה ע,אין_יחיד # Rav-milim does recognize the singular, but says its a legal term. But it's a back-derivation from the plural - other dictionaries recognize only the plural.
+חלכא ע,אין_יחיד # חלכאים. [1] says the singular is חלך, [3] and rav-milim say חלכה. I say the singular isn't useful at all...
+נדכא ת,נקבה_ת
+מכולה ע # note shuruk, not cholam
+שרלטן ת,נקבה_ית
+אורקולי ת
+כספר ע
+כספרית ע
+כספרות ע,יחיד
+מוקיון ע
+מוקיונית ע
+מוקיוני ת
+עקלתון ע
+
+דוקרני ת
+כוללני ת
 
 אגרטל ע
 אמרכל ע
@@ -6416,6 +7062,7 @@
 מסוק ע
 גנון ע
 מסור ע
+מסוע ע
 
 בבואה ע
 
@@ -6465,6 +7112,8 @@
 כנעני ת,עם
 כושי ת,עם
 שומרוני ת,עם
+טיבטי ת,עם
+בנגלדשי ת,עם
 #שוויצי ת,עם # see also: שוויצרי
 # The nationalities ending with אי sound very strange when a ים is added as
 # plural. Maybe I should add ם. (again, this "rule" is my own invention, I
@@ -6481,6 +7130,8 @@
 אפריקני ת,עם,ארץ=אפריקה # alternative spelling: are both correct?
 ארגנטינאי ת,עם,ם
 חיפאי ת,עם,ם # NOTE: Itschak Avineri hates this form, and prefers חיפני...
+רומאי ת,עם,ם,ארץ=רומא # TODO: maybe remove ם to allow רומאיים?
+רומי ת,עם,ארץ=רומי
 ליטאי ת,עם,ם,ארץ=ליטא
 ברזילאי ת,עם,ם,ארץ=ברזיל
 קפריסאי ת,עם,ם,ארץ=קפריסין
@@ -6489,8 +7140,12 @@
 מקסיקאי ת,עם,ארץ=מקסיקו
 מקסיקני ת,עם,ארץ=מקסיקו # alternative spelling: are both correct?
 קובני ת,עם,ארץ=קובה
+# TODO: accept also תוניסיה, טוניס, טוניסיה
 תוניסאי ת,עם,ם,ארץ=תוניס
-אלג'יראי ת,עם,ם,ארץ=אלג'יר
+# wrong: אלג'יראי ת,עם,ם,ארץ=אלג'יר
+# note that I think אלג'יראי should also be considered correct, but rav-millim
+# disagrees.
+אלג'ירי ת,עם,ארץ=אלג'יריה
 קולומביאני ת,עם,ם,ארץ=קולומביה
 צ'יליאני ת,עם,ארץ=צ'ילה
 בדואי ת,עם,ם,ארץ=
@@ -6512,12 +7167,22 @@
 אוסטרי ת,עם,ארץ=אוסטריה
 בולגרי ת,עם,ארץ=בולגריה
 סלובני ת,עם,ארץ=סלובניה
+אסטוני ת,עם,ארץ=אסטוניה
+סלובקי ת,עם,ארץ=סלובקיה
+ארמני ת,עם,ארץ=ארמניה
+מקדוני ת,עם,ארץ=מקדוניה
+קרואטי ת,עם,ארץ=קרואטיה
+בוסני ת,עם,ארץ=בוסניה
+מונגולי ת,עם,ארץ=מונגוליה
+צ'כי ת,עם,ארץ=צ'כיה
 סרבי ת,עם,ארץ=סרביה
 בלגי ת,עם,ארץ=בלגיה
 ניגרי ת,עם,ארץ=ניגריה
 סקנדינבי ת,עם,ארץ=סקנדינביה
 לטבי ת,עם,ארץ=לטביה
 מיקרונזי ת,עם,ארץ=מיקרונזיה
+קמבודי ת,עם,ארץ=קמבודיה
+ליברי ת,עם,ארץ=ליבריה
 #
 קנדי ת,עם,ארץ=קנדה
 אוגנדי ת,עם,ארץ=אוגנדה
@@ -6531,10 +7196,12 @@
 אפגני ת,עם,ארץ=אפגניסטן
 פקיסטני ת,עם,ארץ=פקיסטן
 כורדי ת,עם,ארץ=כורדיסטן
+אוזבקי ת,עם,ארץ=אוזבקיסטן
 בריטי ת,עם,ארץ=בריטניה
 אסייתי ת,עם,ארץ=אסיה
 גרוזיני ת,עם,ארץ=גרוזיה
 פורטוגזי ת,עם,ארץ=פורטוגל
+בורמזי ת,עם,ארץ=בורמה
 הודי ת,עם,ארץ=הודו
 ירושלמי ת,עם,ארץ=ירושלים # note ktiv chaser!
 מצרי ת,עם,ארץ=מצרים # note ktiv chaser!
@@ -6545,6 +7212,7 @@
 מוסלמי ת,עם,ארץ=  # note added vav in ktiv male
 קתולי ת,עם,ארץ=
 פרוטסטנטי ת,עם,ארץ=
+בהאי ת,עם,ארץ=
 אינדיאני ת,עם,ארץ= # TODO: I HAVE NO IDEA IF THIS IS CORRECT SPELLING!
 דרוזי ת,עם,ארץ=
 סובייטי ת,עם,ארץ=  # TODO: if "סוביטים" (soviet people) is wrong, remove עם.
@@ -6556,6 +7224,11 @@
 חילוני ת,עם,ארץ=
 חילוניות ע
 רפובליקני ת,עם,ארץ=
+צמחוני ת,עם,ארץ=
+צמחונות ע,יחיד
+טבעוני ת,עם,ארץ=
+טבעונות ע,יחיד
+ג'ינג'י ת,עם,ארץ=
 לטיני ת,עם,ארץ=  # עם isn't very important as "לטינים" isn't very useful.
 #
 ערבי ת,עם,ארץ=,נקבה_ה
@@ -6574,7 +7247,12 @@
 תימני ת,עם,נקבה_ה
 צרפתי ת,עם,נקבה_ה
 #
+פשיסט ת,נקבה_ית
+פשיסטי ת
 אסלאמי ת
+שיעי ת,ם
+סוני ת,ם
+ביזנטי ת
 #
 #
 # foreign words that do not have commonly used Hebrew alternatives: (???)
@@ -6634,6 +7312,7 @@
 פוליטי ת
 פוליטיקה ע
 פוליטיקאי ע
+פוליטיקאית ע
 טריוויה ע
 טרמפיסט ע
 ספקטרום ע
@@ -6645,10 +7324,15 @@
 רובוט ע
 רובוטי ת
 טופוגרפיה ע
+טופוגרפי ת
+ביבליוגרפיה ע
+ביבליוגרפי ת
 היסטוריה ע
 היסטורי ת
+היסטוריון ע
+היסטוריונית ע
 היסטריה ע
-אסטרונומי ת
+היסטרי ת
 וקטור ע
 לוגריתם ע
 נורמה ע
@@ -6669,6 +7353,7 @@
 תזה ע
 פרופסור ע
 פרופסורית ע
+פרופסורה ע,יחיד
 קומפקטי ת
 קומפקטיות ע
 קתודה ע
@@ -6734,9 +7419,11 @@
 פיננס ע,אין_יחיד  # פיננסים
 פסטיבל ע
 רפורמה ע
+רפורמי ת
 טמפרטורה ע
 מודרני ת
 דינמי ת
+דינמיקה ע
 סטטי ת
 פוטנציאל ע
 פוטנציאלי ת
@@ -6758,6 +7445,8 @@
 קונצרן ע
 ויזה ע
 צנזורה ע
+צנזור ע
+צנזורית ע
 דמוקרטיה ע
 דמוקרטי ת
 אירוניה ע
@@ -6784,6 +7473,8 @@
 פירטיות ע
 אסטרטגיה ע
 אסטרטגי ת
+טקטיקה ע
+טקטי ת
 טנק ע
 אופטימי ת
 אופטימיות ע
@@ -6808,9 +7499,12 @@
 פסיכיאטרי ת
 ביולוג ת,נקבה_ית
 ביולוגי ת
+מיקרוביולוג ת,נקבה_ית
+מיקרוביולוגי ת
 ארכאולוג ת,נקבה_ית
 ארכאולוגי ת
 זברה ע # inflections of this are pretty strange...
+ג'ירפה ע
 מדליה ע
 מיליונר ת,נקבה_ית
 מיליארדר ת,נקבה_ית
@@ -6820,6 +7514,7 @@
 קונדום ע
 טון ע
 דיאטה ע
+דיאטטי ת
 פטריוט ת,נקבה_ית
 פטריוטי ת
 פטריוטיות ע
@@ -6904,8 +7599,15 @@
 אותנטיות ע
 אפקטיבי ת
 סוציאלי ת
+סוציאליסטי ת
 אסטרונאוט ע
 אסטרונאוטית ע
+אסטרולוג ע
+אסטרולוגית ע
+אסטרולוגי ת
+אסטרונום ע
+אסטרונומית ע
+אסטרונומי ת
 טרקטור ע
 טרקטורון ע
 פירמידה ע
@@ -6914,7 +7616,9 @@
 כספומט ע
 אימפריה ע
 לסבי ת # [3] recognizes only לסבית. But think for example: "קשר לסבי".
+הומוסקסואל ע
 הומוסקסואלי ת
+הומוסקסואליות ע,יחיד
 פורנוגרפי ת
 אפיפיורות ע
 אפיפיורי ת
@@ -6935,6 +7639,7 @@
 #גטו ע,רבים=גטאות,אין_נטיות_יחיד
 #גטוא ע,נפרד=גטו,נסמך=גטו,ות,אבד_ו
 קימונוא ע,נפרד=קימונו,נסמך=קימונו
+אבוקדוא ע,נפרד=אבוקדו,נסמך=אבוקדו,רבים=אבוקדות # the plural is according to [3]
 גרף ע
 גרפי ת
 דולרי ת
@@ -6962,9 +7667,139 @@
 סטטיסטי ת
 סטטיסטיקאי ע
 סטטיסטיקאית ע
+גרפיקאי ע
+גרפיקאית ע
 ספונטני ת
 ספונטניות ע
 פיג'מה ע
+אנציקלופדיה ע # note segol, not chirik, in aleph, according to [3].
+ביופסיה ע
+גלקסיה ע
+גלקטי ת
+וטרינר ע
+וטרינרית ע
+וטרינרי ת
+אנזים ע
+אטמוספרה ע
+אטמוספרי ת
+דיסקרטי ת
+דיסקרטיות ע,יחיד
+טלסקופ ע
+מיקרוסקופ ע
+פילוסופיה ע # NOTE that [3] also allows (and even prefers פילוזופיה). I and rav-milim don't like that form.
+פילוסופי ת
+פילוסוף ת,נקבה_ית
+פרימיטיבי ת
+פרימיטיביות ע
+ויטמין ע
+ניטרלי ת
+ניטרליות ע
+אקזוטי ת
+אקורדיון ע
+טרומבון ע
+הוריקן ע
+מיקרוגל ע
+קונצרט ע
+קונצ'רטוא ע,נפרד=קונצ'רטו,נסמך=קונצ'רטו,רבים=קונצ'רטאות
+קזינוא ע,נפרד=קזינו,נסמך=קזינו
+קוסמי ת
+קיוסק ע
+קיוסקאי ע
+קיוסקאית ע
+# Various dictionaries disagree about the singular of קלישאות (they all agree
+# on the plural). [3] and [2] say קלישה with segol (just like the English and
+# French pronounciation). Rav-millim prefer kamats in he, but rav-millim
+# also allows קלישאה. The latter form is most often used in modern speech,
+# but not recognized by other dictionaries so I didn't add it.
+# Note that while both [2] and [3] agree on the segol on the lamed, they
+# disagree on the gender - [2] goes with the strange decision that it is
+# feminine. If it were feminine, it should have kamats, not segol!
+קלישה ע,סגול_ה,אות
+#קלישאה ע
+קקטוס ע
+קתדרלה ע
+רדיקלי ת
+רדיקליות ע
+רדיותרפיה ע
+רדיואקטיבי ת
+רדיואקטיביות ע
+רטורי ת # normally used in the phrase שאלה רטורית
+שימפנז ע # "שימפנזה" is considered baby-talk, according to [3]
+אורגיה ע
+אורתופדי ת
+אורתופד ע
+אורולוגי ת
+אורולוג ע
+גינקולוגי ת
+גינקולוג ע
+נוירולוג ע
+נוירולוגי ת
+אינץ' ע
+אנקדוטה ע
+אפוטרופוס ע
+אפוטרופוסית ע
+אפוטרופסות ע,יחיד
+אפוקליפסה ע
+אפוקליפטי ת
+אתני ת
+בוטני ת
+בוטיק ע
+בורגני ת
+בורגנות ע,יחיד
+ביוגרפיה ע
+ביוגרפי ת
+אוטוביוגרפיה ע
+אוטוביוגרפי ת
+דונם ע
+דרסטי ת
+וילה ע
+לורד ע
+לימונדה ע,יחיד
+לימוזינה ע
+מדיטציה ע
+מטאור ע
+מטאורי ת
+מטאוריט ע
+מיסיונר ע
+מיסיונרית ע
+מיסיונרי ת
+מיסיון ע
+מיסטי ת
+מיסטיקן ע
+מיסטיקנית ע
+סאונה ע
+סטראוטיפ ע
+סטראוטיפי ת
+סטראופוני ת
+סימפוזיון ע
+סימפוניה ע
+סימפוני ת
+סימפתי ת
+סכיזופרני ת
+סלמון ע
+סמינר ע
+סמינריון ע
+סמינריוני ת
+פוליפ ע
+פולימר ע
+פולימרי ת
+פוטוגני ת
+פוטומונטז' ע
+פילהרמוני ת
+פיצה ע
+פיקנטי ת
+פיקניק ע
+פלגמטי ת
+פלגמטיות ע
+ציני ת
+ציניות ע
+ציניקן ת,נקבה_ית
+קולופון ע
+קולוסלי ת
+קולוניאלי ת
+אונקייה ע
+אנטילופה ע
+אנרכיה ע
 
 # foreign words that are often used in Hebrew, but have not been adopted
 # in the language, and *do* also have often-used Hebrew counterpart words
@@ -7063,6 +7898,7 @@
 דנטלי ת
 קוסמטיקאי ת,ם
 כימאי ת,ם
+כימי ת
 סלקטיבי ת
 קונטיננטלי ת
 וולגרי ת
@@ -7090,6 +7926,8 @@
 דיקטטור ת,נקבה_ית
 דיקטטורה ע
 דיקטטורי ת
+ארכיטקט ע
+ארכיטקטית ע
 מלודי ת
 מלודיה ע
 מולקולה ע
@@ -7103,6 +7941,36 @@
 מונוטוני ת
 מונולוג ע
 מינורי ת
+סירופ ע
+היררכיה ע # note that [3] prefers הייררכיה because of tsere in yod. Rav-Millim and I disagree.
+היררכי ת
+סנדוויץ' ע
+פיקציה ע
+פיקטיבי ת
+אינדיבידואלי ת
+הרמוניה ע
+הרמוני ת
+ויזואלי ת
+הומני ת
+הומניטרי ת
+פרופורציה ע
+פרופורציוני ת # not recognized by [3]
+פרופורציונלי ת # not recognized by [3]
+קולקטיבי ת
+קמפוס ע
+קרוון ע
+אורבני ת
+אורגזמה ע
+אלסטי ת
+אלסטיות ע
+אניגמטי ת
+מנטלי ת
+מנטליות ע
+סופרמרקט ע
+פרוגרסיבי ת
+פרודוקטיבי ת
+פריפריה ע
+פריפרי ת # I would have preferred פריפרלי (as in מערכת עצבים פריפרלית, or ציוד פריפרלי), but rav-millim says פריפרי
 
 ##############################################################################
 # The following words do not appear in [1] or [3], but they do look real to
@@ -7133,6 +8001,7 @@
 תחכום ע,יחיד
 חטיף ע
 בשלן ת,נקבה_ית
+ידוען ת,נקבה_ית
 מגדר ע
 מטבל ע # dip
 התקפי ת # this bizarre (but common) word is more related to התקפה then התקף...
@@ -7151,11 +8020,24 @@
 תיקייה ע
 דיסק ע
 זרחני ת
+פרטני ת
 פצעון ע # pimple
 גשרון ע
 מגבון ע
 מקלחון ע
 מיצוב ע # positioning (marketing term)
+מקרנה ע # movie projector
+מכמונת ע # Note added vav for ktiv male. this is a new word for hidden speed trap, not appearing in [1] or [3] (but it is in Rav-Millim)
+מסלעה ע
+אסטרואיד ע
+גופן ע
+דוגמית ע # note added vav for ktiv maleh.
+גרביון ע,אין_יחיד # גרביונים
+בינתחומי ת
+אברון ע # organelle, in cellular biology
+מגורון ע # caravan
+מוקדן ע
+מוקדנית ע
 # foreign words not found in dictionaries:
 אימייל ע
 קמפיין ע

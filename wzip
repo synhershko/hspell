@@ -6,8 +6,8 @@ NR == 1 {
 	next
 }
 {
-	for(i=0;i<=length(last);i++){                
-		if(substr(last,0,i)!=substr($1,0,i)){
+	for(i=1;i<=length(last);i++){                
+		if(substr(last,1,i)!=substr($1,1,i)){
 			break;
 		}
 	}                     

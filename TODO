@@ -1,3 +1,8 @@
+- disallow empty prefixes for infinitives in the enumeration. probable reason is
+  a bug in dmask2ps.
+- put desc_sizes.h into runtime-read file.
+- give better names to functions.
+
 Really important stuff to be done:
 * Extend the list of known verbs, nouns, proper nouns, relation words, etc.
   In this one, the general public could really help.

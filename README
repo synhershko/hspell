@@ -1,4 +1,4 @@
-This is version 0.6 of Hspell, the free Hebrew spellchecker and morphology
+This is version 0.7 of Hspell, the free Hebrew spellchecker and morphology
 engine.
 
 It is a fully working Hebrew spellchecker, not a toy release. On typical
@@ -175,10 +175,14 @@ easy to do and will greatly enhance the Hspell project's usefulness.
   including, for example, Hebrew search engines, Hebrew dictionaries (with
   definitions and/or translation to another language), and machine translation
   software.
-  The "-v" option (in releases 0.5 and earlier) to hspell is a small
-  demonstration of what hspell's morphology engine is capable of. Even the
-  spellchecker itself could benefit from more use of those techniques: e.g.,
-  it could explain how the corrections it suggests were derived.
+  The "-v" option (in releases 0.5 and earlier) to hspell was a small
+  demonstration of what hspell's morphology engine is capable of. The
+  "-l" option in releases 0.7 and later (when compiled with this support
+  on) is already a full-featured morphological analyzer, so this task is
+  basically done.
+  Even the spellchecker itself could benefit from more use of those
+  techniques: e.g., it could explain how the corrections it suggests were
+  derived.
 
 
 Hspell's license

@@ -1,6 +1,6 @@
 '\" t
 .\" Copyright (c) 2001-2003, Nadav Har'El and Dan Kenigsberg
-.TH hspell 1 "5 August 2003" "Hspell 0.6" "Ivrix"
+.TH hspell 1 "22 December 2003" "Hspell 0.7" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker
 .SH SYNOPSIS
@@ -29,7 +29,7 @@ are enabled with the
 .B
 Hspell
 currently expects ISO-8859-8-encoded input files. Non-Hebrew characters in the
-input files are ignored, allowing the easy spellingchecking of Hebrew-English 
+input files are ignored, allowing the easy spellchecking of Hebrew-English 
 texts, as well as HTML or TeX files.
 If files using a different encoding (e.g., UTF8) are to be checked, they must
 be converted first to ISO-8859-8 (e.g., see iconv(1), recode(1)).
@@ -79,10 +79,6 @@ correct). It is recommend to combine the two options,
 .B \-cn
 for maximal correction help from
 .BR hspell .
-
-The
-.B \-n
-option is temporarily unavailable in release 0.6.
 .TP
 .B \-l
 The
@@ -90,10 +86,12 @@ The
 (linguistic information) option will explain for each
 .I correct
 word why it was
-recognized (show the basic noun, verb, etc., that this inflection relates to).
+recognized (show the basic noun, verb, etc., that this inflection relates to,
+and its tense, gender, associated Kinnuy, or other relevant information)
 
-In release 0.6, this option will only show a correct split of the
-given word into prefix + word.
+In normal RPM of release 0.7, this option will only show the correct splits of the
+given word into prefix + word, as the full information incurs a 4-fold increase
+in the installation size.
 .TP
 .B \-s
 Normally, the words deemed spelling mistakes are shown in alphabetical order.
@@ -211,7 +209,7 @@ Currently always 0.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 0.6 (August 5, 2003)
+described by this manual page is 0.7 (December 22, 2003)
 .SH "COPYRIGHT"
 Copyright (C) 2000-2003, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
@@ -250,6 +248,7 @@ Several other people helped us in various releases, with suggestions, fixes
 or patches - they are listed in the WHATSNEW file in the distribution. 
 
 .SH "SEE ALSO"
+.BR hspell (3),
 .BR spell (1),
 .BR bidiv (1),
 .BR iconv (1),
@@ -268,13 +267,15 @@ is being worked on, and
 .BR hspell 's
 vocabulary will grow from release to release.
 .PP
-Version 0.6 features a redesigned front-end, which is unfortunately missing
-a few features that existed in previous versions. See individual notes on 0.6
-above, or the
+Version 0.6 and above feature a redesigned front-end, which is unfortunately
+missing a few features that existed in version 0.5. For more details, see
+the
 .B WHATSNEW
 file in the distribution.
 
 For GUI-lovers,
 .BR hspell 's
 user interface is an abomination. As more and more applications learn to
-interface with hspell, this will no longer be an issue.
+interface with hspell, this will no longer be an issue. See
+.B http://www.ivrix.org.il/projects/spell-checker/Hspell-HOWTO.html
+for instructions on how to use Hspell in a variety of applications.
