@@ -5,13 +5,10 @@ Really important stuff to be done:
   לשמרתי (to guarded) or הלמדנה (the + ladies, learn!). We should be smarter.
 
 Quite important things:
-* Support Kinuyim Khavurim for verbs, i.e. לשומרה (to guard her) or הצחקתני (you
-  made me laugh). They are surprisingly common in written texts. Version 0.2
-  supports it only for the infinitive (Shem Poal).
 * Support the infinitive with different prefixes (not just Lamed) and without
   prefixes ("absolute infinitive"). For example, not only לעבור (to pass) is
-  correct, but so is בעוברו (when he passes) and עוברם (their passing). Version
-  0.4 supports many, but not all, of these.
+  correct, but so is בעוברו (when he passes) and עוברם (their passing). 
+  The "fat" version of release 0.5 supports most, but not all, of these.
 * A quick, C-based, spell-checker that also has a library API.
 * Have a better and more complete ispell-like interface to hspell. Version 0.3
   has a rudimentary one.
@@ -26,7 +23,7 @@ Good to have:
   (Hebrew accentation) to the game sometime in the future.
 * Output morfological information about the conjugation. This can help
   understanding the suggested corrections, and have many other implications.
-  (see Far-fetched section).
+  (see Far-fetched section). This is mostly done by release 0.5's -d option
 * Add statistics to each conjugation. לשבותך (for your repatriation) is less 
   probable word than לשבת (to sit), and it might help the user to know that.
 

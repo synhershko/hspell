@@ -31,15 +31,24 @@ out.nouns: wolig.pl wolig.dat
 out.nouns-shemp: wolig.pl shemp.dat
 	./wolig.pl shemp.dat > out.nouns-shemp
 
+# SEDCMD is left here as a non-user-friendly option to choose whether you want
+# over a 150,000 more rare verb forms or not. The default here is not, but the
+# RPM spec builds both forms (it even plays tricks and builds out.verbs only
+# once without any sed and then does the sed itself).
+
+#SEDCMD=s/\+//
+SEDCMD=/\+/d
+
 shemp.dat out.verbs: woo woo.dat
-	./woo > out.verbs
+	./woo | sed "$(SEDCMD)" > out.verbs
+
 
 hspell.pl_full: hspell.pl
 	sed 's+^my @dictionaries=.*$$+my @dictionaries=("$(SHARE)/out.nouns","$(SHARE)/out.nouns-shemp","$(SHARE)/out.verbs","$(SHARE)/milot","$(SHARE)/extrawords","$(SHARE)/biza-verbs","$(SHARE)/biza-nouns");+; s+my @likelyerror.*$$+my @likelyerror_dictionaries=("$(SHARE)/likelyerrors");+; s+@spellinghints_dictionaries=("spellinghints")+@spellinghints_dictionaries=("$(SHARE)/spellinghints")+' < hspell.pl > $@
 	chmod 755 $@
 
 hspell.pl_wzip: hspell.pl
-	sed 's+^my @dictionaries=.*$$+my @dictionaries=("zcat $(SHARE)/wordlist.wgz|$(LIBEXEC)/wunzip|");+; s+my @likelyerror.*$$+my @likelyerror_dictionaries=("$(SHARE)/likelyerrors");+; s+@spellinghints_dictionaries=("spellinghints")+@spellinghints_dictionaries=("$(SHARE)/spellinghints")+' < hspell.pl > $@
+	sed 's+^my @dictionaries=.*$$+my @dictionaries=("gzip -dc $(SHARE)/wordlist.wgz|$(LIBEXEC)/wunzip|");+; s+my @likelyerror.*$$+my @likelyerror_dictionaries=("$(SHARE)/likelyerrors");+; s+@spellinghints_dictionaries=("spellinghints")+@spellinghints_dictionaries=("$(SHARE)/spellinghints")+' < hspell.pl > $@
 	chmod 755 $@
 
 CFLAGS=-O
@@ -66,7 +75,8 @@ install: $(DICTS) likelyerrors spellinghints hspell.pl_full
 	test -d $(DESTDIR)/$(BIN) || mkdir -m 755 -p $(DESTDIR)/$(BIN)
 	cp hspell.pl_full $(DESTDIR)/$(BIN)/hspell
 	chmod 755 $(DESTDIR)/$(BIN)/hspell
-	test -L $(DESTDIR)/$(BIN)/hspell-i || ln -s hspell $(DESTDIR)/$(BIN)/hspell-i
+	-rm -f $(DESTDIR)/$(BIN)/hspell-i
+	-ln -s hspell $(DESTDIR)/$(BIN)/hspell-i
 	test -d $(DESTDIR)/$(SHARE) || mkdir -m 755 -p $(DESTDIR)/$(SHARE)
 	cp $(DICTS) likelyerrors spellinghints $(DESTDIR)/$(SHARE)/
 	(cd $(DESTDIR)/$(SHARE); chmod 644 $(DICTS) likelyerrors spellinghints)
@@ -82,7 +92,8 @@ install_compressed: wordlist.wgz likelyerrors spellinghints wunzip \
 	test -d $(DESTDIR)/$(BIN) || mkdir -m 755 -p $(DESTDIR)/$(BIN)
 	cp hspell.pl_wzip $(DESTDIR)/$(BIN)/hspell
 	chmod 755 $(DESTDIR)/$(BIN)/hspell
-	test -L $(DESTDIR)/$(BIN)/hspell-i || ln -s hspell $(DESTDIR)/$(BIN)/hspell-i
+	-rm -f $(DESTDIR)/$(BIN)/hspell-i
+	-ln -s hspell $(DESTDIR)/$(BIN)/hspell-i
 	test -d $(DESTDIR)/$(SHARE) || mkdir -m 755 -p $(DESTDIR)/$(SHARE)
 	cp wordlist.wgz likelyerrors spellinghints $(DESTDIR)/$(SHARE)/
 	(cd $(DESTDIR)/$(SHARE); chmod 644 wordlist.wgz likelyerrors spellinghints)
@@ -100,7 +111,7 @@ clean:
 ################################################
 # for creating an hspell distribution tar
 PACKAGE = hspell
-VERSION = 0.4
+VERSION = 0.5
 DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	Makefile stats wunzip.c wzip \
 	hspell.pl hspell.1 \
