@@ -1,14 +1,23 @@
 #!/bin/sh
+unset LANG LC_CTYPE LC_ALL LC_COLLATE
 make
 echo -n "Noun stems: "
-grep " ò" wolig.dat | grep -v "^#"|  wc -l
+grep " ò" wolig.dat | grep -vc "^#"
 echo -n "Adjective stems: "
-grep " ú" wolig.dat | grep -v "^#"|  wc -l
-echo -n "Verb roots: "
-grep " ô" woo.dat | grep -v "^#"|  wc -l
+grep " ú" wolig.dat | grep -vc "^#"
+echo -n "Verb rules: "
+grep " ô" woo.dat | grep -vc "^#"
+echo -n "Verb stems: "
+grep -c -- "----" out.verbs
 echo -n "Shmot Peula derived from verbs: "
 wc -l shemp.dat
-wc -l milot extrawords likelyerrors biza-verbs biza-nouns
+echo -n Sum of unique nouns and shmot peula:
+grep -h " ò" wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$//" | sort -u | wc -l
+echo -n Extrawords, milot and biza-*:
+grep -h "^[à-ú]*" extrawords milot biza-verbs biza-nouns | tr -d - | sort -u | wc -l
+# NOTE: to find duplicates in wolig.dat:
+# grep " ò" wolig.dat | grep -v "^#"| sed "s/ *#.*$//"|sort |uniq -c | sort -n | less
+wc -l milot likelyerrors biza-verbs biza-nouns extrawords
 echo
 echo -n "Total resulting words: "
 (cat out.nouns out.nouns-shemp out.verbs milot extrawords biza-verbs biza-nouns) | grep -h "^[à-ú]" | tr -d -| sort -u |wc -l

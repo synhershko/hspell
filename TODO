@@ -1,5 +1,4 @@
 Really important stuff to be done:
-* Inflect correctly all exemplary nouns of the "Complete Nouns Book".
 * Extend the list of known verbs, nouns, proper nouns, relation words, etc.
   In this one, the general public could really help.
 * We add prefixes without much judgment, a vice that accepts non-words like
@@ -7,14 +6,17 @@ Really important stuff to be done:
 
 Quite important things:
 * Support Kinuyim Khavurim for verbs, i.e. לשומרה (to guard her) or הצחקתני (you
-  made me laugh). They are surprisingly common in written texts.
+  made me laugh). They are surprisingly common in written texts. Version 0.2
+  supports it only for the infinitive, and not for all verbs.
 * Support the infinitive with different prefixes (not just Lamed) and without
   prefixes ("absolute infinitive"). For example, not only לעבור (to pass) is
   correct, but so is בעוברו (when he passes) and עוברם (their passing).
 * A quick, C-based, spell-checker that also has a library API.
 * An ispell-like interface to hspell (whether using aspell/ispell
   themselves, or stealing their code and integrating it with hspell).
-* Setup to work with KWrite and friends.
+* Setup to work with KWrite, LyX and friends.
+* Inflect correctly the few remaining exemplary nouns of the "Complete Nouns 
+  Book".
 
 Good to have:
 * Compression technique that preserves the stem information of words (for the -v
@@ -27,8 +29,6 @@ Good to have:
   (see Far-fetched section).
 * Add statistics to each conjugation. לשבותך (for your repatriation) is less 
   probable word than לשבת (to sit), and it might help the user to know that.
-* An RPM package. Tzafrir?
-* Accept words in a ~/.hspell_personal, as aspell does.
 
 Far fetched:
 * Add support for Niqqud.
@@ -36,3 +36,4 @@ Far fetched:
   morfological information can help the user understand a corrected word, and
   may facilitate word analysis, automatic translations, understanding,
   intelligent search, and more.
+* Use the Niqqud support for text-to-speech application.

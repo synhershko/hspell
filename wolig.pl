@@ -2,213 +2,155 @@
 #
 # Copyright (C) 2000-2002 Nadav Har'El, Dan Kenigsberg
 #
-#BEGIN {push @INC, (".")}
 use Carp;
 use FileHandle;
 
-my ($fh,$word,$optstring,%opts);
-
 sub outword {
   my $word = shift;
+
+  # "*" sign used to signify non-existant word that should not be output.
+  # It will allow us to more-easily drop words without huge if()s.
+  return if $word =~ m/^\*/;
+
   # change otiot-sofiot in the middle of the word
-  $word =~ s/ך(?=[א-ת])/כ/go;
-  $word =~ s/ן(?=[א-ת])/נ/go;
-  $word =~ s/ם(?=[א-ת])/מ/go;
-  $word =~ s/ץ(?=[א-ת])/צ/go;
-  $word =~ s/ף(?=[א-ת])/פ/go;
+  # (the silly a-z was added for our special "y" and "w" marks).
+  $word =~ s/ך(?=[א-תa-z])/כ/go;
+  $word =~ s/ן(?=[א-תa-z])/נ/go;
+  $word =~ s/ם(?=[א-תa-z])/מ/go;
+  $word =~ s/ץ(?=[א-תa-z])/צ/go;
+  $word =~ s/ף(?=[א-תa-z])/פ/go;
+
+  # change special consonant marks into the proper Hebrew letters, using
+  # proper ktiv male rules.
+
+  # Note that the order of these conversion is important. Since they have
+  # the potential of changing so many words, it is highly recommended to
+  # diff the output files before and after the change, to see that no
+  # unexpected words got changed.
+
+  # The vowel markers 'a' and 'e' do nothing except to a yud (chirik male) -
+  # which turns it into a consonant yud; For example your(feminine) צי is
+  # צייך (tsere in the yud, so it's a consonant and doubled) and
+  # your(masculine) צי is ציך (yud is chirik male, and not doubled)
+  $word =~ s/י[ea]/y/go;
+  $word =~ s/[ea]//go;
+
+  # The vowel 'i' is a chirik chaser - it should be followed by a yud if
+  # necessary. We do nothing with it currently - it's only useful for words
+  # like סנאiי where we want to make sure that wolig.pl does not think this
+  # is the normal patach-aleph-yud (with no niqqud under the aleph) case as
+  # in תנאי.
+  # The first rule here is useful for transformation from שני to שנייה, via
+  # שני adj-inword> שנiי feminine> שנiיaה outword> שנiyה outword> שנייה
+  $word =~ s/iy/יי/go;  # useful in stuff like שנiי - שנייה
+  $word =~ s/i//go;
+
+  # Y is the same as y, except it is not translated to a double-yud (but rather
+  # to a single yud) when it is the last letter of the word. It's used in words
+  # like חולי in which the original form of the word has a chirik male, but in
+  # all the inflections the yud from the chirik becomes a fully-fleged
+  # consonant. We do not need a similar trick for vav (w), because the
+  # Academia's rules do not do anything to a vav at the end of the word,
+  # contrary to what happens to a yud.
+  # I'm not sure this trick is "kosher" (based on the language), but it does
+  # work...
+  $word =~ s/Y($|(?=-))/י/go;  # Y's at the end of the word
+  $word =~ s/Y/y/go;       # the rest of the Y's are converted to y's
+
+  # The first conversion below implements the akademia's rule that a chirik
+  # before a yו should not be written with a י. So we convert יyו into יו.
+  # IDEA: to be more certain that the first י functions as a chirik, it would
+  # have been better to use the i character: in addition to the יה -> yה rule
+  # we have in the beginning of processing a word, we should do ייה -> iyה.
+  # Then here the rule would convert iyו, not יyו. [but everything is working
+  # well even without this idea]
+  $word =~ s/יyו/יו/go;
+  $word =~ s/(?<=[^ויy])y(?=[^ויyה]|$)/יי/go;
+  $word =~ s/y/י/go;                      # otherwise, just one yud.
+
+  # The first conversion below of וw to ו has an interesting story. In the
+  # original Hebrew, the consonant ו sounded like the English w or Arabic
+  # waw. An "u" sound (a kubuts, which we mark by ו) followed by this w
+  # sound sounded like a long "u", which was later written with a shuruk,
+  # i.e., one vav. This conversion is very useful for understanding how the
+  # word שוק is inflected (see explanation in wolig.dat).
+  $word =~ s/וw/ו/go;
+  $word =~ s/(?<=[^וw])w(?=[^וw-])/וו/go;  # if vav needs to be doubled, do it
+  $word =~ s/w/ו/go;                       # otherwise, just one vav.
+
+
+  # A consonant ה (h) is always output as a ה. The only reason we are
+  # interested in which ה is consonant is to allow the rules earlier to double
+  # yud next to a consonant ה (i.e.. h), but not next to a em-kria ה.
+  # For example, compare אריה (lion) and ארייה (her lion).
+  $word =~ s/h/ה/go;
+
   print $word."\n";
 }
 
-##################################### ROUTINES FOR VERB CONJUGATION ########
-#guf constants (any idea for a better declaration in perl?)
-my ($ani, $ata, $at, $hu, $hi, $anu, $atem, $aten, $hem, $hen) =
-        (1,2,3,4,5,6,7,8,9,10);
-sub legal_guf {
-  my $tense = shift;
+sub inword {
+  # For some constructs built of אהוי in end or beginnings of words, we can
+  # immediately guess that these must be consonants (and not vowels) and make
+  # use of that knowledge by changing the Hebrew letters into the markers
+  # "w", "y" we use for consonants ו and י respectively.
+  #
+  # This function takes a word as inputted from wolig.dat, presumably written
+  # in ktiv male, and makes a few predictions, such as that a vav in the
+  # beginning of the word must be a consonant. Predictions that appear here
+  # must have two traits:
+  # 1. They must be useful for the correct inflection of some word.
+  #    For example, realising that the וו at the end of מזווה is a consonant
+  #    help us later avoid the false inflection מזווו and instead generate
+  #    the correct מזוו.
+  # 2. They must be correct in 100% of the cases. For example, a rule saying
+  #    that every appearance of וו in the input is a consonant (w) is wrong,
+  #    because of words like ציווי.
+  #    However, the rules only have to "appear" correct (for all the actual
+  #    words in wolig.dat), not necessarily be linguisticly correct. For
+  #    example, we'll see below a rule that a ו at the end of a word is a
+  #    consonant (w). This is indeed true for most nouns (צו, מקווקו), but not
+  #    for אחו. However, all of אחו's inflections have a consonant vav, and in
+  #    the word itself we don't really care about mislabeling it "consonant"
+  #    because a vav at the end of the word isn't doubled anyway under the
+  #    Academia's rules.
+  #
+  # Actually the second rule can be relaxed a bit if we provide alternative
+  # ways to input a certain construct. For example, if "u" could signify a
+  # vowel vav in the input, then we wouldn't really care if in a few rare cases
+  # we wrongly decide a certain vav to be consonant: the user could override
+  # this decision by putting a "u" explicitly, instead of the vav, in the
+  # input file.
 
-  if ($tense==$past) {return ($ani,$ata,$hu,$hi,$anu,$atem,$aten,$hem) }
-  elsif ($tense==$present) {return ($ata,$at,$atem,$aten) }
-  elsif ($tense==$future) {
-    return ($ani,$ata,$at,$hu,$anu,$atem,$aten,$hem) }
-  elsif ($tense==$imperative) {return ($ata,$at,$atem,$aten) }
-  else {return $ani};
-}
-# same for binyan
-my @all_binyan = 
-        ($qal, $nifgal, $pigel, $pugal, $hitpagel, $hifgil, $hufgal) =
-        (101,102,103,104,105,106,107);
-my @all_tense = 
-        ($past, $present, $future, $imperative, $maqor, $shempoal) =
-        (201,202,203,204,205,206,207);
-## a function like this MUST exist in perl:
-sub myinlist {
-  my $s = shift;
-  foreach $param (@_) {
-    return 1 if ($param eq $s);
+  my $word = shift;
+  if(substr($word,0,1) eq "ו"){
+    # A word cannot start with a shuruk or kubuts!
+    substr($word,0,1)="w";
   }
-  return 0;
-}
-
-sub sakel_hitpael {
-  my $word = shift, $p = shift;
-  $word =~ s/תp/pת/ if ($p =~ /ס|ש/);
-  $word =~ s/תp/pד/ if ($p =~ /ז/);
-  $word =~ s/תp/pט/ if ($p =~ /צ/);
-  $word =~ s/תp/p/ if ($p =~ /ת|ט|ד/); 
-  # todo: sometime the tav is is kept 
-  return $word;
-}
-
-sub assign_root {
-  my ($p, $g, $l, $word) = @_;
-  $word =~ s/p/$p/;
-  $word =~ s/g/$g/;
-  $word =~ s/l/$l/;
-  return $word;
-}
-sub guf_root_clash {
-  my ($tense, $guf, $p, $g, $l, $naxe_base) = @_;
-
-  if (($tense==$past) && ($l eq "ה")) {
-    $naxe_base =~ s/l/י/ if ($guf =~ /$ani|$ata|$anu|$atem|$aten/); 
-    $naxe_base =~ s/l/ת/ if ($guf =~ /$hi/); 
-    $naxe_base =~ s/l// if ($guf =~ /$hem/); 
-  }
-  if (($tense==$present) && ($l eq "ה")) {
-    $naxe_base =~ s/l// if ($guf =~ /$atem|$aten/); 
-  }
-  if (($tense==$future) && ($l eq "ה")) {
-    $naxe_base =~ s/l// if ($guf =~ /$at|$hem|$atem/); 
-    $naxe_base =~ s/l/י/ if ($guf =~ /$aten/); 
-  }
-  if (($tense==$imperative) && ($l eq "ה")) {
-    $naxe_base =~ s/l// if ($guf =~ /$at|$atem/); 
-    $naxe_base =~ s/l/י/ if ($guf =~ /$aten/); 
-  }
-  if (($tense==$shempoal) && ($l eq "ה")) {
-    $naxe_base =~ s/l// if $binyan=~/$hitpagel|$nifgal/ ;
-    $naxe_base =~ s/l/י/;
-  }
-  if (($tense==$maqor) && ($l eq "ה")) {
-    if ($binyan==$qal) {$naxe_base =~ s/l/ת/}
-    else {$naxe_base =~ s/l/ות/} 
-  }
-  return $naxe_base;
-}
-
-sub binyan_root_clash {
-  my ($tense, $binyan, $p, $g, $l, $base) = @_;
-
-  #print "tense=$tense, binyan=$binyan, base $base, hitpael=$hitpagel\n";
-  $base = sakel_hitpael($base, $p) if ($binyan==$hitpagel);
-  $base =~ s/י// if (length($g)>1) && ($tense==$past);
-  $base =~ s/י// if myinlist($binyan, $pigel, $pugal, $hitpagel)
-                   && $tense==$present;
-  #all
-  $base =~ s/p// if (myinlist($binyan,$hifgil,$hufgal) && 
-    (($p eq "י" && $g eq "צ") || $p eq "נ") &&
-    !defined($opts{"שמור_נ"})) ;
-  return $base;
-}
-
-sub binyan_guf_clash {
-  my ($tense, $binyan, $guf, $base) = @_;
-  
-  if ($tense==$past) {
-    if (($binyan==$hifgil) && ($guf =~ /$ani|$ata|$at|$anu|$atem|$aten/o))
-    { # 1st & 2nd persons don't get yod in hif`il
-      $base =~ s/י//;
-    }
-  }
-
-  if ($tense==$future) {
-    if (($binyan==$nifgal) && 
-        ($guf =~ /$ani|$ata|$at|$anu|$atem|$aten/o))
-    { # 1st & 2nd persons don't get yod in hif`il
-      $base =~ s/י//;
-    }
-    if ($guf==$ani) {
-      $base =~ s/י// if ($binyan==$nifgal); 
-      $base = "א".$base;
-    }
-    if ($guf =~ /$at|$atem|$hem/o && $binyan==$qal)
-    { # open sylable shortens vav
-      $base =~ s/ו//;
-    }
-  }
-  if ($tense==$imperative) {
-    if (($binyan==$hifgil) && myinlist($guf, $ata, $aten)) {
-      $base =~ s/י//;
-    } # haf`el and not haf`il
-    if ($binyan==$qal && $opts{"קל_אפעול"} &&
-        myinlist($guf, $at, $atem)) {
-      $base =~ s/ו//;} # shimri and not shmori
-  } 
-  return $base;
-}
-
-sub add_guf_affix {
-  my ($tense, $guf, $word) = @_;
-
-  if ($tense==$past) {
-    $suff = "תי" if ($guf==$ani);
-    $suff = "ת" if ($guf==$ata);
-    $suff = "" if ($guf==$hu);
-    $suff = "ה" if ($guf==$hi);
-    if ($guf==$anu) { #if the root ends with nun, don't double it.
-      if (substr($word,-1,1) eq "ן") { $suff = "ו";}
-        else { $suff = "נו";}
-    }
-    $suff = "תם" if ($guf==$atem);
-    $suff = "תן" if ($guf==$aten);
-    $suff = "ו" if ($guf==$hem);
-    $word = $word.$suff;
-  }
-
-  if ($tense==$present) {
-    $suff = "" if ($guf==$ata);
-    $suff = "ת" if ($guf==$at);
-    $suff = "ה" if ($guf==$at) && ($binyan==$hifgil); 
-    $suff = "" if ($guf==$at) && ($binyan=~/$pigel|$pugal|$hitpagel|$qal/ ) && ($l eq "ה"); 
-    # this was BAD, passing $l silently
-    # todo: this is ugly. must suppy $binyan as param.
-    # tdod: many times, both tav and he are applicable.
-    $word =~ s/l/י/ if ($guf==$at) && ($binyan==$nifgal); 
-    $suff = "ים" if ($guf==$atem);
-    $suff = "ות" if ($guf==$aten);
-    $word = $word.$suff;
-  }
-
-
-  if ($tense==$future) {
-    $word = "ת".$word if ($guf==$ata);
-    $word = "ת".$word."י" if ($guf==$at);
-    # if ($binyan eq "נפ") { outword $_[0]; } 
-    # todo: in nif`al, both yod and double yod are acceptable.
-    $word = "י".$word if ($guf==$hu);
-    $word = "נ".$word if ($guf==$anu);
-    $word = "ת".$word."ו" if ($guf==$atem);
-    if ($guf =~ /$aten|$hen/o) {
-      $word =~ s/י// if ($binyan==$hifgil);
-      if ($l eq "ן") {$word = "ת".$word."ה";}
-            else {$word = "ת".$word."נה";}
-    }
-    $word = "י".$word."ו" if ($guf==$hem);
-  }
-
-  if ($tense==$imperative) {
-    $word = $word if ($guf==$ata);  # no change
-    $word = $word."י" if ($guf==$at);
-    $word = $word."ו" if ($guf==$atem);
-    if ($guf==$aten) {
-      if ($l eq "ן") {$word = $word."ה";}
-            else {$word = $word."נה";}
-    }
+  if(substr($word,-1,1) eq "ו"){
+    # This vav is a consonant (see comment above about why the few exceptions
+    # that do exist don't bother us).
+    substr($word,-1,1)="w";
+  } elsif(substr($word,-3,3) eq "ווה"){
+    # If the word ends with ווה, the user wrote in ktiv male and intended
+    # a consonant vav. Replace the וו by the character "w", which will be
+    # doubled if necessary (for ktiv male) by outword. This change actually
+    # makes a difference for the סגול_ה with ות cases: for example, the
+    # word מקווה has a plural מקוות and his-possesive מקוו. Without this
+    # change, we get the incorrect possesive מקווו and plural מקווות.
+    # Similarly it is needed for the adjective נאווה's correct feminine plural.
+    substr($word,-3,2)="w";
+  } elsif(substr($word,-2,2) eq "יה"){
+    substr($word,-2,1)="y";
+    # TODO: maybe convert ייה (in ktiv male, e.g., סופגנייה) into iyה.
+    # see outword above on a discussion about that. But everything also
+    # works without this change.
   }
   return $word;
 }
+
 #############################################################################
 
+my ($fh,$word,$optstring,%opts);
 
 my $infile;
 if($#ARGV < 0){
@@ -220,22 +162,30 @@ if($#ARGV < 0){
 $fh = new FileHandle $infile, "r"
   or croak "Couldn't open data file $infile for reading";
 while(<$fh>){
-  print if /^#\*/;       # print these comments.
+  print if /^#\*/;        # print these comments.
   chomp;
-  next if /^#/;          # comments start with '#'.
+  s/#.*$//o;              # comments start with '#'.
+  next if /^[ 	]*$/o;	  # ignore blank lines.
   ($word,$optstring)=split;
   die "Type of word '".$word."' was not specified." if !defined($optstring);
   undef %opts;
+  my $val;
   foreach $opt (split /,/o, $optstring){
-    $opts{$opt}=1;
+    ($opt, $val) = (split /=/o, $opt);
+    $val = 1 unless defined $val;
+    $opts{$opt}=$val;
   }
   if($opts{"ע"}){
     ############################# noun ######################################
     # note that the noun may have several plural forms (see, for example,
-    # hege). The default form is "im".
+    # אות). When one of the plural forms isn't explicitly specified, wolig
+    # tries to guess, based on simplistic heuristics that work for the majority
+    # of the nouns (84% of them, at one time I counted).
     my $plural_none = $opts{"יחיד"} || substr($word,-3,3) eq "יות";
+    my $plural_bizarre = exists($opts{"רבים"});
     my $plural_implicit = !($opts{"ות"} || $opts{"ים"} || $opts{"יות"}
-			   || $opts{"אות"} || $opts{"יים"}) && !$plural_none;
+			   || $opts{"אות"} || $opts{"יים"} || $plural_none
+			   || $plural_bizarre);
     my $plural_iot = $opts{"יות"} ||
       ($plural_implicit && (substr($word,-2,2) eq "ות"));
     my $plural_xot = $opts{"אות"};
@@ -243,34 +193,52 @@ while(<$fh>){
       ($plural_implicit && !$plural_iot && (substr($word,-1,1) eq "ה" || substr($word,-1,1) eq "ת" ));
     my $plural_im = $opts{"ים"} || ($plural_implicit && !$plural_ot && !$plural_iot);
     my $plural_iim = $opts{"יים"};
+
+    # preprocess the word the user has given, converting certain ktiv male
+    # constructs into markers (w, y) that we can better work with later (see
+    # comments in inword() about what it does).
+    $word=inword($word);
+
     # related singular noun forms
-    outword $word; # the singular noun itself
+    if(exists $opts{"נפרד"}){
+      outword $opts{"נפרד"};  # explicit override of the nifrad
+    } elsif(!$opts{"אין_יחיד"}){
+      outword $word; # the singular noun itself
+    }
+    if($opts{"אבד_י"}){
+      # in words like עיפרון and היריון the first yud (coming from chirik
+      # or tsere in ktiv male) is lost in all but the base word
+      $word =~ s/י//o;
+    }
     my $smichut=$word;
-    my $arye_yud="";
-    if(!$opts{"סגול_ה"}){ # replace final ה by ת, unless סגול_ה option
-      # Academia's relatively-new ktiv male rule, to make smichut קריה: קריית.
-      if(substr($smichut,-2,2) eq "יה" && !(substr($smichut,-3,3) eq "ייה")){
-    	$smichut=substr($smichut,0,-2)."ייה"; # note ה replaced by ת below.
-      }
-      if(substr($smichut,-1,1) eq "ה" && !$opts{"סגול_ה"}){
-        substr($smichut,-1,1)="ת";
-      }
-    } else {
-      # Academia's ktiv male rule, to make your lion ארייך, not אריך
-      if(substr($smichut,-2,2) eq "יה"){
-        $arye_yud="י";
-      }
+    if($opts{"אין_יחיד"} || $opts{"אין_נטיות_יחיד"}){
+      # We mark the singular words with "*", telling outword to drop them.
+      # This makes the code look cleaner than a huge if statement around all
+      # the singular code. Maybe in the future we should move the singular
+      # inflection code to a seperate function, if() only around that, and
+      # stop all that "*" nonsense.
+      $smichut="*".$smichut;
     }
     #my $smichut_orig=$smichut;
     if($opts{"מיוחד_אח"}){
       # special case:
-      # אח, אב, חם include an extra yod in the smichut. Note that in the
+      # אח, אב, חם, פה include an extra yod in the smichut. Note that in the
       # first person singular possessive, we should drop that extra yod.
       # For a "im" plural, it turns out to be the same inflections as the
       # plural - but this is not the case with a "ot" plural.
+      # Interestingly, the yud in these inflections is always a chirik
+      # male - it is never consonantal (never has a vowel on it).
+      if(substr($smichut,-1,1) eq "ה"){
+        # Remove the ה. Basically, only one word fits this case: פה
+	$smichut=substr($smichut,0,-1);
+	# And add the extra third-person masuline possesive (just like the
+	# סגול_ה case, but we don't bother to check for the סגול_ה flag here).
+	outword $smichut."יהו";
+      }
       outword $smichut."י-"; # smichut
       outword $smichut."י"; # possessives (kinu'im)
       outword $smichut."ינו";
+      outword $smichut."יך";
       outword $smichut."יך";
       outword $smichut."יכם";
       outword $smichut."יכן";
@@ -279,7 +247,16 @@ while(<$fh>){
       outword $smichut."יהן";
       outword $smichut."יהם";
     } else {
-      outword $smichut."-"; # smichut
+      if(!$opts{"סגול_ה"}){ # replace final ה by ת, unless סגול_ה option
+        if(substr($smichut,-1,1) eq "ה" && !$opts{"סגול_ה"}){
+          substr($smichut,-1,1)="ת";
+        }
+      }
+      if(exists($opts{"נסמך"})){
+        outword $opts{"נסמך"}."-";
+      } else {
+        outword $smichut."-"; # smichut
+      }
       if($opts{"מיוחד_שן"}){
       	# academia's ktiv male rules indicate that the inflections of שן
 	# (at least the plural is explicitly mentioned...) should get an
@@ -287,7 +264,7 @@ while(<$fh>){
 	substr($smichut,0,-1)=substr($smichut,0,-1).'י';
 	substr($word,0,-1)=substr($word,0,-1).'י';
       }
-      if(substr($word,-2,2) eq "אי"){
+      if(substr($word,-2,2) eq "אי" && length($word)>2){
       	# in words ending with patach and then the imot kria aleph yud,
 	# such as תנאי and גבאי, all the inflections (beside the base word
 	# and the smichut) are as if the yud wasn't there.
@@ -297,64 +274,72 @@ while(<$fh>){
 	substr($word,-1,1)="";
 	substr($smichut,-1,1)="";
       }
+      # Note that the extra vowel markers, 'a' and 'e' are added for mele'im
+      # ending with yud (e.g., אי) - this vowel attaches to the yud and makes
+      # the yud a consonant. This phenomenon is handled in outword.
+      my $no_ah=0;
       if($opts{"סגול_ה"}){
       	# the ה is dropped from the singular inflections, except one alternate
 	# inflection like מורהו (the long form of מורו):
-	$smichut=substr($smichut,0,-1);
-        outword $smichut.$arye_yud."הו";
+	# (there's another femenine inflection, מורה with kamats on the he,
+	# but this is spelled the same (as מורה with mapik) without niqqud so
+	# we don't need to print it again).
+	if(substr($smichut,-1,1) eq "ה"){
+	  $smichut=substr($smichut,0,-1);
+	} else {
+	  # סגול ה not ending with ה? This is basically for words like שה,
+	  # inputted as "שי" (see wolig.dat). According to [1, case 226],
+	  # the "ah" inflection is not valid in this case, and instead we
+	  # have a special "ha" (no vowel before it). Eek... Why couldn't they
+	  # just allow the normal ah or eha in this case, like the masc. ehו??
+          outword $smichut."ha";
+	  $no_ah=1;
+	}
+        outword $smichut."ehו";
+	# TODO: maybe add the "eha" inflection? But it won't generate anything
+	# different from the ah below...
+        #outword $smichut."eha" unless $no_ah;
       }
       outword $smichut."י"; # possessives (kinu'im)
-      outword $smichut.$arye_yud."נו";
-      outword $smichut.$arye_yud."ך";
-      outword $smichut.$arye_yud."כם";
-      outword $smichut.$arye_yud."כן";
+      outword $smichut."eנו";
+      outword $smichut."ך"; # (masculine)
+      outword $smichut."eך";
+      outword $smichut."כם";
+      outword $smichut."כן";
       outword $smichut."ו";
-      outword $smichut.$arye_yud."ה";
-      outword $smichut.$arye_yud."ן";
-      outword $smichut.$arye_yud."ם";
+      outword $smichut."ah"   unless $no_ah;
+      outword $smichut."aן";
+      outword $smichut."aם";
     }
     # related plural noun forms
     # note: don't combine the $plural_.. ifs, nor use elsif, because some
     # nouns have more than one plural forms.
     if($plural_im){
       my $xword=$word;
-      if(substr($xword,-1,1) eq "ה"){
+      if(substr($xword,-1,1) eq "ה" && !$opts{"שמור_ת"}){
 	# remove final "he" (not "tav", unlike the "ot" pluralization below)
 	# before adding the "im" pluralization, unless the שמור_ת option was
 	# given.
-	if(!$opts{"שמור_ת"}){
-	  $xword=substr($xword,0,-1);
-	}
-      }
-      if($opts{"מיוחד_יום"}){
-        # when the מיוחד_יום flag is given, we remove the second letter from
-	# the word in all the plural inflections
-	$xword=substr($xword,0,1).substr($xword,2);
+	$xword=substr($xword,0,-1);
       }
       my $xword_orig=$xword;
       if($opts{"אבד_ו"}){
 	# when the אבד_ו flag was given,we remove the first "em kri'a" from
-	# the word in most of the inflections. (see [1, page 42]).
+	# the word in most of the inflections. (see a discussion of this
+	# option in wolig.dat).
 	$xword =~ s/ו//o;
-      }
-      if($opts{"מיוחד_שוק"}){
-	# when the מיוחד_שוק flag was given, we change the vowel vav to a
-	# consonant vav (i.e., double vav) in most of the inflections.
-	# It's nice that we need to make this change for exactly the same
-	# forms we needed to do it in the אבד_ו option case.
-	$xword =~ s/ו/וו/o;
       }
       outword $xword."ים";
       $smichut=$xword;
       my $smichut_orig=$xword_orig;
       outword $smichut_orig."י-"; # smichut
-      #According to the academia's ktiv male rules (see [3]), the yud in
-      #the "י" plural possesive is doubled.
-      #outword $smichut."י";
-      outword $smichut."יי"; # possessives (kinu'im)
+      # (We write patach followed by a consonant yud as "y", and later this will
+      # give us the chance to automatically double it as necessary by the
+      # Academia's ktiv male rules)
+      outword $smichut."y"; # possessives (kinu'im)
       outword $smichut."ינו";
       outword $smichut."יך";
-      outword $smichut."ייך"; # special ktiv male for the feminine
+      outword $smichut."yך";
       outword $smichut_orig."יכם";
       outword $smichut_orig."יכן";
       outword $smichut."יו";
@@ -373,17 +358,14 @@ while(<$fh>){
 	$xword=substr($xword,0,-1)."ת";
       }
       my $xword_orig=$xword;
-      outword $xword."יים";
+      outword $xword."yם";
       $smichut=$xword;
       my $smichut_orig=$xword_orig;
       outword $smichut_orig."י-"; # smichut
-      #According to the academia's ktiv male rules (see [3]), the yud in
-      #the "י" plural possesive is doubled.
-      #outword $smichut."י"; # possessives (kinu'im)
-      outword $smichut."יי"; # possessives (kinu'im)
+      outword $smichut."y"; # possessives (kinu'im)
       outword $smichut."ינו";
       outword $smichut."יך";
-      outword $smichut."ייך"; # special ktiv male for the feminine
+      outword $smichut."yך";
       outword $smichut_orig."יכם";
       outword $smichut_orig."יכן";
       outword $smichut."יו";
@@ -400,49 +382,32 @@ while(<$fh>){
 	  $xword=substr($xword,0,-1);
 	}
       }
-      if(substr($xword,-2,2) eq "וו" || substr($xword,-2,2) eq "יי" ){
-	# KTIV MALE RULE (should be optional? I'm not sure I agree with them
-	# because they make reading ambiguous in exactly the same was a vav
-	# or yud was supposed to make not ambiguous).
-	# We conveniently apply here two of the Academia's rules of "ktiv
-	# male" (as described in [3]):
-	# 1) a consonent vav should be doubled, but not when followed by
-	#    another vav (so that we don't get 3 vavs in a row). Example מצווה.
-	# 2) don't write yud before yud-vav signifying yu or yo. Example עירייה
-	# Note that we do this after the ה rule above.
-	$xword=substr($xword,0,-1);
-      }
-      my $xword_orig=$xword;
       if($opts{"אבד_ו"}){
-	# when the אבד_ו flag was given,we remove the first "em kri'a" from
-	# the word in most of the inflections. (see [1, page 42]).
-	$xword =~ s/ו//o;
+      	# In segoliim with cholam chaser chat that inflect like feminines
+	# (i.e., the plural_ot case), the cholam is lost *only* in the base
+	# plural, not in other plural inflection. This is comparable to the
+	# inflections of the word מלכה, where the patach is lost only in the
+	# base plural.
+	# See for example גורן, דופן.
+	my $tmp = $xword;
+	$tmp =~ s/ו//o;
+      	outword $tmp."ות";
+      } else {
+        outword $xword."ות";
       }
-      if($opts{"מיוחד_שוק"}){
-	# when the מיוחד_שוק flag was given, we change the vowel vav to a
-	# consonant vav (i.e., double vav) in most of the inflections.
-	# It's nice that we need to make this change for exactly the same
-	# forms we needed to do it in the אבד_ו option case.
-	$xword =~ s/ו/וו/o;
-	#$xword =~ s/י/יי/o;
-      }
-      outword $xword."ות";
+      
       $smichut=$xword."ות";
-      my $smichut_orig=$xword_orig."ות";
-      outword $smichut_orig."-"; # smichut
-      #According to the academia's ktiv male rules (see [3]), the yud in
-      #the "י" plural possesive is doubled.
-      #outword $smichut."י"; # possessives (kinu'im)
-      outword $smichut."יי"; # possessives (kinu'im)
+      outword $smichut."-"; # smichut
+      outword $smichut."y"; # possessives (kinu'im)
       outword $smichut."ינו";
       outword $smichut."יך";
-      outword $smichut."ייך"; # special ktiv male for the feminine
-      outword $smichut_orig."יכם";
-      outword $smichut_orig."יכן";
+      outword $smichut."yך";
+      outword $smichut."יכם";
+      outword $smichut."יכן";
       outword $smichut."יו";
       outword $smichut."יה";
-      outword $smichut_orig."יהן";
-      outword $smichut_orig."יהם";
+      outword $smichut."יהן";
+      outword $smichut."יהם";
     }
     if($plural_iot){
       my $xword=$word;
@@ -452,23 +417,14 @@ while(<$fh>){
 	if(!$opts{"שמור_ת"}){
 	  $xword=substr($xword,0,-1);
 	}
-	# remove the letter before that in the special case of the words
-	# אחות, חמות - in that case the "iot" replaces not only the tav,
-	# but also the vav before it.
-	if($opts{"מיוחד_אחות"}){
-	  $xword=substr($xword,0,-1);
-	}
       }
       outword $xword."יות";
       $smichut=$xword."יות";
       outword $smichut."-"; # smichut
-      #According to the academia's ktiv male rules (see [3]), the yud in
-      #the "י" plural possesive is doubled.
-      #outword $smichut."י"; # possessives (kinu'im)
-      outword $smichut."יי"; # possessives (kinu'im)
+      outword $smichut."y"; # possessives (kinu'im)
       outword $smichut."ינו";
       outword $smichut."יך";
-      outword $smichut."ייך"; # special ktiv male for the feminine
+      outword $smichut."yך";
       outword $smichut."יכם";
       outword $smichut."יכן";
       outword $smichut."יו";
@@ -488,13 +444,37 @@ while(<$fh>){
       outword $xword."אות";
       $smichut=$xword."אות";
       outword $smichut."-"; # smichut
-      #According to the academia's ktiv male rules (see [3]), the yud in
-      #the "י" plural possesive is doubled.
-      #outword $smichut."י"; # possessives (kinu'im)
-      outword $smichut."יי"; # possessives (kinu'im)
+      outword $smichut."y"; # possessives (kinu'im)
       outword $smichut."ינו";
       outword $smichut."יך";
-      outword $smichut."ייך"; # special ktiv male for the feminine
+      outword $smichut."yך";
+      outword $smichut."יכם";
+      outword $smichut."יכן";
+      outword $smichut."יו";
+      outword $smichut."יה";
+      outword $smichut."יהן";
+      outword $smichut."יהם";
+    }
+    if($plural_bizarre){
+      # User specified plural for bizarre cases; For example, the plural of
+      # צל is צללים, the plural of בת is בנות.
+      # We take the fully formed plural from the user, and may need to take
+      # of the ending to guess the smichut and possesives.
+      my $plural=$opts{"רבים"};
+      outword $plural;
+      if(substr($plural,-2,2) eq "ות"){
+        $smichut=$plural;
+        outword $smichut."-"; # smichut
+      } elsif(substr($plural,-2,2) eq "ים" || substr($plural,-2,2) eq "ין"){
+        $smichut=substr($plural,0,-2);
+        outword $smichut."י-"; # smichut
+      } else {
+        die "Plural given for $word is of unrecognized form: $plural.";
+      }
+      outword $smichut."y"; # possessives (kinu'im)
+      outword $smichut."ינו";
+      outword $smichut."יך";
+      outword $smichut."yך";
       outword $smichut."יכם";
       outword $smichut."יכן";
       outword $smichut."יו";
@@ -504,6 +484,20 @@ while(<$fh>){
     }
   } elsif($opts{"ת"}){
     ############################# adjective ##################################
+
+    # preprocess the word the user has given, converting certain ktiv male
+    # constructs into markers (w, y) that we can better work with later (see
+    # comments in inword() about what it does).
+    $word=inword($word);
+    # A preprocessing rule special for adjectives: a final yud will always be
+    # a chirik male, not some sort of consonant yud or another vowel. Together
+    # with the iy post-transformation in outword, this makes שני - שנייה work
+    # correctly. However, when the word ends with וי (and not ווי) we assume
+    # this is shuruk followed by a consonant yud (for example, מצוי).
+    if($word =~ m/([^aeiו]|וו)י$/o){
+      substr($word,-1,1) = "iי";
+    }
+
     my $xword=$word;
     if(substr($xword,-1,1) eq "ה"){
       # remove final "he" before adding the pluralization,
@@ -515,12 +509,21 @@ while(<$fh>){
     outword $word; # masculin, singular
     outword $word."-"; # smichut (exactly the same as nifrad)
     # feminine, singular:
-    if(substr($xword,-1,1) eq "י" || $opts{"נקבה_ת"}){
+    my $nekeva_implicit = !($opts{"נקבה_ת"} || $opts{"נקבה_ה"});
+    my $nekeva_t = $opts{"נקבה_ת"} ||
+    		   ($nekeva_implicit && substr($xword,-1,1) eq "י");
+    my $nekeva_h = $opts{"נקבה_ה"} ||
+    		   ($nekeva_implicit && !$nekeva_t);
+    if($nekeva_t){
+      # note: we don't bother adding the vowel "e" before the ת because that
+      # would only make a difference before a yud - and interestingly when
+      # there *is* a yud, the vowel is dropped anyway!
       outword $xword."ת";
       outword $xword."ת-"; # smichut (exactly the same as nifrad)
-    } else {
-      outword $xword."ה";
-      outword $xword."ת-"; # smichut
+    }
+    if($nekeva_h){
+      outword $xword."aה";
+      outword $xword."aת-"; # smichut
     }
     if($opts{"ם"}){
       # special case for adjectives like רשאי. Unlike the noun case where we
@@ -535,79 +538,6 @@ while(<$fh>){
     }
     outword $xword."ות"; # feminine, plural
     outword $xword."ות-"; # smichut (exactly the same as nifrad)
-  } elsif($opts{"פ"}){
-    ################################ verb ####################################
-    my $p=substr($word,0,1), $g=substr($word,1,length($word)-2),
-       $l=substr($word,-1,1);
-
-    undef %base;
-    $base{$past,$qal}="pgl" if ($opts{"קל_אפעל"}||$opts{"קל_אפעול"});
-    $base{$past,$nifgal}="נpgl" if ($opts{"נפ"});
-    $base{$past,$hifgil}="הpgיl" if ($opts{"הפ"});
-    $base{$past,$hufgal}="הוpgl" if ($opts{"הו"});
-    $base{$past,$pigel}="pיgl" if ($opts{"פי"});
-    $base{$past,$pugal}="pוgl" if ($opts{"פו"});
-    $base{$past,$hitpagel}="התpgl" if ($opts{"הת"});
-    
-    $base{$present,$qal}="pוgl" if ($opts{"קל_אפעל"}||$opts{"קל_אפעול"});
-    $base{$present,$nifgal}="נpgl" if ($opts{"נפ"});
-    $base{$present,$hifgil}="מpgיl" if ($opts{"הפ"});
-    $base{$present,$hufgal}="מוpgl" if ($opts{"הו"});
-    $base{$present,$pigel}="מpgl" if ($opts{"פי"});
-    $base{$present,$pugal}="מpוgl" if ($opts{"פו"});
-    $base{$present,$hitpagel}="מתpgl" if ($opts{"הת"});
-    
-    $base{$future,$qal}="pgl" if ($opts{"קל_אפעל"});
-    $base{$future,$qal}="pgוl" if ($opts{"קל_אפעול"});
-    $base{$future,$nifgal}="יpgl" if ($opts{"נפ"});
-    $base{$future,$hifgil}="pgיl" if ($opts{"הפ"});
-    $base{$future,$hufgal}="וpgl" if ($opts{"הו"});
-    $base{$future,$pigel}="pgl" if ($opts{"פי"});
-    $base{$future,$pugal}="pוgl" if ($opts{"פו"});
-    $base{$future,$hitpagel}="תpgl" if ($opts{"הת"});
-     
-    $base{$imperative,$qal}="pgl" if ($opts{"קל_אפעל"});
-    $base{$imperative,$qal}="pgוl" if ($opts{"קל_אפעול"});
-    # shouldn't be with yod? - הישמר או השמר? 
-    $base{$imperative,$nifgal}="היpgl" if ($opts{"נפ"});
-    $base{$imperative,$hifgil}="הpgיl" if ($opts{"הפ"});
-    $base{$imperative,$qal}="pgוl" if ($opts{"אפעול"});
-    $base{$imperative,$pigel}="pgl" if ($opts{"פי"});
-    $base{$imperative,$hitpagel}="התpgl" if ($opts{"הת"});
-    
-    $base{$shempoal,$qal}="pgיlה" if ($opts{"קל_אפעל"}||$opts{"קל_אפעול"});
-    $base{$shempoal,$nifgal}="היpglות" if ($opts{"נפ"});
-    $base{$shempoal,$hifgil}="הpglה" if ($opts{"הפ"});
-    $base{$shempoal,$pigel}="pיgוl" if ($opts{"פי"});
-    # todo: this does not always exist: "shiqur" 
-    # quod-roots should not get yod:
-    $base{$shempoal,$pigel}="pgוl" if ($opts{"פי"} && length($g)>1);
-    $base{$shempoal,$hitpagel}="התpglות" if ($opts{"הת"});
- 
-    $base{$maqor,$qal}="לpgוl" if ($opts{"קל_אפעל"}||$opts{"קל_אפעול"});
-    $base{$maqor,$qal}="לpgl" if ($opts{"לרכב"}); # a very rare exception
-    $base{$maqor,$nifgal}="להיpgl" if ($opts{"נפ"});
-    $base{$maqor,$hifgil}="להpgיl" if ($opts{"הפ"});
-    $base{$maqor,$pigel}="לpgl" if ($opts{"פי"});
-    $base{$maqor,$hitpagel}="להתpgl" if ($opts{"הת"});
-    
-    foreach $tense (@all_tense) {
-      foreach $binyan (@all_binyan) {
-        $base = $base{$tense,$binyan};
-        next unless defined($base); #no such conjugation..
-        $naxe_base = binyan_root_clash($tense, $binyan, $p, $g, $l, $base);
-        foreach $guf (legal_guf($tense)) {
-          $naxe = guf_root_clash($tense, $guf, $p, $g, $l, $naxe_base);
-          $conj_base = binyan_guf_clash($tense, $binyan, $guf, $naxe);
-#          $asgn_base = assign_root($p, $g, $l, $conj_base);
-#          $affx_base = add_guf_affix($tense, $guf, $asgn_base);
-#          outword $affx_base;
-          $affx_base = add_guf_affix($tense, $guf, $conj_base);
-          $asgn_base = assign_root($p, $g, $l, $affx_base);
-          outword $asgn_base;
-        }
-      }
-    }
   } else {
     die "word '".$word."' was not specified as noun, adjective or verb.";
   }
