@@ -3,13 +3,19 @@
 # Copyright (C) 2000-2002 Nadav Har'El, Dan Kenigsberg
 #
 use Carp;
-use FileHandle;
 
-$fh = new FileHandle "woo.dat", "r"
-  or croak "Couldn't open data file wolig.dat for reading";
+my $infile;
+if($#ARGV < 0){
+	$infile="woo.dat";
+} else {
+	$infile=$ARGV[0];
+}
+
+open(INFILE, "<", $infile)
+  or croak "Couldn't open data file $infile for reading";
 open (SHEMP, ">shemp.dat");
 print SHEMP "# list of automatically generated shmot-peula\n";
-while(<$fh>){
+while(<INFILE>){
   chomp;
   next if /^( |	)*$/;      # ignore empty lines.
   next if /^ *#/;          # comments start with '#'.
@@ -60,11 +66,22 @@ while(<$fh>){
       my $s = $w->infinitive_conj;
       $w->outword($s);
 
-      if (defined($s) && $transitive{$w->{binyan}} ) {
-	foreach $bj (1,2,4,5,6,7,8,9,10) {
-          my $n = $w->objectize($s, $bj);
-          print &Word::finalize($n),"\n" if $n;
-        }
+      if (defined($s)) {
+        if ($transitive{$w->{binyan}} ) {
+ 	  foreach $bj (1,2,4,5,6,7,8,9,10) {
+            my $n = $w->objectize($s, $bj);
+            $w->outword($n) if $n; # print &Word::finalize($n),"\n" if $n;
+          }
+          my $n = $w->subjectize($s, $Word::ani);
+          $w->outword($n) if $n;
+	} else {  # this is very ugly and incomplete. here I am creating
+		  # "subjectized" shem poal for all verbs, but only with
+		  # preceding ב (though all בכלמ and (nothing) are legal)
+ 	  foreach $bj (1,2,4,5,6,7,8,9,10) {
+            my $n = $w->subjectize($s, $bj);
+            $w->outword($n) if $n; # print &Word::finalize($n),"\n" if $n;
+          }
+	}
       }
 
       foreach $g (1,2,3,4,5,6,7,8,9) # in past, at==ata,hem==hen
@@ -105,21 +122,40 @@ while(<$fh>){
       {
         $s = $w->present_conj($g);
         $w->outword($s);
-	if ($s && $g eq 3) {if ($s =~ s/ה$/ת-/) {$w->outword($s);}}
+	if ($s && $g eq 3) {
+	  if ($s =~ s/ה$/ת-/) {$w->outword($s);}
+	  # create the other form of the present female if both are requested
+	  if (${$w->{opts}}{"בינונית_תה"} || 
+		$w->_nakey_lh && $w->{binyan}==$Word::huqtal) {
+	    ${$w->{opts}}{"בינונית_ארכאית"} = 1;
+            $s = $w->present_conj($g);
+            $w->outword($s);
+	    if ($s =~ s/ה$/ת-/) {$w->outword($s);}
+	    ${$w->{opts}}{"בינונית_ארכאית"} = 0;
+	  }
+	}
 	if ($s && $g eq 7) {$s =~ s/ם$/-/; $w->outword($s);}
       }
-      if ($w->{binyan} eq $Word::qal) {
-        foreach $g (2,3,7,8)
-        {
-          $s = $w->paul_conj($g);
-          $w->outword($s);
-	  if ($s && $g eq 3) {$s =~ s/ה$/ת-/; $w->outword($s);}
-	  if ($s && $g eq 7) {$s =~ s/ם$/-/; $w->outword($s);}
-        }
-      }
       $s = $w->shempeula_conj;
-      print SHEMP &Word::finalize($s)." ע\n" if $s;
+      if ($s) {
+        print SHEMP &Word::finalize($s)." ע";
+	# for male shemps ending with ות, we must pass a hint to wolig.pl
+        print SHEMP ",ים" if ($w->{binyan}==$Word::qitel && $s =~ m/ות$/);
+        print SHEMP "\n"
+      }
       print "-----\n";
+    }
+    # Create the pa`ul form, when applicable.
+    if (${$w->{opts}}{"פעול"} || ${$w->{opts}}{"קל_אפעל"} 
+	      || ${$w->{opts}}{"קל_אפעול"}) {
+      foreach $g (2,3,7,8)
+      {
+        $s = $w->paul_conj($g);
+        $w->outword($s);
+        if ($s && $g eq 3) {$s =~ s/ה$/ת-/; $w->outword($s);}
+        if ($s && $g eq 7) {$s =~ s/ם$/-/; $w->outword($s);}
+      }
+      print "-----\n" if $s;
     }
   }
 }
@@ -146,6 +182,9 @@ while(<$fh>){
     
     %future_initial = ($ani=>'א', $ata=>'ת', $at=>'ת', $hu=>'י', $hi=>'ת',
 	$anu=>'נ', $atem=>'ת', $aten=>'ת', $hem=>'י', $hen=>'ת');
+
+    %subject_suf = ($ani=>'י', $ata=>'ך', $at=>'ך', $hu=>'הו', $hi=>'ה', 
+	$anu=>'נו', $atem=>'כם', $aten=>'כן', $hem=>'ם', $hen=>'ן');
 
     %object_suf = ($ani=>'ני', $ata=>'ך', $at=>'ך', $hu=>'הו', $hi=>'ה', 
 	$anu=>'נו', $atem=>'כם', $aten=>'כן', $hem=>'ם', $hen=>'ן');
@@ -361,7 +400,8 @@ while(<$fh>){
 	  }
           # for freaking doubled root
           $hataya .= 'ו' if $w->{binyan} eq $qal && $w->{t} eq $w->{l} &&
-				!${$w->{opts}}{'שמור_עע'};
+				!${$w->{opts}}{'שמור_עע'} &&
+				!${$w->{opts}}{'חדתי_מודרני'};
 	
 	  #TODO check subcases (a) (c)
 	  ### check (c):
@@ -673,7 +713,8 @@ _cond_debug('10');
     if ($w->{guf} eq $ani) {
       # case #11
       $m =~ s/^א/ו/o if ${$w->{opts}}{"קל_אפעל"} && 
-			$w->{binyan} eq $qal; # for אוהב
+			$w->{binyan} eq $qal &&  # for אוהב
+			!${$w->{opts}}{"עתידי_אאמץ"};
       $m =~ s/^י//o if $w->{binyan} eq $niqtal  # אשמר לנפשי )ולא אישמר(
 		# תשלום-דגש גורם לצירה וליוד גם אחרי אלף
 		&& $w->{q} !~ m/[רעהאחוי]/
@@ -1007,7 +1048,7 @@ _cond_debug(9);
     my ($w, $guf) = @_;
     $w->{guf} = $guf;
     return undef if ${$w->{opts}}{"אין_בינוני"} ||${$w->{opts}}{"אין_פעול"};
-    return undef if $w->{t} =~ m/[יו]/o || ${$w->{opts}}{"נסתר"}|| ${$w->{opts}}{"בינוני_שמן"};
+    return undef if $w->{t} =~ m/[יו]/o || ${$w->{opts}}{"נסתר"};
     my $m;
 
     $w->{tense} = $present;
@@ -1090,13 +1131,27 @@ _cond_debug(9);
     return $w->_subst_root($m)
   }
 
+  sub subjectize { # TODO: far far from being done.
+    my ($w, $s, $bj, $suf) = @_;
+    $w->{object} = $bj;
+    if ($w->{tense} eq $infinitive) {
+      $s =~ s/^ל(.)(.)ו(?=.$)/ל$1ו$2/ if $w->{binyan} eq $qal && 
+			!$w->_nakey_lh && $bj !~ m/^($atem|$aten)$/;
+      $s =~ s/(?=.$)/י/o if ($w->{t} eq $w->{l} && !${$w->{opts}}{"שמור_עע"});
+      $suf = $subject_suf{$bj};
+      $suf =~ s/^הו$/ו/;
+      $s =~ s/ל/B/o;
+      return $s.$suf;
+    }
+  }
+
   sub objectize { # TODO: far far from being done.
     my ($w, $s, $bj, $suf) = @_;
     $w->{object} = $bj;
     if ($w->{tense} eq $infinitive) {
       $s =~ s/^ל(.)(.)ו(?=.$)/ל$1ו$2/ if $w->{binyan} eq $qal && 
 			!$w->_nakey_lh && $bj !~ m/^($atem|$aten)$/;
-      # TODO move the handling of Dobles to all tenses
+      # TODO move the handling of Doubles to all tenses
       $s =~ s/(?=.$)/י/o if ($w->{t} eq $w->{l} && !${$w->{opts}}{"שמור_עע"});
       $suf = $object_suf{$bj};
       $suf =~ s/^הו$/ו/;
@@ -1124,25 +1179,28 @@ _cond_debug(9);
   sub outword {
     my ($w, $s) = @_;
     return unless $s;
-    my ($tense,$gender,$person,$mult)=('','-','-','-');
-    $tense = 'p' if $w->{tense} eq $past;
-    $tense = 'r' if $w->{tense} eq $present;
-    $tense = 'f' if $w->{tense} eq $future;
-    $tense = 'i' if $w->{tense} eq $imperative;
-    $tense = 'l' if $w->{tense} eq $infinitive;
-    if ($w->{guf}) {
-      $person = '1' if $w->{guf} =~ m/^($ani|$anu)$/o;
-      $person = '2' if $w->{guf} =~ m/^($ata|$at|$atem|$aten)$/o;
-      $person = '3' if $w->{guf} =~ m/^($hu|$hi|$hem|$hen)$/o;
-      $person = '-' if $tense eq 'r';
-      $gender = 'm' if $w->{guf} =~ m/^($ata|$hu|$atem|$hem)$/o;
-      $gender = 'f' if $w->{guf} =~ m/^($at|$hi|$aten|$hen)$/o;
-      $mult = 's' if $w->{guf} =~ m/^($ani|$ata|$at|$hu|$hi)$/o;
-      $mult = 'p' if $w->{guf} =~ m/^($anu|$aten|$atem|$hem|$hen)$/o;
-    }
-
-    $s =~ s/Yו/יו/;
-    $s =~ s/וY/וי/;
+#    my ($tense,$gender,$person,$mult)=('','-','-','-');
+#    $tense = 'p' if $w->{tense} eq $past;
+#    $tense = 'r' if $w->{tense} eq $present;
+#    $tense = 'f' if $w->{tense} eq $future;
+#    $tense = 'i' if $w->{tense} eq $imperative;
+#    $tense = 'l' if $w->{tense} eq $infinitive;
+#    if ($w->{guf}) {
+#      $person = '1' if $w->{guf} =~ m/^($ani|$anu)$/o;
+#      $person = '2' if $w->{guf} =~ m/^($ata|$at|$atem|$aten)$/o;
+#      $person = '3' if $w->{guf} =~ m/^($hu|$hi|$hem|$hen)$/o;
+#      $person = '-' if $tense eq 'r';
+#      $gender = 'm' if $w->{guf} =~ m/^($ata|$hu|$atem|$hem)$/o;
+#      $gender = 'f' if $w->{guf} =~ m/^($at|$hi|$aten|$hen)$/o;
+#      $mult = 's' if $w->{guf} =~ m/^($ani|$ata|$at|$hu|$hi)$/o;
+#      $mult = 'p' if $w->{guf} =~ m/^($anu|$aten|$atem|$hem|$hen)$/o;
+#    }
+    # the following is only an oversimplification of deornanization!!!
+    $s =~ s/w([יו])/ו$1/;
+    $s =~ s/([יו])w/$1ו/;
+    $s =~ s/w/וו/;
+    $s =~ s/Y([יו])/י$1/;
+    $s =~ s/([יו])Y/$1י/;
     $s =~ s/Y/יי/;
     print finalize($s).
 	#"\tv $tense,$person,$gender,$mult".

@@ -22,4 +22,4 @@ grep -h "^[à-ú]*" extrawords milot biza-verbs biza-nouns | tr -d - | sort -u | w
 wc -l milot likelyerrors biza-verbs biza-nouns extrawords
 echo
 echo -n "Total resulting words: "
-(cat out.nouns out.nouns-shemp out.verbs milot extrawords biza-verbs biza-nouns) | grep -h "^[Là-ú]" | tr -d -| sort -u |wc -l
+(cat out.nouns out.nouns-shemp out.verbs milot extrawords biza-verbs biza-nouns) | grep -h "^[LBà-ú]" | tr -d -| sort -u |wc -l
