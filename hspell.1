@@ -1,12 +1,12 @@
 '\" t
 .\" Copyright (c) 2001, Nadav Har'El
-.TH hspell 1 "4 Jan 2003" "Hspell 0.3" "Ivrix"
+.TH hspell 1 "10 Mar 2003" "Hspell 0.4" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker
 .SH SYNOPSIS
 .B hspell
 [
-.B \-vcns
+.B \-vcnsa
 ]
 .BI [\| file\|.\|.\|. \|]
 .SH DESCRIPTION
@@ -21,9 +21,9 @@ spell(1),
 .B hspell
 can suggest possible corrections for some spelling errors - such suggestions
 are enabled with the
-.B -c
+.B \-c
 (correct) and
-.B -n
+.B \-n
 (notes) options.
 .PP
 .B
@@ -48,7 +48,7 @@ reads from its standard input.
 .TP
 .B \-c 
 If the
-.B -c
+.B \-c
 option is given,
 .B hspell
 will suggest corrections for misspelled words, whenever it can find such
@@ -73,6 +73,9 @@ The
 .I correct
 word why it was
 recognized (show the basic noun, verb, etc., that this inflection relates to).
+NOTE: In this version, this option will not work correctly if
+.BR hspell 's
+dictionaries were installed in compressed form.
 .TP
 .B \-s
 Normally, the words deemed spelling mistakes are shown in alphabetical order.
@@ -86,6 +89,30 @@ This option is most useful for people helping to build
 word list, and are looking for common correct words that
 .B hspell
 does not know yet.
+.TP
+.B \-a 
+With the 
+.B -a
+option, 
+.B hspell
+tries to emulate (as little as possible of) 
+.B ispell's
+pipe interface. This allows
+.B lyx
+to use
+.B hspell
+as an external spell-checker, if the lines
+.B "\\\\spell_command hspell-i"
+and
+.B "\\\\use_pspell false"
+appear in ~/.lyx/lyxrc.
+.TP
+.B \-d \-B and \-m
+These three options are passed to 
+.B hspell 
+by
+.B lyx
+and are cordially ignored.
 .\".SH EXAMPLES
 .\".TP 3
 .\"1.
@@ -159,7 +186,7 @@ Currently always 0.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 0.2 (January 5, 2003)
+described by this manual page is 0.4 (March 10, 2003)
 .SH "COPYRIGHT"
 Copyright (C) 2000-2003, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.

@@ -1,7 +1,16 @@
 # override any locale settings the user might have - they are destructive
 # to some of the things we do here (like sort).
-export LANG=C
-export LC_ALL=C
+#export LANG=C
+#export LC_ALL=C
+# Because the "export" directive is only supported by Gnu make, let's instead
+# redfine all the relevant LC_* variables the user might have set... Note that
+# the following only modified environment variables that were already exported
+# by the user - which is actually ok (but this makes us have to set all these
+# different variables).
+LANG=C
+LC_ALL=C
+LC_CTYPE=C
+LC_COLLATE=C
 
 # build and installation paths
 DESTDIR =
@@ -48,7 +57,7 @@ out.nouns-all: wolig.pl wolig.dat shemp.dat
 
 DICTS= out.nouns out.verbs out.nouns-shemp milot extrawords biza-verbs biza-nouns
 wordlist.wgz: $(DICTS) wzip
-	grep -h "^[à-úL]" $(DICTS) | tr -d '-' | sort -u | ./wzip | gzip -9 \
+	grep -h "^[à-úLB]" $(DICTS) | tr -d '-' | sort -u | ./wzip | gzip -9 \
 		> wordlist.wgz
 
 ################################################
@@ -57,6 +66,7 @@ install: $(DICTS) likelyerrors spellinghints hspell.pl_full
 	test -d $(DESTDIR)/$(BIN) || mkdir -m 755 -p $(DESTDIR)/$(BIN)
 	cp hspell.pl_full $(DESTDIR)/$(BIN)/hspell
 	chmod 755 $(DESTDIR)/$(BIN)/hspell
+	test -L $(DESTDIR)/$(BIN)/hspell-i || ln -s hspell $(DESTDIR)/$(BIN)/hspell-i
 	test -d $(DESTDIR)/$(SHARE) || mkdir -m 755 -p $(DESTDIR)/$(SHARE)
 	cp $(DICTS) likelyerrors spellinghints $(DESTDIR)/$(SHARE)/
 	(cd $(DESTDIR)/$(SHARE); chmod 644 $(DICTS) likelyerrors spellinghints)
@@ -65,13 +75,14 @@ install: $(DICTS) likelyerrors spellinghints hspell.pl_full
 	chmod 644 $(DESTDIR)/$(MAN1)/hspell.1
 
 # This will create a much smaller installation (60K instead of 1MB) but the
-# -v option (for viewing the reasons for words' *correctness*) will not be
-# available.
+# -v option (for viewing the reasons for words' *correctness*) will not work
+# properly.
 install_compressed: wordlist.wgz likelyerrors spellinghints wunzip \
 	            hspell.pl_wzip
 	test -d $(DESTDIR)/$(BIN) || mkdir -m 755 -p $(DESTDIR)/$(BIN)
 	cp hspell.pl_wzip $(DESTDIR)/$(BIN)/hspell
 	chmod 755 $(DESTDIR)/$(BIN)/hspell
+	test -L $(DESTDIR)/$(BIN)/hspell-i || ln -s hspell $(DESTDIR)/$(BIN)/hspell-i
 	test -d $(DESTDIR)/$(SHARE) || mkdir -m 755 -p $(DESTDIR)/$(SHARE)
 	cp wordlist.wgz likelyerrors spellinghints $(DESTDIR)/$(SHARE)/
 	(cd $(DESTDIR)/$(SHARE); chmod 644 wordlist.wgz likelyerrors spellinghints)
@@ -89,13 +100,14 @@ clean:
 ################################################
 # for creating an hspell distribution tar
 PACKAGE = hspell
-VERSION = 0.3
+VERSION = 0.4
 DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	Makefile stats wunzip.c wzip \
 	hspell.pl hspell.1 \
 	wolig.pl wolig.dat biza-nouns milot extrawords \
 	woo woo.dat biza-verbs \
-	likelyerrors spellinghints
+	likelyerrors spellinghints \
+	hspell.spec
 
 DISTDIR = $(PACKAGE)-$(VERSION)
 

@@ -293,13 +293,15 @@ while(<$fh>){
 	if(substr($smichut,-1,1) eq "ה"){
 	  $smichut=substr($smichut,0,-1);
 	} else {
+# NOTE: THIS WAS A MISTAKE: see correction to case 226 at the end of [1]!!!
+# שייה is quite normal, after all...
 	  # סגול ה not ending with ה? This is basically for words like שה,
 	  # inputted as "שי" (see wolig.dat). According to [1, case 226],
 	  # the "ah" inflection is not valid in this case, and instead we
 	  # have a special "ha" (no vowel before it). Eek... Why couldn't they
 	  # just allow the normal ah or eha in this case, like the masc. ehו??
-          outword $smichut."ha";
-	  $no_ah=1;
+#          outword $smichut."ha";
+#	  $no_ah=1;
 	}
         outword $smichut."ehו";
 	# TODO: maybe add the "eha" inflection? But it won't generate anything
@@ -313,7 +315,7 @@ while(<$fh>){
       outword $smichut."כם";
       outword $smichut."כן";
       outword $smichut."ו";
-      outword $smichut."ah"   unless $no_ah;
+      outword $smichut."ah";#   unless $no_ah;
       outword $smichut."aן";
       outword $smichut."aם";
     }

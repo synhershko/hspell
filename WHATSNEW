@@ -1,3 +1,36 @@
+Release 0.4: (March 10, 2003)
+
+ * Some incorrect words purged or fixed, and many more words added: over
+   2,300 base words and 60,000 inflections.
+   Thanks to Orna Agmon for reporting some of the missing words.
+
+ * Complete overhaul of the hspell homepage
+   (http://www.ivrix.org.il/projects/spell-checker/).
+   Also, the site now features signed RPMs, and the spec used to make them
+   is included in the source distribution. The current binary RPM includes the
+   dictionary compressed with a special algorithm, making it, and the final
+   installation, very small (as little as 100K), at the expense of the "-v"
+   option not working.
+   Thanks to Tzafrir Cohen and Oron Peled for the initial version of the spec.
+
+ * Shem Poal Natuy + Kinuy for all verbs, things like: ותבשב ,יננטצהב
+   There is probably an error in the conjugation of these Shmot Poal from Binyan
+   Qal. woo creates בזוכרנו, while the strict rules say it should be בזכרנו.
+   This would be settled by the next release.
+
+ * Added "-i" option, to be used in addition to "-a" from within other
+   programs (e.g. LyX) to allow spell-checking of mixed English-Hebrew text
+   by using ispell for the English words. The new program "hspell-i" runs
+   hspell with the -i option, so it can be used in (for example) LyX as
+   the spellchecker. (thanks to Alon Altman)
+
+ * Long options, and new --help and --version options. (thanks to Tzafrir Cohen)
+
+ * Vocabulary: 250,027 words
+               based on 6238 nouns, 1174 adjectives, 4584 verb stems, and
+	       1291 other words
+
+-----------------------------------------------------------------------------
 Release 0.3: (February 2, 2003)
 
  * Some incorrect words purged or fixed, and many more words added: over
