@@ -1,3 +1,67 @@
+Release 0.6 (August 5, 2003):
+
+ In this release, the Hspell front-end (the hspell program) was rewritten.
+ The new front-end has many improvements over the old one, but also a few
+ setbacks - features that are (temporarily) unavailable because they weren't
+ yet ported to the new version.
+
+ The improvements:
+
+ * A huge performance improvement - hspell now starts up, and runs, at least
+   20 times faster than it used to and takes less than one fifth the memory.
+
+ * The new front-end is written in C, so Hspell can now run on systems which
+   do not have Perl. Perl is still needed for building Hspell from source.
+
+ * The list of allowed prefixes was improved (joined work with Shlomo Yona)
+   and hspell now finally knows which prefixes are valid for most words,
+   reducing the risk of accepting misspellings as correct and reducing the
+   number of silly (and wrong) correction suggestions.
+
+   Note that unlike earlier versions, words listed in the user's personal
+   dictionary (~/.hspell_words or ./hspell_words) are no longer automatically
+   accepted with prefixes. Also, these words are never used as suggested
+   corrections.
+
+ * "hspell -a" was made more compatible with the standard "ispell -a" (thanks
+   to Mooffie). Hspell is now known to be used with LyX, KDE, Geresh and Emacs.
+   
+ The setbacks:
+
+ * The "-v" option, that used to explain how valid words were derived, is
+   no longer available in this version. It is replaced by a "-l" option,
+   which in this release is weaker (it can only show a division of valid
+   words into prefix particle + word).
+
+ * The "-n" option, that used to give hints on how to spell correctly, is
+   not available.
+
+ * The "likelyerrors" feature (or recognizing certain words as theoretically
+   correct but still very likely to be mistakes) is not available.
+
+ * TeX-like repeated single quote ('') is not treated as double quotes (").
+
+ * Long options (GNU's "minus-minus" options) are not supported in this
+   version.
+
+ Some other changes:
+
+ * Included in the distribution is a new utility "multispell" by Mooffie,
+   which can spell-check mixed Hebrew-English text by interfacing with two
+   spell-checkers (hspell and ispell) simultaneously. Multispell is better
+   than hspell's built-in slave mode (hspell -a -i) when the calling program
+   can't deal with wrong word order in the results (e.g., Emacs has this
+   issue.)
+
+ * Some incorrect words purged or fixed, and more words added: over 600
+   base words added.
+
+ * Vocabulary: 394,833 words (when including kinuyim on verbs)
+               based on 7462 nouns, 1533 adjectives, 5060 verb stems, and
+	       1819 other words
+
+
+-----------------------------------------------------------------------------
 Release 0.5: (May 8, 2003)
  * Some incorrect words purged or fixed, and many more words added: about
    2,000 base words added.
@@ -27,6 +91,7 @@ Release 0.5: (May 8, 2003)
                based on 7125 nouns, 1484 adjectives, 4801 verb stems, and
 	       1799 other words
 
+-----------------------------------------------------------------------------
 Release 0.4: (March 10, 2003)
 
  * Some incorrect words purged or fixed, and many more words added: over

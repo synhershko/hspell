@@ -18,7 +18,7 @@ if($#ARGV < 0){
 	$infile=$ARGV[0];
 }
 
-open(INFILE, "<", $infile)
+open(INFILE, "<$infile")
   or croak "Couldn't open data file $infile for reading";
 open (SHEMP, ">shemp.dat");
 print SHEMP "# list of automatically generated shmot-peula\n";
@@ -67,11 +67,21 @@ while(<INFILE>){
     $w->{opts}= \%opts; #TODO pass only relevant options.
  
     foreach $b (@binyanim) {
-      my $SUBJECTIZE = 1; # if perl had constants, here I'd use it.
+      # if perl had constants, here I'd use it. When $SUBJECTIZE is passed to
+      # the objectize funtion, it creates the kinnuy xabur that signifies the
+      # subject of a sentence, rather than the object. In some (few) cases it
+      # makes a difference.
+      my $SUBJECTIZE = 1;
       $w->{guf} = undef; # some cleanup. should there be more?
       $w->binyan($b);
+
+      # When the options נסתר is given, $word is not the root to conjugate, but
+      # rather the 3rd person masculine singular form of the verb. We seldom
+      # use this input method, and usually generate this base form automatically
+      # (in the parameter-less abar_nistar function).
       if ($opts{"נסתר"}) {$w->abar_nistar($word);}
       else { $w->abar_nistar;}
+
       my $s = $w->infinitive_conj;
       # in most cases, we want to accept all bklm in the initial. but since the
       # code is less-than-perfect, it relies on 'ל' so we substitute the lamed
@@ -79,31 +89,45 @@ while(<INFILE>){
       my $tmps = $s;
       $tmps =~ s/^ל/L/ if defined($tmps) && !$opts{'מקור_אבד_פנ'};
       $w->outword($tmps);
+      # infinitives that lost their p"n, should regain it in their bkm form.
+      # Here, with this B prefix, we allow only the bet form.
+      # TODO: correct this silly add/remove/regain drill
+      if (defined($tmps) && $opts{'מקור_אבד_פנ'}) {
+	$tmps =~ s/^לי/B$w->{q}/;
+        $w->outword($tmps);
+      }
 
       # the infinitive form of all verbs has subjectization in all pronouns.
       # however, transitive verbs have also objectization, which is exactly the
       # same for most pronouns. therefore, for transitive verbs we print 
       # subjectizatoin only for $ani. 
-      # (maybe we should add $atem and $aten in $qal)
+      #
+      # TODO: resolve the following linguistic question: Is there a differnce
+      # in the pronounciation and spelling of בדוחפם (when they push, bdoxpam) 
+      # and לדחופם (to push them, lidxpam)? The first is an subjectization of
+      # לדחוף, and the second is a objectization. I do *not* know if the above
+      # differentiation is valid or correct, and failed to find refernces to 
+      # support my gut feeling. Thus, on the mean while, I produce a waw-less 
+      # form, as done by rav-millim.
       if (defined($s)) {
         if ($transitive{$w->{binyan}} ) {
  	  foreach $bj (1,2,4,5,6,7,8,9,10) {
             my $n = $w->objectize($s, $bj);
-            $w->outword($n) if $n; # print &Word::finalize($n),"\n" if $n;
+            $w->outword($n) if $n;
           }
           my $n = $w->objectize($s, $Word::ani, $SUBJECTIZE);
           $w->outword($n) if $n;
-	} else {  # this is very ugly. here I am creating
-		  # "subjectized" infinitive for all verbs, with
-		  # preceding B (to be substituted by hspell.pl)
+	} else { # output only subjectizations for intransitive verbs.
  	  foreach $bj (1,2,4,5,6,7,8,9,10) {
             my $n = $w->objectize($s, $bj, $SUBJECTIZE);
-            $w->outword($n) if $n; # print &Word::finalize($n),"\n" if $n;
+            $w->outword($n) if $n;
           }
 	}
       }
 
-      foreach $g (1,2,3,4,5,6,7,8,9) # in past, at==ata,hem==hen
+      # in past, hem==hen and in niqqudless script so is at==ata. But the
+      # objectization is different, so we generate both at and ata.
+      foreach $g (1,2,3,4,5,6,7,8,9) 
       {
         $w->{object} = undef; #clear objectization
         $s = $w->past_conj($g);
@@ -115,15 +139,16 @@ while(<INFILE>){
 	}
 	if (1 && $transitive{$w->{binyan}}) {
 	  next if $g eq 8; # $aten is same as transitivisation of $atem
+	  $w->{second_bj_form} = 0;
           foreach $bj (1,2,4,4,5,6,7,8,9,10) {
-	    $w->{short_hu_bj} = !$w->{short_hu_bj} if $bj == 4;
+	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj == $Word::hu;
 	    my $n = $w->objectize($s, $bj);
 	    $w->outword($n) if $n;
           }
         }
       }
 
-      foreach $g (2,3,7,8) # in imperative only at,ata,atem,aten
+      foreach $g (2,3,7,8) # in imperative only at,ata,atem,aten (second person)
       {
         $w->{object} = undef; #clear objectization
 	$s = $w->imperative_conj($g);
@@ -144,22 +169,28 @@ while(<INFILE>){
         $w->outword($s);
       	if (1 && $transitive{$w->{binyan}}) {
 	  next if $g eq 8;
+	  $w->{second_bj_form} = 0;
           foreach $bj (1,2,4,5,4,5,6,7,8,9,10) {
-	    # a trick to flip short_hu_bj for the second time of bj=hu/hi
-	    $w->{short_hu_bj} = !$w->{short_hu_bj} if $bj == 4;
+	    # a trick to flip second_bj_form for the second time of bj=hu/hi
+	    $w->{second_bj_form} = !$w->{second_bj_form} if $bj == 4;
 	    my $n = $w->objectize($s, $bj);
 	    $w->outword($n) if $n;
           }
         }
       }
 
-      foreach $g (2,3,7,8)
+      $w->{second_bj_form}=1; # only this is accepted in the present tense.
+      #and no reason to repeat it for every objectization.
+
+      # the gufs of the present tense are very much different than in other
+      # tenses. Nevertheless, we use at, ata, atem, aten as represetatives of
+      # yaxid, yxida, rabbim, rabbot.
+      foreach $g ($Word::ata,$Word::at,$Word::atem,$Word::aten)
       {
         $w->{object} = undef; #clear objectization
         $s = $w->present_conj($g);
         $w->outword($s);
 	if (1 && $transitive{$w->{binyan}}) {
-	  $w->{short_hu_bj}=1; # only this is accepted in the present tense
           foreach $bj (1,2,3,4,5,6,7,8,9,10) {
 	    my $n = $w->objectize($s, $bj);
 	    $w->outword($n) if $n;
@@ -287,7 +318,8 @@ while(<INFILE>){
     $w->{mishqal} =~ s/^התq/הqת/ if ($w->{q} =~ m/(ס|ש)/);
     $w->{mishqal} =~ s/^התq/הqט/ if ($w->{q} eq 'צ');
     $w->{mishqal} =~ s/^התq/הqד/ if ($w->{q} eq 'ז');
-    $w->{mishqal} =~ s/^התq/היq/ if ($w->{q} =~ m/(ת|ד|ט)/);
+    $w->{mishqal} =~ s/^התq/היq/ if ($w->{q} =~ m/(ת|ד|ט)/ && 
+			!${$w->{opts}}{"שמור_פד"});
   }
 
 # create the abar_nistar form, unless it is provided as the param.
@@ -1180,23 +1212,6 @@ while(<INFILE>){
     return $w->_subst_root($m)
   }
 
-#  sub subjectize { # TODO: far far from being done.
-#    my ($w, $s, $bj, $suf) = @_;
-#    $w->{object} = $bj;
-#    $suf = $subject_suf{$bj};
-#    if ($w->{tense} eq $infinitive) {
-#      # nadav (and the aqademia rules) requires dropping the ו
-#      $s =~ s/^ל(.)(.)ו(?=.$)/ל$1$2/ if $w->{binyan} eq $qal && 
-#			!$w->_nakey_lh;# && $bj !~ m/^($atem|$aten)$/;
-#      # the nun stays since it has qamac!
-#      $s =~ s/^לי/לנ/o if $w->{binyan} eq $qal && $w->{q} eq 'נ';
-#      $s =~ s/(?=.$)/י/o if ($w->{t} eq $w->{l} && !${$w->{opts}}{"שמור_עע"});
-#      $suf =~ s/^הו$/ו/;
-#      $s =~ s/ל/B/o;
-#      return $s.$suf;
-#    }
-#  }
-
   sub objectize {
     # $is_subj is 1 if the object that is fused into the verb is realy the
     # subject of a sentence.
@@ -1205,22 +1220,27 @@ while(<INFILE>){
 
     # according to barkali, no kinuy khavur when obj=subj
     if ($w->{tense} !~ m/($present|$infinitive)/){
-    return undef
-      if ($bj eq $w->{guf} && $bj =~ m/^($ani|$anu|$ata|$at|$atem|$aten)$/o);
-    return undef if "$bj $w->{guf}" =~ m/($ani|$anu) ($ani|$anu)/;
-    return undef if "$bj $w->{guf}" =~ m/($at|$ata) ($at|$ata)/;
-    return undef if "$bj $w->{guf}" =~ m/($aten|$atem) ($aten|$atem)/;
+      return undef
+        if ($bj eq $w->{guf} && $bj =~ m/^($ani|$anu|$ata|$at|$atem|$aten)$/o);
+      return undef if "$bj $w->{guf}" =~ m/($ani|$anu) ($ani|$anu)/;
+      return undef if "$bj $w->{guf}" =~ m/($at|$ata) ($at|$ata)/;
+      return undef if "$bj $w->{guf}" =~ m/($aten|$atem) ($aten|$atem)/;
     }
 
     if ($is_subj) {$suf = $subject_suf{$bj}} else {$suf = $object_suf{$bj}}
-    $suf =~ s/^הו$/ו/ if $w->{short_hu_bj};
+    $suf =~ s/^הו$/ו/ if $w->{second_bj_form};
 
-    # handling of Doubled
-    if ($w->{binyan} eq $hiqtil &&
-	$w->{t} eq $w->{l} && !${$w->{opts}}{"שמור_עע"}) {
-      # add xiriq where there was ceire.
-      $s =~ s/($w->{q})($w->{l}(ה|ו|י)?)$/$1י$2/;
-    }
+#   The following handling may seem logical, but it is wrong according to the
+#   academia specifications. since the stem form does not have the internal yod,
+#   the cojugations don't obtain it either. "When I protected my country" should
+#   be spelled בהגני על ארצי, and not בהגיני על ארצי.
+#
+#    # handling of Doubled
+#    if ($w->{binyan} eq $hiqtil &&
+#	$w->{t} eq $w->{l} && !${$w->{opts}}{"שמור_עע"}) {
+#      # add xiriq where there was ceire.
+#      $s =~ s/($w->{q})($w->{l}(ה|ו|י)?)$/$1י$2/;
+#    }
     if ($w->{tense} eq $infinitive) {
       # nadav (and the aqademia rules) requires dropping the ו.
       # in general the waw should be dropped. but what about the cases where it
@@ -1248,12 +1268,12 @@ while(<INFILE>){
       $s =~ s/ת[םןמנ]$/תו/ if $w->{guf} eq $aten || $w->{guf} eq $atem;
       $s .= 'י' if $w->{guf} eq $at;
       # TODO: $suf = 'ו' if $bj==$hu && past_pael שנאו and not שנאהו
-      # plural gufs don't have the short_hu_bj
-      return undef if ($w->{short_hu_bj} && $s =~ m/ו$/o);
+      # plural gufs don't have the second_bj_form
+      return undef if ($w->{second_bj_form} && $s =~ m/ו$/o);
     } elsif ($w->{tense} eq $present) {
       #TODO why Barkaly does not show objectization of female plurals??
       #return undef if $w->{guf} =~ m/^($anu|$aten|$hen)$/o;
-      return undef unless $w->{short_hu_bj};
+      return undef unless $w->{second_bj_form};
       $s =~ s/ה$/ת/o if $w->{guf} eq $at;
       $s =~ s/ה$//o if ($w->_nakey_lh && $bj ne $hu);
       if ($w->{guf} =~ m/^($atem|$hem|$anu|$aten|$hen)$/o) {
@@ -1267,9 +1287,10 @@ while(<INFILE>){
       $s =~ s/^([אתינ]..)ו(?=.$)/$1/ if $w->{binyan} eq $qal;
       $s =~ s/ה$//o if $w->_nakey_lh;
       # few gufs has a second legal form for hu/hi objects. 
-      # return it when short_hu_bj is requested.
-      if ($w->{short_hu_bj}) {
-	#only few gufs have short_hu_bj.
+      # return it when second_bj_form is requested.
+      # for example אשמרנו/אשמרנה, aside to אשמרו/אשמרה
+      if ($w->{second_bj_form}) {
+	#only few gufs have second_bj_form.
         return undef unless $w->{guf} =~ m/($ani|$ata|$hu|$hi|$anu)/o;
         $suf =~ s/^(?=[הו]$)/נ/o; 
       }
@@ -1290,11 +1311,11 @@ while(<INFILE>){
       my %gname = ($ani => 'אני', $ata => 'אתה', $at => 'את', $hu => 'הוא',
   	     $hi => 'היא',  $anu => 'אנו', $atem => 'אתם', $aten => 'אתן',
   	     $hem => 'הם', $hen => 'הן' );
-      $tense = 'עבר' if $w->{tense} eq $past;
-      $tense = 'הווה' if $w->{tense} eq $present;
-      $tense = 'עתיד' if $w->{tense} eq $future;
-      $tense = 'ציווי' if $w->{tense} eq $imperative;
-      $tense = 'מקור' if $w->{tense} eq $infinitive;
+      # the following anonymous hash looks much better than the translation
+      # code it replaces.
+      $tense = ${ {$past=>'עבר', $present=>'הווה', $future=>'עתיד', 
+		$imperative=>'ציווי', $infinitive=>'מקור', 
+		undef=>'-' } }{ $w->{tense} };
       if ($w->{guf}) {
         $person = ','.$gname{$w->{guf}};
         if ($w->{tense} eq $present || $w->{tense} eq $adjective) {
