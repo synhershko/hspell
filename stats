@@ -1,27 +1,57 @@
 #!/bin/sh
 unset LANG LC_CTYPE LC_ALL LC_COLLATE
 make
-echo -n "Noun stems: "
-grep " ע" wolig.dat | grep -vc "^#"
-echo -n "Adjective stems: "
-grep " ת" wolig.dat | grep -vc "^#"
-echo -n "Verb rules: "
-grep " פ" woo.dat | grep -vc "^#"
-echo -n "Verb stems: "
-grep -c -- "----" out.verbs
-echo -n "Shmot Peula derived from verbs: "
-wc -l shemp.dat
-echo -n Sum of unique nouns and shmot peula:
-grep -h " ע" wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$//" | sort -u | wc -l
-echo -n "...out of them: needing no inflection hints: "
-grep -h " ע" wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$//" | sort -u | grep "ע$" | wc -l
-echo -n "                needing explicit gender hints: "
-egrep ",(זכר|נקבה)" wolig.dat | grep "ע,"| wc -l
-echo -n Extrawords, milot and biza-*:
-grep -h "^[א-ת]" extrawords milot biza-verbs biza-nouns | tr -d - | sort -u | wc -l
+echo
+
+echo "Statistics on input files:"
+echo "--------------------------"
+echo -n "wolig.dat: "
+echo -n `grep " ע" wolig.dat | grep -vc "^#"`
+echo -n " noun lines, "
+echo -n `grep " ת" wolig.dat | grep -vc "^#"`
+echo " adjective lines."
+echo -n "woo.dat: "
+echo -n `grep " פ" woo.dat | grep -vc "^#"`
+echo " verb lines."
+echo -n "shemp.dat: "
+echo -n `grep " ע" shemp.dat | grep -vc "^#"`
+echo " auto-generated gerunds."
+echo -n "misc data lines:" `grep -hc "^[א-ת]" extrawords` "extrawords, "
+echo -n `grep -hc "^[א-ת]" milot` "milot, "
+echo -n `grep -hc "^[א-ת]" biza-verbs` "bizaverbs, "
+echo `grep -hc "^[א-ת]" biza-nouns` "bizanouns. "
+
+echo
+
+echo "Unique baseword counts:"
+echo "-----------------------"
+NN=`grep -h " ע" wolig.dat shemp.dat | sed "/^#/d;s/ *#.*$//" | sort -u | wc -l`
+NN1=`grep -h " ע" wolig.dat shemp.dat | sed "/^#/d;s/ *#.*$//" | sort -u | grep -vc "ע$"`
+NN2=`sed "s/#.*$//" < wolig.dat | egrep ",(זכר|נקבה)" | grep "ע,"| wc -l`
+echo Nouns: $NN "(of" them, $NN1 need inflection hints, $NN2 explicit "gender)."
+
+VV=`zgrep -c -- ---- dout.verbs.gz`
+echo Verbs: $VV
+
+AA=`grep " ת" wolig.dat | grep -v "^#" | sed "s/ *#.*$//" | sort -u | wc -l`
+echo Adjectives: $AA
+
+EE=`grep -h "^[א-ת]" extrawords milot biza-verbs biza-nouns |  sed "s/ *#.*$//" | tr -d - | sort -u | wc -l`
+echo Other words: $EE
+echo
+echo Total number of base words - `expr $NN + $VV + $AA + $EE`
+
+echo
+echo "Final word count:"
+echo "-----------------"
+
+# we can count words in hebrew.wgz even without compiling wunzip :)
+WW=`zcat hebrew.wgz | tr [0-9] '\012' | grep -vc "^$"`
+echo Unique words in hebrew.wgz: $WW
+echo "Dictionary file sizes (in bytes):"
+wc -c hebrew.wgz*
+echo "Memory use (spell-checker only):"
+gzip -dc hebrew.wgz | ./find_sizes >/dev/null
+
 # NOTE: to find duplicates in wolig.dat:
 # grep " ע" wolig.dat | grep -v "^#"| sed "s/ *#.*$//"|sort |uniq -c | sort -n | less
-wc -l milot likelyerrors biza-verbs biza-nouns extrawords
-echo
-echo -n "Total resulting words: "
-(cat out.nouns out.nouns-shemp out.verbs milot extrawords biza-verbs biza-nouns) | grep -h "^[LBא-ת]" | tr -d -| sort -u |wc -l

@@ -1,8 +1,3 @@
-- disallow empty prefixes for infinitives in the enumeration. probable reason is
-  a bug in dmask2ps.
-- put desc_sizes.h into runtime-read file.
-- give better names to functions.
-
 Really important stuff to be done:
 * Extend the list of known verbs, nouns, proper nouns, relation words, etc.
   In this one, the general public could really help.
@@ -10,30 +5,28 @@ Really important stuff to be done:
   לשמרתי (to guarded) or הלמדנה (the + ladies, learn!). However, we should be
   even smarter and reject wrong prefixes before milot/extrawords as in כשה+מתי
   and refine our judgement in order to reject מכ+בית but accpept מכ+מאה
+* Improve quality of correction-suggestion algorithm.
+* Include documentation for hspell-i and multispell (if hspell -i is the
+  same as hspell, then document hspell-i in the hspell man page and link
+  them) and the -i option for hspell.
 
 Quite important things:
 * Support the infinitive with different prefixes (not just Lamed) and without
   prefixes ("absolute infinitive"). For example, not only לעבור (to pass) is
   correct, but so is בעוברו (when he passes) and עוברם (their passing). 
   The "fat" version of release 0.5 supports most, but not all, of these.
-* Add library API to the C-based spell-checker
+* Improve the library API to the C-based spell-checker
 * Have a better and more complete ispell-like interface to hspell. Version 0.3
   has a rudimentary one.
-* Setup to work with KWrite, LyX and friends. Version 0.3 works under LyX, but
-  in a less-than-favorable fashion. Version 0.6 works well also withc emacs,
-  KDE, and geresh.
 
 Good to have:
-* Compression technique that preserves the stem information of words (for the -l
-  option).
 * Rewrite the whole thing using Uzzi Ornan's transcript internally. This would
   probably induce a simpler, more elegant code, and enable us to add Niqqud
   (Hebrew accentation) to the game sometime in the future.
-* Output morphological information about the conjugation. This can help
-  understanding the suggested corrections, and have many other implications.
-  (see Far-fetched section). This is mostly done by release 0.5's -d option
 * Add statistics to each conjugation. לשבותך (for your repatriation) is less 
   probable word than לשבת (to sit), and it might help the user to know that.
+* Support other, non-academia, spelling standards. Try to gather some
+  statististics on which spellings are more frequently used in practice.
 
 Far fetched:
 * Add support for Niqqud.

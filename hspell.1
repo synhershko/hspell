@@ -1,12 +1,12 @@
 '\" t
-.\" Copyright (c) 2001-2003, Nadav Har'El and Dan Kenigsberg
-.TH hspell 1 "22 December 2003" "Hspell 0.7" "Ivrix"
+.\" Copyright (c) 2001-2004, Nadav Har'El and Dan Kenigsberg
+.TH hspell 1 "21 June 2004" "Hspell 0.8" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker
 .SH SYNOPSIS
 .B hspell
 [
-.B \-vVcnlsa
+.B \-achHlnsvV
 ]
 .BI [\| file\|.\|.\|. \|]
 .SH DESCRIPTION
@@ -89,9 +89,9 @@ word why it was
 recognized (show the basic noun, verb, etc., that this inflection relates to,
 and its tense, gender, associated Kinnuy, or other relevant information)
 
-In normal RPM of release 0.7, this option will only show the correct splits of the
-given word into prefix + word, as the full information incurs a 4-fold increase
-in the installation size.
+If Hspell was built without morphological analysis support, this option will
+only show the correct splits of the given word into prefix + word, as the
+full information incurs a 4-fold increase in the installation size.
 .TP
 .B \-s
 Normally, the words deemed spelling mistakes are shown in alphabetical order.
@@ -120,6 +120,14 @@ and
 to use
 .B hspell
 as an external spell-checker.
+.TP
+.B \-H
+By default, Hspell does not allow the He Ha-sh'ela prefix. This is because
+this prefix is not normally used in modern Hebrew, and generates many
+false-negatives (errors, like He followed by a possessed noun, are thought
+to be correct). The
+.B \-H
+option nevertheless tells Hspell to allow this prefix.
 .TP
 .B \-d \-B, \-m, \-T, \-C, \-S, \-P, \-p, \-w, and \-W
 These options are passed to 
@@ -170,7 +178,7 @@ of printed dictionaries.
 
 The word list is also not based on automatic scanning
 of available Hebrew documents (such as online newspapers), because there is
-no way to guarantee that such a list will be correct (and not contain
+no way to guarantee that such a list will be correct (not contain
 misspellings, useless proper names, slang, and so on), complete (certain
 inflections might not appear in the chosen samples) or consistent (especially
 when it comes to niqqud-less spelling rules).
@@ -209,9 +217,9 @@ Currently always 0.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 0.7 (December 22, 2003)
+described by this manual page is 0.8 (June 21, 2004)
 .SH "COPYRIGHT"
-Copyright (C) 2000-2003, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2004, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
 Hspell is free software, released under the GNU General Public License (GPL).
@@ -259,7 +267,7 @@ This manual page is in English.
 The
 .B hspell
 spellchecker depends on word lists created by the Hspell project. At this
-stage, these word lists still do not cover all (or even most) of the Hebrew
+stage, these word lists still do not cover all of the Hebrew
 vocabulary, and so
 .B hspell
 will often list correct words (that it doesn't know) as being wrong. This
