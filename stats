@@ -1,0 +1,14 @@
+#!/bin/sh
+make
+echo -n "Noun stems: "
+grep " ò" wolig.dat | grep -v "^#"|  wc -l
+echo -n "Adjective stems: "
+grep " ú" wolig.dat | grep -v "^#"|  wc -l
+echo -n "Verb roots: "
+grep " ô" woo.dat | grep -v "^#"|  wc -l
+echo -n "Shmot Peula derived from verbs: "
+wc -l shemp.dat
+wc -l milot extrawords likelyerrors biza-verbs biza-nouns
+echo
+echo -n "Total resulting words: "
+(cat out.nouns out.nouns-shemp out.verbs milot extrawords biza-verbs biza-nouns) | grep -h "^[à-ú]" | tr -d -| sort -u |wc -l

@@ -1,0 +1,210 @@
+We are proud to announce version 0.1 of Hspell, the free Hebrew spellchecker
+and morphology engine.
+
+We have worked very hard to bring you a fully working Hebrew spellchecker
+on the first release. It is not a toy release, and on typical documents it
+should recognize the majority of correct words. However, users of this release
+must take into account that it still will not recognize *all* the correct
+words; The dictionary is still admittedly not complete, and this situation
+will be improved in the next releases. On the other hand, barring bugs
+hspell should not recognize incorrect words - extreme attention has been
+given to the correctness and consistency of the dictionary.
+
+You can get Hspell from:
+	http://www.ivrix.org.il/projects/spell-checker/
+
+Hspell was written by Nadav Har'El and Dan Kenigsberg.
+Thanks to Uwe Brauer and Michael Lugassy for "convincing" us to start and
+to advance this project when we were almost ready to give up.
+
+People who wish to integrate Hspell's technology into their or others' GPL
+software (e.g., word processors, editors), are encouraged to do so, and are
+welcome to contact us for help. People who wish to help us with enlarging
+the word lists, are also encouraged to contact us and will be appreciated
+(see the full README for instructions on how to help).
+
+The full README (http://www.ivrix.org.il/projects/spell-checker/README)
+explains Hspell's spelling standard (niqqud-less), a bit about the technology
+behind Hspell, how to use the "hspell" program, and lists a few future
+directions.
+
+
+About Hspell's spelling standard
+--------------------------------
+
+Hspell was designed to be 100% and strictly compliant with the official
+niqqud-less spelling rules ("Ha-ktiv Khasar Ha-niqqud", colloquially known as
+"Ktiv Male") published by the Academy of the Hebrew Language. This is both an
+advantage and a disadvantage, depending on your viewpoint. It's an advantage
+because it encourages a *correct* and consistent spelling style throughout
+your writing. It is a disadvantage, because a few of the Academia's official
+spelling decisions are relatively unknown to the general public.
+
+Users of Hspell (and all Hebrew writers, for that matter) are encouraged to 
+read the Academia's official niqqud-less spelling rules (which are printed at
+the end of most modern Hebrew dictionaries), and to refer to Hebrew
+dictionaries which use the niqqud-less spelling (such as Millon Ha-hove or
+Rav Milim).
+
+Future releases might include an option for alternative spelling standards.
+
+
+The technology behind Hspell
+----------------------------
+
+The "hspell" program itself is a simple Perl script, but the real "brains"
+behind it are the word lists (dictionary) provided by the Hspell project.
+
+In order for it to be completely free of other people's copyright restrictions,
+the Hspell project is a clean-room implementation, not based on other
+companies' word lists, on other companies' spell checkers, or on copying of
+printed dictionaries. The word list is also not based on automatic scanning
+of available Hebrew documents (such as online newspapers), because there is
+no way to guarantee that such a list will be correct (and not contain
+misspellings, useless proper names, slang, and so on), complete (certain
+inflections might not appear in the chosen samples) or consistent (especially
+when it comes to niqqud-less spelling rules).
+
+Instead, our idea was to write programs which know how to correctly inflect
+Hebrew nouns and conjugate Hebrew verbs. The input to these programs is a
+list of noun stems and verb roots, plus hints needed for the correct
+inflection when these cannot be figured out automatically. These input files
+are obviously an important part of the Hspell project. The "word list
+generators" (written in Perl, and are also part of the Hspell project) then
+create the complete word-list for use by the spellchecking program, hspell.
+The generated lists are useful for much more than spellchecking, by the
+way - see more on that below ("the future").
+
+Although we wrote all of Hspell's code ourselves, we are truly indebted to
+the old-style "open source" pioneers - people who wrote books instead of
+hiding their knowledge in proprietary software. For the correct noun
+inflections, Dr. Shaul Barkali's "The Complete Noun Book" has been a great
+help. Prof. Uzzi Ornan's booklet "Verb Conjugation in Flow Charts" has been
+instrumental in the implementation of verb conjugation, and Barkali's
+"The Complete Verb Book" was used too.
+During our work we have extensively used a number of Hebrew dictionaries,
+including Even Shoshan, Millon Ha-hove and Rav-Milim, to ensure the correctness
+of certain words. Various Hebrew newspapers and books, both printed and online,
+were used for inspiration and for finding words we still do not recognize.
+We wish to thank Cilla Tuviana and Dr. Zvi Har'El for their assistance with
+some grammatical questions.
+
+
+Using hspell
+------------
+
+After unpacking the distribution and running "make" and "make install",
+the hspell executable (a Perl script, actually) is installed (by default)
+in /usr/local/bin, and the dictionary files are in /usr/local/share/hspell.
+
+The "hspell" program can be used on any sort of text file containing Hebrew
+and potentially non-Hebrew characters which it ignores. For example, it
+works well on Hebrew text files, TeX/LaTeX files, and HTML. Running
+
+	hspell filename
+
+Will check the spelling in filename and will output the list of incorrect
+words (just like the old-fashioned UNIX "spell" program did). If run without
+a file parameter, hspell reads from its standard input.
+
+In the current release, hspell expects ISO-8859-8-encoded files. If files
+using a different encoding (e.g., UTF8) are to be checked, they must be
+converted first to ISO-8859-8 (e.g., see iconv(1), recode(1)).
+
+If the "-c" option is given, hspell will suggest corrections for misspelled
+words, whenever it can find such corrections. The correction mechanism in this
+release is especially good at finding corrections for incorrect niqqud-less
+spellings, with missing or extra 'immot-qri'a.
+The "-v" (verbose) option will explain for each correct word why it was
+recognized (show the basic noun, verb, etc., that this inflection relates to).
+
+Because hspell's output (naturally) is "logical-order", it is normally
+useful to pipe it to bidiv or rev before viewing. For example
+
+	hspell -c filename | bidiv | less
+
+Another convenient alternative is to run hspell on a BiDi-enabled terminal.
+
+How *you* can help
+------------------
+
+As mentioned above, hspell does not cover yet all modern Hebrew. Few types of
+nouns are not inflected correctly, and therefore we cannot add them to the
+dictionary. Few extremely irregular verbs do not fit in, too. However, most
+hebrew words are inflected correctly, and all we need is to collect them all.
+
+This is where you enter the picture. If you stumble upon a commonly used word
+in modern Israeli Hebrew, you are welcome to add its stem to the appropriate
+dat file. Notice that in some cases you should add some flags to hint how the
+inflection should be done.
+Run wolig/woo to inflect it (or simply "make"), and make sure the output is
+correct. Since "open source" should not mean "low quality", you should examine
+the outcome carefully to make sure the spelling is perfect - look each and
+every word in a good dictionary and/or consult grammer books.
+
+If you send us lists of tested nouns or verbs, and even proper names, you would
+do great service to this GPLed project. Be sure not to copy words out of a
+dictionary or another copyrighted word lists, but rather use you own knowledge
+of Hebrew.
+
+Also, we are very keen to know if you find a spelling error that creeped into
+hspell's word lists.
+
+
+The future
+----------
+
+See the TODO file for a more detailed list of things that should be done
+to improve the Hspell project. Here are just 3 ideas that will be relatively
+easy to do and will greatly enhance the Hspell project's usefulness.
+
+* Completeness and correctness: the word list generated by this release, over
+  120,000 inflected words, isn't bad in the sense that in typical documents a
+  majority of the correct words will be recognized as such. On the other hand,
+  typical documents still contain a non-negligible number of correct words
+  (especially nouns) that will not be recognized, and this should be fixed
+  by adding more noun bases, verb roots and other miscellaneous words to the
+  dictionary. The TODO file mentions a few other special cases that Hspell
+  does not yet recognize as correct words, and should be fixed.
+  Also, in some cases hspell accepts words that it were better if it didn't,
+  for example it currently allows a "he" prefix even before the imperative of
+  verbs.
+
+* Morphology: The Hspell project's data files and generated word lists
+  provide much more than a word list for spell checking: it also allows
+  finding for a given inflected word its base for (e.g., basic noun, the
+  basic verb and the root, etc.), and vice-versa - given a base word one
+  can find its inflections. Such a "morphology" engine can have many uses,
+  including, for example, Hebrew search engines, Hebrew dictionaries (with
+  definitions and/or translation to another language), and machine translation
+  software.
+  The "-v" option to hspell is a small demonstration of what hspell's
+  morphology engine is capable of. Even the spellchecker itself could benefit
+  from more use of those techniques: e.g., it could explain how the corrections
+  it suggests were derived.
+
+* Compression: currently, "make install" installs roughly 1 MB of data
+  files. We have designed a compression algorithm which takes this down
+  to only 50 KB (!!), which is used if "make install_compressed" is done
+  instead of "make install". However, our compression algorithm currently
+  doesn't keep the base-word information that allows hspell's "-v" option
+  to work. This should be fixed in a later release, because a 20-fold
+  (or even "just" 10-fold) reduction in dictionary size will be very welcome
+  by other projects (e.g., Linux distributions) who will want to distribute
+  hspell.
+
+Hspell's license
+----------------
+
+Hspell is free software, released under the GNU General Public License (GPL).
+Note that not only the programs in the distribution, but also the dictionary
+files and the generated word lists, are licensed under the GPL.
+There is no warranty of any kind for the contents of this distribution.
+
+See the LICENSE file for more information and the exact license terms.
+
+Contacting the authors
+----------------------
+
+Nadav Har'El:    nyh    @ math.technion.ac.il
+Dan Kenigsberg:  danken @   cs.technion.ac.il
