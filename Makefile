@@ -1,7 +1,7 @@
 # override any locale settings the user might have - they are destructive
 # to some of the things we do here (like sort).
-LANG=C
-LC_ALL=C
+export LANG=C
+export LC_ALL=C
 
 # build and installation paths
 DESTDIR =
@@ -37,11 +37,18 @@ CFLAGS=-O
 LDFLAGS=-s
 wunzip:
 
+# experimental, not currently in use:
+# TODO: use this instead of seperate out.nouns and out.nouns-shemp in the
+# installation! It's 5% smaller. (not a major difference...)
+out.nouns-all: wolig.pl wolig.dat shemp.dat
+	cat wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$$//" | \
+		sort -u | ./wolig.pl /dev/stdin > out.nouns-all
+
 ################################################
 
 DICTS= out.nouns out.verbs out.nouns-shemp milot extrawords biza-verbs biza-nouns
 wordlist.wgz: $(DICTS) wzip
-	grep -h "^[à-ú]" $(DICTS) | tr -d '-' | sort -u | wzip | gzip -9 \
+	grep -h "^[à-úL]" $(DICTS) | tr -d '-' | sort -u | ./wzip | gzip -9 \
 		> wordlist.wgz
 
 ################################################
@@ -82,7 +89,7 @@ clean:
 ################################################
 # for creating an hspell distribution tar
 PACKAGE = hspell
-VERSION = 0.2
+VERSION = 0.3
 DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	Makefile stats wunzip.c wzip \
 	hspell.pl hspell.1 \

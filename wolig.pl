@@ -126,6 +126,12 @@ sub inword {
     # A word cannot start with a shuruk or kubuts!
     substr($word,0,1)="w";
   }
+  if(substr($word,-4,4) eq "וויה"){
+    # A word like חוויה, הלוויה, טריוויה. I can't imagine any base noun (or
+    # adjective) for which such a double-vav isn't a consonant but rather
+    # a vav and shuruk.
+    substr($word,-4,2)="w";
+  }
   if(substr($word,-1,1) eq "ו"){
     # This vav is a consonant (see comment above about why the few exceptions
     # that do exist don't bother us).
@@ -493,7 +499,9 @@ while(<$fh>){
     # a chirik male, not some sort of consonant yud or another vowel. Together
     # with the iy post-transformation in outword, this makes שני - שנייה work
     # correctly. However, when the word ends with וי (and not ווי) we assume
-    # this is shuruk followed by a consonant yud (for example, מצוי).
+    # this is shuruk followed by a consonant yud (for example, מצוי). In
+    # words that do end in ווי and the וו is not a consonant we must use a
+    # w explictly, (e.g. רווי should be written explictly as רwוי).
     if($word =~ m/([^aeiו]|וו)י$/o){
       substr($word,-1,1) = "iי";
     }
@@ -506,25 +514,30 @@ while(<$fh>){
 	$xword=substr($xword,0,-1);
       }
     }
+
+    if($opts{"עם"}){
+      # For nationality adjectives (always adding in yud!), there is a seperate
+      # plural for the people of that nationality (rather than other objects
+      # from that country), with only ם added. There's also a country name,
+      # and sometimes a female-person form too (נקבה_ה). We these here,
+      # instead of seperately in extrawords, so that the country list can be
+      # organized nicely at one place.
+      if(exists($opts{"ארץ"})){
+        outword $opts{"ארץ"} if($opts{"ארץ"} ne "") # country name
+      } elsif(substr($word,-3,3) eq "אiי"){
+        outword substr($word,0,-3)."ה";  # country name
+      } else {
+        $country = $word;
+        $country =~ s/i?י$//; $country =~ s/מ$/ם/; $country =~ s/נ$/ן/;
+	$country =~ s/כ$/ך/; $country =~ s/פ$/ף/; $country =~ s/צ$/ץ/;
+        outword $country; # country name
+      }
+      outword $word."ם"; # plural (people of that nationality)
+      $opts{"נקבה_ת"}=1; # for enabling ת plural. adding ה plural is optional.
+    }
+
     outword $word; # masculin, singular
     outword $word."-"; # smichut (exactly the same as nifrad)
-    # feminine, singular:
-    my $nekeva_implicit = !($opts{"נקבה_ת"} || $opts{"נקבה_ה"});
-    my $nekeva_t = $opts{"נקבה_ת"} ||
-    		   ($nekeva_implicit && substr($xword,-1,1) eq "י");
-    my $nekeva_h = $opts{"נקבה_ה"} ||
-    		   ($nekeva_implicit && !$nekeva_t);
-    if($nekeva_t){
-      # note: we don't bother adding the vowel "e" before the ת because that
-      # would only make a difference before a yud - and interestingly when
-      # there *is* a yud, the vowel is dropped anyway!
-      outword $xword."ת";
-      outword $xword."ת-"; # smichut (exactly the same as nifrad)
-    }
-    if($nekeva_h){
-      outword $xword."aה";
-      outword $xword."aת-"; # smichut
-    }
     if($opts{"ם"}){
       # special case for adjectives like רשאי. Unlike the noun case where we
       # turn this option automatically for words ending with אי, here such a
@@ -535,6 +548,37 @@ while(<$fh>){
     } else {
       outword $xword."ים"; # masculin, plural
       outword $xword."י-"; # smichut
+    }
+    # feminine, singular:
+    if($opts{"נקבה_ית"}){
+      # This is an ad-hoc treatment of the nekeva_it option, which cannot be
+      # combined with others because we will only have one plural form...
+      $xword=$xword."י";
+      $opts{"נקבה_ת"}=1;
+    }
+    my $nekeva_implicit = !($opts{"נקבה_ת"} || $opts{"נקבה_ה"});
+    my $nekeva_t = $opts{"נקבה_ת"} ||
+    		   ($nekeva_implicit && substr($xword,-1,1) eq "י");
+    my $nekeva_h = $opts{"נקבה_ה"} ||
+    		   ($nekeva_implicit && !$nekeva_t);
+    if($nekeva_t){
+      if(substr($word,-1,1) eq "ה" && !$opts{"שמור_ה"}){
+        # This is a rare case, where an adjective ending with ה gets a ת
+	# feminine form, and an extra yud needs to be added. For example
+	# מופלה, מופלית.
+        outword $xword."ית";
+        outword $xword."ית-"; # smichut (exactly the same as nifrad)
+      } else {
+        # note: we don't bother adding the vowel "e" before the ת because that
+        # would only make a difference before a yud - and interestingly when
+        # there *is* a yud, the vowel is dropped anyway!
+        outword $xword."ת";
+        outword $xword."ת-"; # smichut (exactly the same as nifrad)
+      }
+    }
+    if($nekeva_h){
+      outword $xword."aה";
+      outword $xword."aת-"; # smichut
     }
     outword $xword."ות"; # feminine, plural
     outword $xword."ות-"; # smichut (exactly the same as nifrad)

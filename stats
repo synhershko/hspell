@@ -13,6 +13,8 @@ echo -n "Shmot Peula derived from verbs: "
 wc -l shemp.dat
 echo -n Sum of unique nouns and shmot peula:
 grep -h " ò" wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$//" | sort -u | wc -l
+echo -n ...out of them, needing no inflection hints:
+grep -h " ò" wolig.dat shemp.dat | grep -v "^#"| sed "s/ *#.*$//" | sort -u | grep "ò$" | wc -l
 echo -n Extrawords, milot and biza-*:
 grep -h "^[à-ú]*" extrawords milot biza-verbs biza-nouns | tr -d - | sort -u | wc -l
 # NOTE: to find duplicates in wolig.dat:
@@ -20,4 +22,4 @@ grep -h "^[à-ú]*" extrawords milot biza-verbs biza-nouns | tr -d - | sort -u | w
 wc -l milot likelyerrors biza-verbs biza-nouns extrawords
 echo
 echo -n "Total resulting words: "
-(cat out.nouns out.nouns-shemp out.verbs milot extrawords biza-verbs biza-nouns) | grep -h "^[à-ú]" | tr -d -| sort -u |wc -l
+(cat out.nouns out.nouns-shemp out.verbs milot extrawords biza-verbs biza-nouns) | grep -h "^[Là-ú]" | tr -d -| sort -u |wc -l

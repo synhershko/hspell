@@ -1,3 +1,45 @@
+Release 0.3: (February 2, 2003)
+
+ * Some incorrect words purged or fixed, and many more words added: over
+   1,000 base words and 20,000 inflections. In this release, emphasis has
+   been put on adding Hebrew nouns and adjectives.
+
+ * Fixed Makefile behavior in certain case. In particular "make" should work
+   regardless of LC_* environment variables. However, as hspell currently
+   works on iso8859-8 encoded files, users with a utf8 locale must run the
+   "hspell" perl program as "LC_ALL=C hspell" (otherwise, they will see
+   error messages from Perl).
+
+ * Added ispell-like "-a" option, for interfacing with LyX.
+   If you want to use hspell under LyX you should use Hebrew-enabled LyX
+   (version 1.1.6fix4 is known to work). Add the following line to your
+   .lyx/lyxrc file:
+	\spell_command hspell
+   Notice that this prevents using English ispell/aspell from within LyX. 
+   If you know of a better configuration, please tell us.
+   Notice that if a Hebrew misspelled word is found, it is shown reversed on
+   LyX's spellchecker (and so are its corrections). This is about to be
+   corrected in future releases of LyX. Also, LyX breaks Hebrew acronyms
+   wrongly, and causes hspell to reject them.
+
+   Read http://www.math.tau.ac.il/~dekelts/lyx/instructions2.html for
+   Hebrew LyX general instructions.
+
+ * No longer incorrectly recognize שלווום (should be שלוום, "that to their
+   hook").
+
+ * The wolig.pl automatic inflector can handle country names, and many more
+   country names and nationalities have been added. Note that since I did
+   not find a source for "official" country-name spellings in Hebrew, our
+   list might contain errors. Please tell us if you know a dictionary or other
+   authoritative document which contains the official Hebrew spellings of
+   country names.
+
+ * Vocabulary: 189,347 words
+               based on 5238 nouns, 927 adjectives, 3568 verb stems, and
+	       1203 other words
+
+-----------------------------------------------------------------------------
 Release 0.2: (January 5, 2003)
  * Many more nouns, verbs, and other words: around 2500 new base words, and
    40,000 inflections. Emphasis has been given to adding *common* words that

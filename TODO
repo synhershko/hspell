@@ -3,6 +3,8 @@ Really important stuff to be done:
   In this one, the general public could really help.
 * We add prefixes without much judgment, a vice that accepts non-words like
   לשמרתי (to guarded) or הלמדנה (the + ladies, learn!). We should be smarter.
+* In many cases the verb conjugation contains only one of the legal forms. We
+  should add the other ones לנטוע->לטעת, מותנה->מותנית etc.
 
 Quite important things:
 * Support Kinuyim Khavurim for verbs, i.e. לשומרה (to guard her) or הצחקתני (you
@@ -14,7 +16,8 @@ Quite important things:
 * A quick, C-based, spell-checker that also has a library API.
 * An ispell-like interface to hspell (whether using aspell/ispell
   themselves, or stealing their code and integrating it with hspell).
-* Setup to work with KWrite, LyX and friends.
+* Setup to work with KWrite, LyX and friends. Version 0.3 works under LyX, but
+  in a less-than-favorable fashion.
 * Inflect correctly the few remaining exemplary nouns of the "Complete Nouns 
   Book".
 
