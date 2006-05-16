@@ -1,9 +1,9 @@
 // Spell checking dictionary for Mozilla Thunderbird
 // Script written by rockstiff. Dictionary from ivrix.org.il
 
-const APP_DISPLAY_NAME	= "Hebrew (IL) dictionary";
-const APP_NAME			= "spell-he-IL";
-const APP_PACKAGE		= "dictionaries.mozdev.org/spell-he-IL";
+const APP_DISPLAY_NAME		= "%DISPLAY_NAME%";
+const APP_NAME			= "%APP_NAME%";
+const APP_PACKAGE		= "dictionaries.mozdev.org/%APP_NAME%";
 const APP_VERSION		= "%VERSION%";
 
 var err = initInstall(APP_NAME, APP_PACKAGE, APP_VERSION);
@@ -11,9 +11,9 @@ if (err==SUCCESS) {
 
   // Copy files to Components/myspell
   var myspell_folder = getFolder("Components", "myspell");
-  addFile(APP_NAME, "he-IL.dic", myspell_folder, "");
-  addFile(APP_NAME, "he-IL.aff", myspell_folder, "");
-  addFile(APP_NAME, "README-he-IL.txt", myspell_folder, "");
+  addFile(APP_NAME, "he.dic", myspell_folder, "");
+  addFile(APP_NAME, "he.aff", myspell_folder, "");
+  addFile(APP_NAME, "README-he.txt", myspell_folder, "");
 
   err = getLastError();
   if (err == SUCCESS || err == REBOOT_NEEDED) {

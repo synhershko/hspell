@@ -1,12 +1,12 @@
 '\" t
-.\" Copyright (c) 2001-2005, Nadav Har'El and Dan Kenigsberg
-.TH hspell 1 "13 January 2005" "Hspell 0.9" "Ivrix"
+.\" Copyright (c) 2001-2006, Nadav Har'El and Dan Kenigsberg
+.TH hspell 1 "16 May 2006" "Hspell 1.0" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker
 .SH SYNOPSIS
 .B hspell
 [
-.B \-achHlnsvV
+.B \-acDhHilnsvV
 ]
 .BI [\| file\|.\|.\|. \|]
 .SH DESCRIPTION
@@ -53,6 +53,14 @@ option is given,
 .B hspell
 prints emacs-oriented version information and exits.
 .TP
+.B \-vv
+Repetition of the
+.B \-v
+option causes
+.B hspell
+to also show some information on which optional features were enabled at
+compile time.
+.TP
 .B \-V
 With the
 .B \-V
@@ -97,8 +105,10 @@ Giving the
 .B \-c
 option in addition to
 .B \-l
-results in special behavior. In that case we suggest "corrections"
-to every word (regardless if they are in the dictionary or not), and show
+results in special behavior. In that case
+.B hspell
+suggests "corrections"
+to every word (regardless if they are in the dictionary or not), and shows
 the linguistic information on all those words. This can be useful
 for a reader application, which may also want to be able to understand
 mispellings and their possible meanings.
@@ -119,7 +129,7 @@ does not know yet.
 .TP
 .B \-a 
 With the 
-.B -a
+.B \-a
 option, 
 .B hspell
 tries to emulate (as little as possible of) 
@@ -132,6 +142,38 @@ to use
 .B hspell
 as an external spell-checker.
 .TP
+.B \-i
+This option only has any effect when used together with the
+.B \-a
+option. Normally,
+.B hspell \-a
+only checks the spelling of Hebrew words. If the given file also contains
+non-Hebrew words (such as English words), these are simply ignored. Adding
+the
+.B \-i
+option tells
+.B hspell
+to pass the non-Hebrew words to
+.BR ispell (1),
+and return its answer as an answer from
+.BR hspell .
+This allows conveniently spell-checking mixed Hebrew-English documents.
+
+Running
+.B hspell
+with the program name
+.B hspell-i
+also enables the
+.B -i
+option. This is a useful trick when an application expects just the name
+of a spell-checking program, and adds only the "\-a" option (without giving
+the user an option to also add "\-i"). The
+.B multispell
+script supplied with
+.B hspell
+serves a similar purpose, with more control over encodings and which
+spell-checker to run for non-Hebrew words.
+.TP
 .B \-H
 By default, Hspell does not allow the He Ha-sh'ela prefix. This is because
 this prefix is not normally used in modern Hebrew, and generates many
@@ -141,12 +183,12 @@ to be correct). The
 option nevertheless tells Hspell to allow this prefix.
 .TP
 .B \-D base
-load the word lists from the given base pathname, rather than from the
+Load the word lists from the given base pathname, rather than from the
 compiled-in default path. This is mostly used for testing Hspell, when the
 dictionaries have been compiled in the current directory and hspell is run as
 "hspell -Dhebrew.wgz".
 .TP
-.B \-d \-B, \-m, \-T, \-C, \-S, \-P, \-p, \-w, and \-W
+.B \-d, \-B, \-m, \-T, \-C, \-S, \-P, \-p, \-w, and \-W
 These options are passed to 
 .B hspell 
 by
@@ -177,8 +219,8 @@ read the Academia's official niqqud-less spelling rules (which are printed at
 the end of most modern Hebrew dictionaries, and an abridged version is
 available in http://hebrew-academy.huji.ac.il/decision4.html). Users are
 also encouraged to refer to Hebrew
-dictionaries which use the niqqud-less spelling (such as Millon Ha-hove or
-Rav Milim).
+dictionaries which use the niqqud-less spelling (such as Millon Ha-hove,
+Rav Milim, and the new Even Shoshan).
 
 Future releases might include an option for alternative spelling standards.
 .SH "BEHIND THE SCENES"
@@ -190,28 +232,37 @@ that checks input words against a long list of valid words. The real
 
 In order for this dictionary to be completely free of other people's copyright
 restrictions, the Hspell project is a clean-room implementation, not based on
-other companies' word lists, on other companies' spell checkers, or on copying
+pre-existing word lists or spell checkers, or on copying
 of printed dictionaries.
 
 The word list is also not based on automatic scanning
 of available Hebrew documents (such as online newspapers), because there is
 no way to guarantee that such a list will be correct (not contain
-misspellings, useless proper names, slang, and so on), complete (certain
+misspellings, useless proper names, and so on), complete (certain
 inflections might not appear in the chosen samples) or consistent (especially
 when it comes to niqqud-less spelling rules).
 
 Instead, our idea was to write programs which know how to correctly inflect
 Hebrew nouns and conjugate Hebrew verbs. The input to these programs is a
 list of noun stems and verb roots, plus hints needed for the correct
-inflection when these cannot be figured out automatically. These input files
-are obviously an important part of the Hspell project. The "word list
-generators" (written in Perl, and are also part of the Hspell project) then
-create the complete word-list for use by the spellchecking program, hspell.
-This generation process is only done once, when installing
-.BR hspell .
+inflection when these cannot be figured out automatically. Most of the effort
+that went into the Hspell project went into building these input files.
+Then, "word list
+generators" (written in Perl, and are also part of the Hspell project)
+create the complete inlected word list that will be used by the spellchecking
+program, hspell.
+This generation process is only done once, when building
+.BR hspell
+from source.
 
-The generated lists are useful for much more than spellchecking - see the
-Hspell project's README file for more ideas for the future.
+These lists, before and after inflection, may be useful for much more than
+spellchecking. Morphological analysis (which
+.B hspell
+provides with the 
+.B \-l
+option) is one example. For more ideas, see
+Hspell project's Web site, at
+.BR http://ivrix.org.il/projects/spell\-checker .
 .SH "FILES"
 .TP
 ~/.hspell_words, ./hspell_words
@@ -234,9 +285,9 @@ Currently always 0.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 0.9 (January 13, 2005)
+described by this manual page is 1.0 (May 16, 2006)
 .SH "COPYRIGHT"
-Copyright (C) 2000-2005, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2006, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
 Hspell is free software, released under the GNU General Public License (GPL).
@@ -275,32 +326,37 @@ or patches - they are listed in the WHATSNEW file in the distribution.
 .SH "SEE ALSO"
 .BR hspell (3),
 .BR spell (1),
+.BR ispell (1),
 .BR bidiv (1),
 .BR iconv (1),
 .BR recode (1)
 .SH "BUGS"
 This manual page is in English.
+.\".PP
+.\"The
+.\".B hspell
+.\"spellchecker depends on word lists created by the Hspell project. At this
+.\"stage, these word lists still do not cover all of the Hebrew
+.\"vocabulary, and so
+.\".B hspell
+.\"will often list correct words (that it doesn't know) as being wrong. This
+.\"is being worked on, and
+.\".BR hspell 's
+.\"vocabulary will grow from release to release.
+.\".PP
+.\"Version 0.6 and above feature a redesigned front-end, which is unfortunately
+.\"missing a few features that existed in version 0.5. For more details, see
+.\"the
+.\".B WHATSNEW
+.\"file in the distribution.
 .PP
-The
-.B hspell
-spellchecker depends on word lists created by the Hspell project. At this
-stage, these word lists still do not cover all of the Hebrew
-vocabulary, and so
-.B hspell
-will often list correct words (that it doesn't know) as being wrong. This
-is being worked on, and
-.BR hspell 's
-vocabulary will grow from release to release.
-.PP
-Version 0.6 and above feature a redesigned front-end, which is unfortunately
-missing a few features that existed in version 0.5. For more details, see
-the
-.B WHATSNEW
-file in the distribution.
-
 For GUI-lovers,
 .BR hspell 's
 user interface is an abomination. As more and more applications learn to
 interface with hspell, this will no longer be an issue. See
 .B http://www.ivrix.org.il/projects/spell-checker/Hspell-HOWTO.html
 for instructions on how to use Hspell in a variety of applications.
+.PP
+.BR hspell 's
+being limited to the ISO-8859-8 encoding, and not recognizing UTF-8
+or even CP1255 (including niqqud), is almost an anachronism today.

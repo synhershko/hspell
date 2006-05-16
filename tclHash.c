@@ -483,7 +483,7 @@ Tcl_DeleteHashEntry(entryPtr)
  *	None.
  *
  * Side effects:
- *	The hash table is no longer useable.
+ *	The hash table is no longer usable.
  *
  *----------------------------------------------------------------------
  */

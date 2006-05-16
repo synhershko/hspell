@@ -184,7 +184,7 @@ hspell_check_word(struct dict_radix *dict, const char *word, int *preflen)
 		/* The first case here is the Academia's "ha-ktiv hasar
 		 * ha-niqqud" rule of doubling a consonant waw in the middle
 		 * a word, unless it's already next to a waw. When adding a
-		 * prefix, any initial waw in a word will nececessarily
+		 * prefix, any initial waw in a word will necessarily
 		 * become a consonant waw in the middle of the word.
 		 * The "else if" below is the normal check.
 		 */
@@ -222,10 +222,10 @@ hspell_check_word(struct dict_radix *dict, const char *word, int *preflen)
 		if(hspell_debug) fprintf(stderr,"Accepting empty word\n");
 		return 1;
 	} else
-		return 0; /* unrecognized (mis-spelled) word */
+		return 0; /* unrecognized (misspelled) word */
 }
 
-/* this functions copies, in a less than inteligent fashion, the Nadav's code
+/* this functions copies, in a less than intelligent fashion, the Nadav's code
  * from hspell_check_word. TODO: use the same code for both functions. */
 int hspell_enum_splits(struct dict_radix *dict, const char *word, 
 	hspell_word_split_callback_func *enumf)
@@ -319,7 +319,7 @@ int hspell_enum_splits(struct dict_radix *dict, const char *word,
 		enumf(word, w, preflen, n->mask);
 		count++;
 	} /* else
-		return 0;  unrecognized (mis-spelled) word */
+		return 0;  unrecognized (misspelled) word */
 	if (hspell_debug) fprintf(stderr, "enum_splits found %d splits\n", count);
 	return count;
 }
@@ -483,14 +483,14 @@ hspell_init(struct dict_radix **dictp, int flags){
 /* hspell_uninit() undoes the effects of hspell_init, freeing memory that
    was allocated during initialization. The dict pointer passed is no
    longer valid after this call, and should not be used (i.e., hspell_uninit()
-   has similar semnatics to free()).
+   has similar semantics to free()).
 */
 void
 hspell_uninit(struct dict_radix *dict)
 {
 	delete_dict_radix(dict);
 	/* free prefix tree. Too bad this is a global variable, and not
-	   something in a "context" given to us as a paramter. */
+	   something in a "context" given to us as a parameter. */
 	free_prefix_tree(prefix_tree);
 	prefix_tree=0;
 #ifdef USE_LINGINFO

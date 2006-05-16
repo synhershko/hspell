@@ -1,4 +1,4 @@
-/* Copyright (C) 2003-2004 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2006 Nadav Har'El and Dan Kenigsberg */
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -95,7 +95,7 @@ save_personal_dict(hspell_hash *personaldict,
 	/* NOTE: currently, we assume that the personal dictionary we
            originally read, or last wrote, is the current state of the
 	   user's personal dictionary file. This may be wrong if several
-	   hspell processes are running concunrrently and adding words or the
+	   hspell processes are running concurrently and adding words or the
 	   user has been manually editing the file while hspell is running.
 	   It might be safer, perhaps, to load the personal dictionary again
 	   to see its really current state? In any case, the current
@@ -215,7 +215,18 @@ next_file(int *argcp, char ***argvp)
 #define VERSION_IDENTIFICATION ("@(#) International Ispell Version 3.1.20 " \
 			       "(but really Hspell/C %d.%d%s)\n")
 
-#define ishebrew(c) ((c)>=(int)(unsigned char)'à' && (c)<=(int)(unsigned char)'ú')
+
+/* ishebrew() checks for an intra-word Hebrew character. This includes the
+   Hebrew alphabet and the niqqud characters. The 8-bit encoding that these
+   characters may appear in is the "cp1255" encoding, Microsoft's extension
+   to the iso-8859-8 standard (which did not contain niqqud). For the tables
+   of these encodings, see
+   http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1255.TXT
+   http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-8.TXT
+ */
+#define isniqqud(c) ((unsigned char)(c)>= 0xC0 && (unsigned char)(c) <= 0xD2 \
+		     && (unsigned char)(c)!=0xCE && (unsigned char)(c)!=0xD0)
+#define ishebrew(c) (((c)>=(int)(unsigned char)'à' && (c)<=(int)(unsigned char)'ú')||isniqqud(c))
 
 static int uglyuglyflag = 0;
 
@@ -328,14 +339,20 @@ main(int argc, char *argv[])
 			break;
 		case 'V':
 			printf("Hspell %d.%d%s\nWritten by Nadav Har'El and "
-			       "Dan Kenigsberg\n", HSPELL_VERSION_MAJOR,
+			       "Dan Kenigsberg.\n\nCopyright (C) 2000-2006 "
+			       "Nadav Har'El and Dan Kenigsberg.\nThis is "
+			       "free software, released under the GNU General "
+			       "Public License (GPL).\nSee "
+			       "http://ivrix.org.il/projects/spell-checker "
+			       "more information.\n", HSPELL_VERSION_MAJOR,
 			       HSPELL_VERSION_MINOR, HSPELL_VERSION_EXTRA);
 			return 0;
 		case 'h': case '?':
 			fprintf(stderr,"hspell - Hebrew spellchecker\n"
 				"Usage: %s [-acinslVH] [file ...]\n\n"
 				"See hspell(1) manual for a description of "
-				"hspell and its options.\n", progname);
+				"hspell and its options.\nRun hspell -V for "
+				"hspell's version and copyright.\n", progname);
 			return 1;
 		}
 	}
@@ -350,6 +367,13 @@ main(int argc, char *argv[])
 	if(opt_v){
 		printf(VERSION_IDENTIFICATION, HSPELL_VERSION_MAJOR,
 		       HSPELL_VERSION_MINOR, HSPELL_VERSION_EXTRA);
+		if (opt_v > 1) {
+		    printf("Compiled-in options:\n");
+		    printf("\tDICTFILE = \"%s\"\n", hspell_get_dictionary_path());
+#ifdef USE_LINGINFO
+		    printf("\tLINGINFO\n");
+#endif
+		}
 		return 0;
 	}
 
@@ -424,7 +448,7 @@ main(int argc, char *argv[])
 			if(wordlen<MAXWORD)
 				word[wordlen++]=c;
 		} else if(wordlen){
-			/* found word seperator, after a non-empty word */
+			/* found word separator, after a non-empty word */
 			word[wordlen]='\0';
 			wordstart=offset-wordlen;
 			/* TODO: convert two single quotes ('') into one
@@ -476,7 +500,7 @@ main(int argc, char *argv[])
 					hspell_enum_splits(dict,w,notify_split);
 				}
 			} else if(interpipe){
-				/* Mispelling in -a mode: show suggested
+				/* Misspelling in -a mode: show suggested
 				   corrections */
 				struct corlist cl;
 				int i;
@@ -503,11 +527,11 @@ main(int argc, char *argv[])
 						printf("%s", flathints+index);
 				}
 			} else {
-				/* Mispelling in "spell" mode: remember this
-				   mispelling for later */
+				/* Misspelling in "spell" mode: remember this
+				   misspelling for later */
 
 				if(hspell_debug)
-					fprintf(stderr,"mispelling: %s\n",w);
+					fprintf(stderr,"misspelling: %s\n",w);
 				hspell_hash_incr_int(&wrongwords, w);
 			}
 			/* We treat the combination of the -l (linguistic
@@ -517,7 +541,7 @@ main(int argc, char *argv[])
 			   dictionary or not), and show the linguistic
 			   information on all those words. This can be useful
 			   for a reader application, which may also want to
-			   be able to understand mispellings and their possible
+			   be able to understand misspellings and their possible
 			   meanings.
 			*/
 			if (opt_l && opt_c) {
@@ -625,6 +649,8 @@ main(int argc, char *argv[])
 			   Otherwise, an EOF is the end of this loop.
 			*/
 			if(!interpipe && argc>0){
+				if(in!=stdin)
+					fclose(in);
 				in=next_file(&argc, &argv);
 				if(!in)
 					break;

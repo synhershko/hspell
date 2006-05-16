@@ -1,13 +1,12 @@
-This is version 0.9 of Hspell, the free Hebrew spellchecker and morphology
+This is version 1.0 of Hspell, the free Hebrew spellchecker and morphology
 engine.
 
-It is a fully working Hebrew spellchecker, not a toy release. On typical
-documents it should recognize the majority of correct words. However, users
-of this release must take into account that it still will not recognize *all*
-the correct words; The dictionary is still admittedly not complete, and this
-situation will be improved in the next releases. On the other hand, barring
-bugs hspell should not recognize incorrect words - extreme attention has been
-given to the correctness and consistency of the dictionary.
+On typical documents Hspell recognizes the majority of correct words. However,
+users must take into account that it still will not recognize *all* the correct
+words; The dictionary is still not complete, and this situation will continue to
+improve in the next releases. On the other hand, barring bugs Hspell should not
+recognize incorrect words - extreme attention has been given to the correctness
+and consistency of the dictionary.
 
 You can get Hspell from:
 	http://www.ivrix.org.il/projects/spell-checker/
@@ -131,10 +130,7 @@ Another convenient alternative is to run hspell on a BiDi-enabled terminal.
 How *you* can help
 ------------------
 
-As mentioned above, hspell does not cover yet all modern Hebrew. Few types of
-nouns are not inflected correctly, and therefore we cannot add them to the
-dictionary. Few extremely irregular verbs do not fit in, too. However, most
-hebrew words are inflected correctly, and all we need is to collect them all.
+As mentioned above, hspell does not cover yet all modern Hebrew.
 
 This is where you enter the picture. If you stumble upon a commonly used word
 in modern Israeli Hebrew, you are welcome to add its stem to the appropriate
