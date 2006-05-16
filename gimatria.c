@@ -157,7 +157,7 @@ int2gim(int n, char *buf)
 			buf[1]='\'';
 			buf[2]='\0';
 		/* NOTE: this test is to make 5001 was ä'à', not ä'à.
-		 * I'm not sure this is warrented, but it's what we had in
+		 * I'm not sure this is warranted, but it's what we had in
 		 * hspell.pl. Note that b[-2] exists because of the previous
 		 * test. */
 		} else if(b[-2]=='\'' && b[-1]!='\'') {

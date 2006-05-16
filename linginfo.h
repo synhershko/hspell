@@ -21,7 +21,7 @@ int linginfo_desc2ps(const char *desc, int i);
 /* translate the i'th stem-index of a word into human-readable text */
 char *linginfo_stem2text(const char *stem, int i);
 
-/* search for a word int the linginfo database. if a the word is found, feel the
+/* search for a word in the linginfo database. if a the word is found, fill the
  * pointed desc and stem buffers with the relevant (opaque) data. */
 int linginfo_lookup(const char *word, char **desc, char **stem);
 

@@ -377,11 +377,13 @@ while(<$fh>){
       outword $xword."ים", "ע,רבים";
       $smichut=$xword;
       my $smichut_orig=$xword_orig;
+      unless ($opts{"אין_נטיות_רבים"}){
       outword $smichut_orig."י-", "ע,רבים,סמיכות"; # smichut
+      }
       # (We write patach followed by a consonant yud as "y", and later this will
       # give us the chance to automatically double it as necessary by the
       # Academia's ktiv male rules)
-      unless ($opts{"אין_כינויי_רבים"}){
+      unless ($opts{"אין_כינויי_רבים"}||$opts{"אין_נטיות_רבים"}){
       outword $smichut."y",        "ע,רבים,של/אני"; # possessives (kinu'im)
       outword $smichut."ינו",      "ע,רבים,של/אנחנו";
       outword $smichut."יך",       "ע,רבים,של/אתה";
@@ -408,8 +410,10 @@ while(<$fh>){
       outword $xword."yם", "ע,רבים";
       $smichut=$xword;
       my $smichut_orig=$xword_orig;
+      unless ($opts{"אין_נטיות_רבים"}){
       outword $smichut_orig."י-", "ע,רבים,סמיכות"; # smichut
-      unless ($opts{"אין_כינויי_רבים"}){
+      }
+      unless ($opts{"אין_כינויי_רבים"}||$opts{"אין_נטיות_רבים"}){
       outword $smichut."y",        "ע,רבים,של/אני"; # possessives (kinu'im)
       outword $smichut."ינו",      "ע,רבים,של/אנחנו";
       outword $smichut."יך",       "ע,רבים,של/אתה";
@@ -446,8 +450,10 @@ while(<$fh>){
       }
       
       $smichut=$xword."ות";
+      unless ($opts{"אין_נטיות_רבים"}){
       outword $smichut."-",   "ע,רבים,סמיכות"; # smichut
-      unless ($opts{"אין_כינויי_רבים"}){
+      }
+      unless ($opts{"אין_כינויי_רבים"}||$opts{"אין_נטיות_רבים"}){
       outword $smichut."y",   "ע,רבים,של/אני"; # possessives (kinu'im)
       outword $smichut."ינו", "ע,רבים,של/אנחנו";
       outword $smichut."יך",  "ע,רבים,של/אתה";
@@ -471,8 +477,10 @@ while(<$fh>){
       }
       outword $xword."יות",   "ע,רבים";
       $smichut=$xword."יות";
+      unless ($opts{"אין_נטיות_רבים"}){
       outword $smichut."-",   "ע,רבים,סמיכות"; # smichut
-      unless ($opts{"אין_כינויי_רבים"}){
+      }
+      unless ($opts{"אין_כינויי_רבים"}||$opts{"אין_נטיות_רבים"}){
       outword $smichut."y",   "ע,רבים,של/אני"; # possessives (kinu'im)
       outword $smichut."ינו", "ע,רבים,של/אנחנו";
       outword $smichut."יך",  "ע,רבים,של/אתה";
@@ -496,8 +504,10 @@ while(<$fh>){
       }
       outword $xword."אות",   "ע,רבים";
       $smichut=$xword."אות";
+      unless ($opts{"אין_נטיות_רבים"}){
       outword $smichut."-",   "ע,רבים,סמיכות"; # smichut
-      unless ($opts{"אין_כינויי_רבים"}){
+      }
+      unless ($opts{"אין_כינויי_רבים"}||$opts{"אין_נטיות_רבים"}){
       outword $smichut."y",   "ע,רבים,של/אני"; # possessives (kinu'im)
       outword $smichut."ינו", "ע,רבים,של/אנחנו";
       outword $smichut."יך",  "ע,רבים,של/אתה";
@@ -526,6 +536,7 @@ while(<$fh>){
       # different ones. This is important for words like תיש, and in fact
       # the אבד_ו option does basically the same thing.
       my $smichut_orig;
+      unless ($opts{"אין_נטיות_רבים"}){
       if(substr($plural,-2,2) eq "ות"){
 	$smichut_orig= exists($opts{"נסמכים"}) ? $opts{"נסמכים"} : $plural;
 	# as David Yalin explains (ibid.): "צריך להעיר כי בשמות שסימן הריבוי
@@ -540,9 +551,13 @@ while(<$fh>){
 		substr($opts{"נסמכים"},0,-1) : $smichut;
         outword $smichut_orig."י-", "ע,רבים,סמיכות"; # smichut
       } else {
-        die "Plural given for $word is of unrecognized form: $plural.";
+        #die "Plural given for $word is of unrecognized form: $plural.";
+	# An unrecognized plural form, so we don't know how to construct the
+	# construct forms from it. Just ignore them.
+	$opts{"אין_כינויי_רבים"}=1;
       }
-      unless ($opts{"אין_כינויי_רבים"}){
+      }
+      unless ($opts{"אין_כינויי_רבים"}||$opts{"אין_נטיות_רבים"}){
       outword $smichut."y",        "ע,רבים,של/אני"; # possessives (kinu'im)
       outword $smichut."ינו",      "ע,רבים,של/אנחנו";
       outword $smichut."יך",       "ע,רבים,של/אתה";
@@ -622,20 +637,15 @@ while(<$fh>){
       outword $xword."י-", "ת,רבים,ז,סמיכות"; # smichut
     }
     # feminine, singular:
-    if($opts{"נקבה_ית"}){
-      # This is an ad-hoc treatment of the nekeva_it option, which cannot be
-      # combined with others because we will only have one plural form...
-      $xword=$xword."י";
-      $opts{"נקבה_ת"}=1;
-    }
     my $nekeva_implicit = !($opts{"נקבה_ת"} || $opts{"נקבה_ה"} ||
-    			    $opts{"יחידה"});
+    			    $opts{"נקבה_ית"} || $opts{"יחידה"});
     # by checking for final iי, we're basically checking for final י except
     # in final וי (see comment above on where we added the i)
     my $nekeva_t = $opts{"נקבה_ת"} ||
     		   ($nekeva_implicit && substr($xword,-2,2) eq "iי");
     my $nekeva_h = $opts{"נקבה_ה"} ||
     		   ($nekeva_implicit && !$nekeva_t);
+    my $nekeva_it = $opts{"נקבה_ית"};
     if(exists($opts{"יחידה"})){
       my $yechida=$opts{"יחידה"};
       outword $yechida,     "ת,יחיד,נ";
@@ -661,8 +671,23 @@ while(<$fh>){
       outword $xword."aה",  "ת,יחיד,נ";
       outword $xword."aת-", "ת,יחיד,נ,סמיכות"; # smichut
     }
-    outword $xword."ות",  "ת,רבים,נ"; # feminine, plural
-    outword $xword."ות-", "ת,רבים,נ,סמיכות"; # smichut (same as nifrad)
+    if($nekeva_it){
+      outword $xword."ית",  "ת,יחיד,נ";
+      outword $xword."ית-", "ת,יחיד,נ,סמיכות"; # smichut
+    }
+    # Feminine, plural:
+    # It stays the same, regardless of the singular for. The only exception
+    # is the ית feminine, where the plural becomes יות. Note that there is
+    # no "else" in the if below - because we need to support the cased that
+    # one word has both types of plural (e.g., see אהבל).
+    if($nekeva_h || $nekeva_t || $opts{"יחידה"}){
+      outword $xword."ות",  "ת,רבים,נ"; # feminine, plural
+      outword $xword."ות-", "ת,רבים,נ,סמיכות"; # smichut (same as nifrad)
+    }
+    if($nekeva_it){
+      outword $xword."יות",  "ת,רבים,נ"; # feminine, plural
+      outword $xword."יות-", "ת,רבים,נ,סמיכות"; # smichut (same as nifrad)
+    }
   } else {
     die "word '".$word."' was not specified as noun, adjective or verb.";
   }

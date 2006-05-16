@@ -22,7 +22,7 @@
    code into something that will work with zlib without ugly ifdefs
    everywhere (further ifdefs are only needed in some places). Note that
    when BUFFERED_ZLIB is enabled (and it is enabled by default here) we
-   enable speciall buffered version of zlib (gzbuffered.h) instead of the
+   enable special buffered version of zlib (gzbuffered.h) instead of the
    normal zlib functions.
 */
 #ifdef HAVE_ZLIB
@@ -78,7 +78,7 @@
  * nodes.
  * One way to choose among them is to minimize search time. On average
  * searching a node with N children takes N/2 comparisons. If we pass
- * all nodes (and I doubt this is a meaninful measure... :( ) the 2,8
+ * all nodes (and I doubt this is a meaningful measure... :( ) the 2,8
  * will make 162059 comparisons and 3,8 will make 167732. Again, roughly
  * the same, so I can't decide :(
  * Another deciding factor: read time. 2,8 is slightly quicker - I have

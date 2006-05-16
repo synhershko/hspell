@@ -7,7 +7,7 @@
    we read from a pipe to the "gzcat" program.
 
    It turns out that this can easily be solved, by buffering the reads:
-   we can read, using gzread() a whole chuck (say, of 4 Kbytes) of
+   we can read, using gzread() a whole chunk (say, of 4 Kbytes) of
    uncompressed characters, and then dispense them one character at a time,
    much like the stdio library's getc() buffers calls to read().
 
@@ -24,7 +24,7 @@
    and of course writing, can be implemented in the future if needed.
 */
 
-#define GZBUFFERED_SIZE 4096 /* empyrical testing showed this to be fine */
+#define GZBUFFERED_SIZE 4096 /* empirical testing showed this to be fine */
 
 #include <stdlib.h>
 #include <zlib.h>

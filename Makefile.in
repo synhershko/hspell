@@ -1,5 +1,5 @@
 # Hspell Makefile
-# Copyright (C) 2002-2004 Nadav Har'El and Dan Kenigsberg
+# Copyright (C) 2002-2006 Nadav Har'El and Dan Kenigsberg
 
 # Locale override:
 # Some of the things we do here (like sort), and Perl scripts we run can be
@@ -74,8 +74,13 @@ clean:
 	      hebrew.wgz.desc hebrew.wgz.stems he_affix.dat \
 	      he.wl mk_he_affix linginfo.o mk_he_affix.o \
 	      hebrew.wgz.lingsizes.tmp dmask.c install.js \
-	      spell-he-IL.xpi he-IL.dic he-IL.aff README-he-IL.txt \
-	      README_he_IL.txt he_IL.dic he_IL.aff he_IL.zip
+	      spell-he.xpi he.dic he.aff README-he.txt \
+	      README_he_IL.txt he_IL.dic he_IL.aff he_IL.zip \
+	      specfilter.o specfilter
+	rm -f hebeng/install.js hebeng/heb-eng.aff hebeng/heb-eng.dic \
+	      hebeng/README-he.txt hebeng/README-en-US.txt \
+	      hebeng/spell-heb-eng.xpi
+	-rmdir hebeng
 
 distclean: clean
 	rm -f Makefile config.log config.status
@@ -116,14 +121,13 @@ install: all
 ################################################
 # for creating an hspell distribution tar
 PACKAGE = hspell
-VERSION = 0.9
+VERSION = 1.0
 DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	Makefile.in stats wunzip.c wzip \
 	hspell.1 \
 	wolig.pl wolig.dat biza-nouns milot extrawords \
 	woo woo.dat biza-verbs \
 	likelyerrors spellinghints \
-	hspell.spec \
 	corlist.c dict_radix.c \
 	dict_radix.h find_sizes.c gimatria.c hspell.c \
 	hspell.h libhspell.c gzbuffered.h \
@@ -131,7 +135,7 @@ DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	hash.h tclHash.c tclHash.h \
         binarize-desc.pl pack-desc.pl linginfo.c linginfo.h \
 	multispell hspell.3 mk_he_affix.c configure.in configure \
-	install.js.pre
+	install.js.pre specfilter.c
 
 DISTDIR = $(PACKAGE)-$(VERSION)
 
@@ -174,6 +178,7 @@ tclHash.o: tclHash.h
 corlist.o gimatria.o hspell.o libhspell.o: hspell.h
 hspell.o libhspell.o linginfo.o: linginfo.h hspell.h
 linginfo.o: dmask.c
+specfilter.o: prefixes.c
 
 prefixes.c: genprefixes.pl PrefixBits.pl
 	$(PERL) -w ./genprefixes.pl >prefixes.c
@@ -270,9 +275,11 @@ dout.nouns.%.gz:  %.dat wolig.pl
 dout.nouns.shemp.gz:  shemp.dat wolig.pl
 	$(PERL) -w wolig.pl -d shemp.dat | gzip -4 > $@
 
-dout.verbs.gz shemp.dat: woo woo.dat
+# We need two rules here, and not just two targets for one rule, to make
+# parallel make work correctly. See bug 78 in the bugzilla for more info.
+dout.verbs.gz: woo woo.dat
 	$(PERL) -w woo -d woo.dat | sed "$(SEDCMD)" | gzip -4 > $@
-
+shemp.dat: dout.verbs.gz
 
 ############################################################################
 # The following targets build packages of Hspell's word list in formats
@@ -284,32 +291,61 @@ dout.verbs.gz shemp.dat: woo woo.dat
 # for using aspell 0.6 with Hspell's Hebrew word list.
 aspell: he_affix.dat he.wl
 mk_he_affix.o: prefixes.c hspell.h
-he_affix.dat he.wl: mk_he_affix wunzip hebrew.wgz hebrew.wgz.prefixes
+he_affix.dat he.wl: mk_he_affix wunzip hebrew.wgz hebrew.wgz.prefixes specfilter
 	./mk_he_affix > he.wl
 
-# The "myspell" target generates the "he-IL.dic" and "he-IL.aff" files needed
+# The "myspell" target generates the "he.dic" and "he.aff" files needed
 # for using Hspell's Hebrew word list in myspell. Myspell is the spell-
 # checking library used in both Mozilla and OpenOffice, and its format is
 # very similar to the uncompressed aspell dictionary format.
-myspell: he-IL.dic he-IL.aff
-he-IL.dic he-IL.aff: he_affix.dat he.wl
-	cat he.wl | wc -l > he-IL.dic
-	cat he.wl >> he-IL.dic
-	echo SET ISO8859-8 > he-IL.aff
-	echo TRY éåäàòçë÷\'\"ùñæãâáøðîèöúôíóêõïì >> he-IL.aff
-	cat he_affix.dat >> he-IL.aff
+myspell: he.dic he.aff
+he.dic he.aff: he_affix.dat he.wl
+	cat he.wl | wc -l > he.dic
+	cat he.wl >> he.dic
+	echo SET ISO8859-8 > he.aff
+	echo TRY éåäàòçë÷\'\"ùñæãâáøðîèöúôíóêõïì >> he.aff
+	cat he_affix.dat >> he.aff
 
 # The "mozilla" target generates a ".xpi" file, which is basically a zip
 # file containing the dictionaries in Myspell format (similar to the
 # uncompressed aspell dictionary format).
-mozilla: spell-he-IL.xpi
-spell-he-IL.xpi: he-IL.dic he-IL.aff install.js README
-	rm -f README-he-IL.txt spell-he-IL.xpi
-	cp README README-he-IL.txt
-	zip spell-he-IL.xpi install.js README-he-IL.txt he-IL.aff he-IL.dic
+mozilla: spell-he.xpi
+spell-he.xpi: he.dic he.aff install.js README
+	rm -f README-he.txt spell-he.xpi
+	cp README README-he.txt
+	zip spell-he.xpi install.js README-he.txt he.aff he.dic
 install.js: install.js.pre
-	sed "s/%VERSION%/$(VERSION)/g" < install.js.pre > install.js
+	sed "s/%VERSION%/$(VERSION)/g; s/%DISPLAY_NAME%/Hebrew (IL) dictionary/g; s/%APP_NAME%/spell-he/g" < install.js.pre > install.js
 
+# The "heb-eng-xpi" target generates, like the "mozilla" target, an xpi
+# file. But instead of taking only the Hebrew word list, it merges our
+# Hebrew word list with another English word list. This is useful in software
+# (like Mozilla) which doesn't support multiple dictionaries at the same time,
+# but a typical user still wants to check mixed-language documents.
+hebeng:
+	mkdir hebeng
+en-US.dic en-US.aff README-en-US.txt:
+	echo \*\*\* Please link to the english dictionary files $@
+	false
+hebeng/install.js: hebeng install.js.pre
+	sed "s/%VERSION%/$(VERSION)/g; s/%DISPLAY_NAME%/Hebrew-English combined dictionary/g; s/%APP_NAME%/spell-heb-eng/g; s/he\.dic/heb-eng.dic/; s/he\.aff/heb-eng.aff/; /var myspell_folder/s/$$/addFile(APP_NAME, \"README-en-US.txt\", myspell_folder, \"\")\;/" < install.js.pre > hebeng/install.js
+hebeng/heb-eng.aff: he.aff en-US.aff
+	echo SET ISO8859-8 >hebeng/heb-eng.aff
+	echo TRY esianrtolcdugmphbyfvkwzESIANRTOLCDUGMPHBYFVKWZéåäàòçë÷\'\"ùñæãâáøðîèöúôíóêõïì >> hebeng/heb-eng.aff
+	tail +3 en-US.aff >> hebeng/heb-eng.aff
+	tail +3 he.aff >> hebeng/heb-eng.aff
+hebeng/heb-eng.dic: he.dic en-US.dic
+	cat he.dic en-US.dic | wc -l > hebeng/heb-eng.dic
+	tail +2 en-US.dic >> hebeng/heb-eng.dic
+	tail +2 he.dic >> hebeng/heb-eng.dic
+heb-eng-xpi: hebeng hebeng/heb-eng.dic hebeng/heb-eng.aff hebeng/install.js README README-en-US.txt
+	(cd hebeng;\
+	rm -f README-he.txt spell-heb-eng.xpi ;\
+	cp ../README README-he.txt;\
+	cp ../README-en-US.txt . ;\
+	zip spell-heb-eng.xpi install.js README-he.txt README-en-US.txt heb-eng.aff heb-eng.dic)
+
+#
 # The openoffice target generates a .zip file, which contains the files
 # that need to be installed in OpenOffice's dictionary directory (e.g.,
 # /usr/lib/ooo-1.1/share/dict/ooo/). Additionally, you'll need to add the
@@ -323,10 +359,10 @@ he_IL.zip: he_IL.dic he_IL.aff README_he_IL.txt
 	rm -f he_IL.zip
 	zip he_IL.zip he_IL.dic he_IL.aff README_he_IL.txt
 # note: zip dereferences symbolic links, so those are enough.
-he_IL.dic: he-IL.dic
-	ln -s he-IL.dic he_IL.dic
-he_IL.aff: he-IL.aff
-	ln -s he-IL.aff he_IL.aff
+he_IL.dic: he.dic
+	ln -s he.dic he_IL.dic
+he_IL.aff: he.aff
+	ln -s he.aff he_IL.aff
 README_he_IL.txt:
 	echo "This Hebrew dictionary in Myspell format was generated automatically from" >README_he_IL.txt
 	echo "data prepared by the Hspell project:" >>README_he_IL.txt
@@ -334,6 +370,6 @@ README_he_IL.txt:
 	echo "http://ivrix.org.il/projects/spell-checker" >>README_he_IL.txt
 	echo "Hspell version $(VERSION) was used." >>README_he_IL.txt
 	echo >>README_he_IL.txt
-	echo "This dictionary is Copyright (C) 2000-2004, Nadav Har'El and Dan Kenigsberg." >>README_he_IL.txt
+	echo "This dictionary is Copyright (C) 2000-2006, Nadav Har'El and Dan Kenigsberg." >>README_he_IL.txt
 	echo "It is licensed under the GNU General Public License (GPL)." >>README_he_IL.txt
 

@@ -1,3 +1,40 @@
+Release 1.0 (May 16, 2006):
+
+ * Some incorrect words purged or fixed, and many more words added:
+   1,500 base words added.
+
+ * Fixed small bugs in the generation of dictionaries in the aspell format
+   (for aspell) and myspell format (for Mozilla and OpenOffice), and made
+   these files somewhat smaller.
+
+ * New "hebeng" make target, which generates an xpi file like the "mozilla"
+   target, but instead of taking only the Hebrew word list, it merges it
+   with another English word list. This can allow mixed Hebrew-English
+   spell-checking in Mozilla.
+
+ * When Hspell was given Hebrew words with niqqud (in the cp1255 encoding)
+   it used to incorrectly split them on the niqqud characters. Now it
+   collects the entire word, with its niqqud, and by default considers it
+   to be an error (as Hspell cannot check its correctness). To accept
+   this voweled word as correct, you can add it to your personal dictionary.
+  
+ * Hspell is part of Fedora Extras and is available in places such as
+   http://download.fedora.redhat.com/pub/fedora/linux/extras/4/SRPMS/.
+   To save the pain of maintaining two RPM packages, the hspell.spec file
+   was removed form the tarball.
+
+ * A new "-vv" option prints some information on optional Hspell features
+   enabled at compile time. It can be used, for example, to check if
+   morphological analysis has been enabled, by checking
+       hspell -vv | grep -q LINGINFO
+
+ * Small bug fixes and manual page improvements.
+
+ * Vocabulary: 455,043 words (when built with "--enable-fatverb")
+               based on 22589 base words: 11724 nouns, 3297 adjectives,
+               5223 verb stems, and 2345 other words
+
+-----------------------------------------------------------------------------
 Release 0.9 (January 13, 2005):
 
  * Some incorrect words purged or fixed, and many more words added: almost
