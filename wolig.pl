@@ -396,11 +396,13 @@ while(<$fh>){
       outword $smichut_orig."יהם", "ע,רבים,של/הם";
       }
     }
-    if($plural_iim){
-      # I currently decided that in Hebrew, unlike Arabic, only specific
-      # nouns can get the iim (zugi) pluralization, and most nouns can't,
-      # e.g., חתוליים isn't correct (for "two cats") despite a story called
-      # מעשה בחתוליים. This is why this is an option, and not the default.
+    if($plural_iim || $opts{"זוגי"}){
+      # The difference between זוגי and יים is that זוגי adds only the "יים"
+      # plural, while יים adds the plural and its inflections. For example,
+      # for שנתיים, יומיים, שעתיים, שבועיים, נקודתיים, one would never say
+      # שנתיי (my two years); On the other hand for other words יים and all
+      # the inflections it implies makes sense, e.g., consider ציפורניים,
+      # שפתיים, קרניים.
       my $xword=$word;
       if(substr($xword,-1,1) eq "ה"){
 	# Change final he into tav before adding the "iim" pluralization.
@@ -410,10 +412,10 @@ while(<$fh>){
       outword $xword."yם", "ע,רבים";
       $smichut=$xword;
       my $smichut_orig=$xword_orig;
-      unless ($opts{"אין_נטיות_רבים"}){
+      unless ($opts{"אין_נטיות_רבים"} || !$plural_iim){
       outword $smichut_orig."י-", "ע,רבים,סמיכות"; # smichut
       }
-      unless ($opts{"אין_כינויי_רבים"}||$opts{"אין_נטיות_רבים"}){
+      unless ($opts{"אין_כינויי_רבים"}||$opts{"אין_נטיות_רבים"} || !$plural_iim){
       outword $smichut."y",        "ע,רבים,של/אני"; # possessives (kinu'im)
       outword $smichut."ינו",      "ע,רבים,של/אנחנו";
       outword $smichut."יך",       "ע,רבים,של/אתה";

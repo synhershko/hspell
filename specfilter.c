@@ -1,4 +1,4 @@
-/* Copyright 2005 Nadav Har'El and Dan Kenigsberg */
+/* Copyright 2005-2009 Nadav Har'El and Dan Kenigsberg */
 
 /* specfilter.c - word prefix-specifier 
  * The way prefixes currently work in Hspell is that each word has an 8-bit
@@ -137,7 +137,7 @@ static void genequiv(void)
 }
 
 #include <stdio.h>
-main(){
+int main(void){
 	int i,j;
 	int num;
 
@@ -180,4 +180,5 @@ main(){
 		}
 		putchar(equivalent[i]);
 	}
+	return 0;
 }

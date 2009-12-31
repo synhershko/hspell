@@ -1,3 +1,33 @@
+Release 1.1 (December 31, 2009)
+
+ * Some incorrect words purged or fixed, and 900 base words added.
+
+ * This release introduces a new a document (in Hebrew), niqqudless.odt,
+   which explains in detail Hspell's spelling standard, and why Hspell
+   spells some words the way it does. If you ever wondered whether
+   (or why) Hspell's spelling is justified, this is the document for you.
+   This first release is still far from explaining all of the spelling
+   questions that we have encountered while developing Hspell, so be on
+   the lookout for newer releases of this document on Hspell's website.
+   On the website, you can also find the same document in alternative
+   formats, such as PDF; The source package contains only the source of
+   the document, in OpenOffice format.
+
+ * Fixed some makefile errors, and modernized some makefile targets.
+
+ * The myspell dictionary created by "make myspell" now uses a different
+   encoding, and as result loads as much as 10 times faster in the
+   "hunspell" multilingual spell-checker.
+   Also added a new makefile target "hunspell", which generates a dictionary
+   especially for hunspell, which is smaller and uses less memory than the
+   myspell dictionary.
+
+ * Vocabulary: 461,326 words (when built with "--enable-fatverb")
+               based on 23486 base words: 12445 nouns, 3583 adjectives,
+               5242 verb stems, and 2216 other words
+
+-----------------------------------------------------------------------------
+
 Release 1.0 (May 16, 2006):
 
  * Some incorrect words purged or fixed, and many more words added:
@@ -17,7 +47,7 @@ Release 1.0 (May 16, 2006):
    collects the entire word, with its niqqud, and by default considers it
    to be an error (as Hspell cannot check its correctness). To accept
    this voweled word as correct, you can add it to your personal dictionary.
-  
+
  * Hspell is part of Fedora Extras and is available in places such as
    http://download.fedora.redhat.com/pub/fedora/linux/extras/4/SRPMS/.
    To save the pain of maintaining two RPM packages, the hspell.spec file
@@ -178,7 +208,7 @@ Release 0.6 (August 5, 2003):
 
  * "hspell -a" was made more compatible with the standard "ispell -a" (thanks
    to Mooffie). Hspell is now known to be used with LyX, KDE, Geresh and Emacs.
-   
+
  The setbacks:
 
  * The "-v" option, that used to explain how valid words were derived, is
@@ -223,19 +253,19 @@ Release 0.5: (May 8, 2003)
    as many as 150,000 correct but rarely-used (in modern texts) inflections,
    a compile-time option is present for enabling or disabling these forms.
    The default in this version is *not* to enable them, but this may be changed
-   in the future. 
+   in the future.
    Also, precompiled RPMs of both types are available (thanks to Tzafrir Cohen).
    In order to build the source rpm you must --define in the command-line either
    'fat 0' or 'fat 1'. Can anyone tell me how can I set a default for that?
 
  * Infinitives now allow בכלמ prefixes, not just ל: לשבור, בשבור, כשבור, משבור.
- 
+
  * Added a "-d" option to the word-list generators, which prints derivation
-   explanation for all inflections, and also gender information for all nouns. 
+   explanation for all inflections, and also gender information for all nouns.
    This feature is not presently used for spell-checking.
 
  * Bug fixes: B-words were ignored unless "-v" was used; gimatria checking
-   failed to recognize numbers ending in 17-19; 
+   failed to recognize numbers ending in 17-19;
 
  * fixed "ispell -a"'s handling of "^..." lines that prevented Hspell from
    working properly with KDE (thanks to Meni Livne).
@@ -295,7 +325,7 @@ Release 0.3: (February 2, 2003)
    (version 1.1.6fix4 is known to work). Add the following line to your
    .lyx/lyxrc file:
 	\spell_command hspell
-   Notice that this prevents using English ispell/aspell from within LyX. 
+   Notice that this prevents using English ispell/aspell from within LyX.
    If you know of a better configuration, please tell us.
    Notice that if a Hebrew misspelled word is found, it is shown reversed on
    LyX's spellchecker (and so are its corrections). This is about to be

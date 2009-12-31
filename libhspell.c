@@ -334,7 +334,7 @@ int hspell_enum_splits(struct dict_radix *dict, const char *word,
    This function splices together the first s1len characters of s1, then
    two characters c1,c2 (or nothing if c is 0) and the string s2.
 */
-static inline splice(char *buf, int size, const char *s1, int s1len,
+static inline void splice(char *buf, int size, const char *s1, int s1len,
 		     char c1, char c2, const char *s2)
 {
 	int len=s1len;

@@ -199,6 +199,8 @@ while(<INFILE>){
       $s = $w->shempeula_conj;
       if ($s) {
 	$s =~ s/C/צ'/o;
+	$s =~ s/J/ג'/o;
+	$s =~ s/Z/ז'/o;
         $s =~ s/([כמנפצ])$/$fin{$1}/;
         $s =~ s/h/ה/o;
 
@@ -367,10 +369,10 @@ sub output_infinitive() {
 
   sub _bdoq_sikul {
     my $w = shift;
-    return if ($w->{q} !~ m/[דזטסצCZשת]/o);
+    return if ($w->{q} !~ m/[דזטסצCZJשת]/o);
     $w->{mishqal} =~ s/^התq/הqת/ if ($w->{q} =~ m/[סש]/o);
     $w->{mishqal} =~ s/^התq/הqט/ if ($w->{q} =~ m/[צC]/o);
-    $w->{mishqal} =~ s/^התq/הqד/ if ($w->{q} =~ m/[זZ]/o);
+    $w->{mishqal} =~ s/^התq/הqד/ if ($w->{q} =~ m/[זZJ]/o);
     $w->{mishqal} =~ s/^התq/היq/ if ($w->{q} =~ m/[תדט]/o && 
 			!${$w->{opts}}{"שמור_פד"});
   }

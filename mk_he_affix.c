@@ -1,4 +1,4 @@
-/* Copyright 2004-2006 Nadav Har'El and Dan Kenigsberg */
+/* Copyright 2004-2009 Nadav Har'El and Dan Kenigsberg */
 
 /* this little program creates aspell affix information for Hebrew according to
  * the hebrew.wgz*. This version creates a single rule for each of hspell's
@@ -13,7 +13,7 @@
 #include "hspell.h"
 
 /* #define PREFIXFILE_COMMAND "gzip -dc hebrew.wgz.prefixes" */
-#define PREFIXFILE_COMMAND "gzip -dc hebrew.wgz.prefixes | specfilter"
+#define PREFIXFILE_COMMAND "gzip -dc hebrew.wgz.prefixes | ./specfilter"
 
 /* Convert a number in the range 0..52 (currently) to a readable character
    that can be used as the rule (prefix set) name. To facilitate merging our
@@ -27,7 +27,7 @@
    if we use symbols. But with the digits and other symbols, there's plenty
    of room for future expansion.
 */
-static inline num_to_char(int i)
+static inline char num_to_char(int i)
 {
 	if(i<0){
 		fprintf(stderr,"internal error: num_to_char(%d)\n",i);
@@ -47,7 +47,7 @@ int main(void) {
   char seen_specifiers[100], rulechar;
   int already_seen=0, seen, count;
   FILE *prefixfp, *wordsfp, *hefp;
-  int prefixes_size;
+  int prefixes_size = 0;
   char *prefix_is_word;
 
   hefp = fopen("he_affix.dat", "w");
@@ -57,7 +57,7 @@ int main(void) {
                 "# The conversion was carried out in %s\n",
           HSPELL_VERSION_MAJOR,HSPELL_VERSION_MINOR,HSPELL_VERSION_EXTRA,
           __DATE__); 
-  fprintf(hefp, "# Copyright 2004-2006, Nadav Har'El and Dan Kenigsberg\n"); 
+  fprintf(hefp, "# Copyright 2004-2009, Nadav Har'El and Dan Kenigsberg\n"); 
   fprintf(hefp, "# This dictionary (this file and the corresponding word list)\n"
                 "# is licensed under the GNU General Public License (GPL)\n"); 
 

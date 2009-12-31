@@ -1,6 +1,34 @@
 The README file describes what Hspell is and what it includes. This file
 explains how to build and install it.
 
+===========================================================================
+
+Hspell is normally installed and used in one of two ways:
+
+1. Native Hspell: Hspell can be used as a command-line tool "hspell", and/or
+   using a library libhspell, together with a dictionary in Hspell's own
+   format.
+
+2. Derivative dictionaries: Hspell's dictionary data is compiled into a
+   format used by some common multi-lingual spell-checker, such as aspell,
+   myspell or hunspell.
+
+One benefit of the native Hspell method is much better peformance: When
+Hspell's native spell-checker is compared to hunspell, for example, it is
+10 times smaller on disk, 10 times faster to start, uses half the memory,
+and spell-checks hundreds of times (!) faster. Hspell's code also has
+additional features that no multi-lingual spell-checker currently supports,
+especially morphological analysis.
+
+The benefit of generating dictionaries for one of the existing multi-lingual
+spell-checkers like aspell are obvious: no additional code needs to be
+installed (so it will work on any system where aspell works). Even more
+importantly: Large applications, such as OpenOffice, Firefox and even
+Google's Gmail, which already use aspell et al. to provide spell-checking
+for many languages, gain Hebrew spell-checking without any extra effort.
+
+============================================  Native Hspell ===============
+
 Installing Hspell on a Unix-compatible system (Linux, Unix, Mac OS X) is
 usually as simple as running
 
@@ -40,13 +68,36 @@ probably slightly more useful:
         the installation about 4 times larger, but doesn't slow hspell if "-l"
         isn't used.
 
-  --enable-aspell
-        Build data files - he_affix.dat and he.wl - suitable for use as
-        Aspell 0.6 dictionary for Hebrew. Probably not useful for anyone
-        but Aspell's dictionary package developers.
-
 These optional features are not turned on by default because they present
 a feature/performance tradeoff (you get more features but slower build,
 larger installation, and/or slower executable), or a feature/feature tradeoff
 (when you add more rare word forms, you're allowing more spelling mistakes
 to masquerade as real-looking).
+
+There are additional options available for "configure": run
+	configure --help
+to get a list of them.
+
+============================================  Derivative Dictionaries =====
+
+After you run "configure" as explained above, the Makefile has additional
+targets for creating dictionaries for several common multi-lingual
+spell-checkers and applications:
+
+"make aspell"  -
+	Creates the files "he_affix.dat" and "he.wl".
+
+"make myspell" -
+	Creates the files "he.dic" and "he.aff"
+
+"make hunspell" -
+	Creates the files "hunspell/new_he.aff" and "hunspell/new_he.dic".
+	Hunspell can also read the dictionaries from "make myspell", but
+	"make hunspell" enables a hunspell-only second level of suffix
+	compression, which creates a smaller dictionary that also uses less
+	memory and loads faster.
+
+Additionally, we have targets which create plugins useful for applications:
+
+"make ff2" -
+	Creates the file ff2/spell-he-1.1.xpi for Firefox

@@ -1,5 +1,20 @@
 # Hspell Makefile
-# Copyright (C) 2002-2006 Nadav Har'El and Dan Kenigsberg
+# Copyright (C) 2002-2009 Nadav Har'El and Dan Kenigsberg
+ 
+# A comment about parallel make:
+# Unfortunately, parallel make deals with rules with multiple targets in a way
+# I can only describe as "useless". If one rule has multiple targets, and
+# more than one of them appear as dependencies in other rules, parallel make
+# may run the rule more than once concurrently! To work around this problem,
+# we need to change every rule of the form:
+# 	a b c:
+# 		... create a b and c
+# to the form:
+# 	a:
+# 		... create a b and c
+# 	b c: a
+# Now, the real rule will be run just once, because a will be created just
+# once. This workaround is used several times in the Makefile below.
 
 # Locale override:
 # Some of the things we do here (like sort), and Perl scripts we run can be
@@ -24,6 +39,7 @@ LC_COLLATE=C
 # build and installation paths
 prefix = @prefix@
 exec_prefix = @exec_prefix@
+datarootdir = @datarootdir@
 
 DESTDIR =
 PREFIX = @prefix@
@@ -45,6 +61,8 @@ CFLAGS=@CFLAGS@
 LIBS=@LIBS@
 CPPFLAGS=@CPPFLAGS@
 LDFLAGS=@LDFLAGS@
+
+STRIP=strip
 
 .c.o:
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(DEFS) $<
@@ -81,6 +99,14 @@ clean:
 	      hebeng/README-he.txt hebeng/README-en-US.txt \
 	      hebeng/spell-heb-eng.xpi
 	-rmdir hebeng
+	rm -f hunspell/he.aff hunspell/he.dic hunspell/new_he.aff \
+	      hunspell/new_he.dic hunspell/num_he.aff hunspell/num_he.dic \
+	      hunspell/word hunspell/word2 hunspell/affixcompress[0123].tmp
+	-rmdir hunspell
+	rm -f ff2/dictionaries/he.aff ff2/dictionaries/he.dic \
+	      ff2/dictionaries/license.txt ff2/dictionaries/README-he.txt \
+	      ff2/install.js ff2/install.rdf ff2/spell-he-$(VERSION).xpi
+	-rmdir ff2/dictionaries ff2
 
 distclean: clean
 	rm -f Makefile config.log config.status
@@ -90,7 +116,7 @@ HSPELL_EXECUTABLE=hspell
 
 install: all
 	test -d $(DESTDIR)$(BIN) || mkdir -m 755 -p $(DESTDIR)$(BIN)
-	strip $(HSPELL_EXECUTABLE)
+	$(STRIP) $(HSPELL_EXECUTABLE)
 	-rm -f $(DESTDIR)$(BIN)/$(HSPELL_EXECUTABLE)
 	cp $(HSPELL_EXECUTABLE) $(DESTDIR)$(BIN)/$(HSPELL_EXECUTABLE)
 	chmod 755 $(DESTDIR)$(BIN)/$(HSPELL_EXECUTABLE)
@@ -98,7 +124,7 @@ install: all
 	chmod 755 $(DESTDIR)$(BIN)/multispell
 	test -d $(DESTDIR)$(SHARE) || mkdir -m 755 -p $(DESTDIR)$(SHARE)
 	cp hebrew.wgz hebrew.wgz.prefixes hebrew.wgz.sizes $(DESTDIR)$(SHARE)/
-	gzip -9 < spellinghints > $(DESTDIR)$(SHARE)/hebrew.wgz.hints
+	gzip -9n < spellinghints > $(DESTDIR)$(SHARE)/hebrew.wgz.hints
 	(cd $(DESTDIR)$(SHARE); chmod 644 hebrew.wgz hebrew.wgz.prefixes hebrew.wgz.sizes hebrew.wgz.hints)
 	test ! -f hebrew.wgz.stems || cp hebrew.wgz.stems hebrew.wgz.desc $(DESTDIR)$(SHARE)/
 	(cd $(DESTDIR)$(SHARE); test ! -f hebrew.wgz.stems || chmod 644 hebrew.wgz.stems hebrew.wgz.desc)
@@ -121,8 +147,8 @@ install: all
 ################################################
 # for creating an hspell distribution tar
 PACKAGE = hspell
-VERSION = 1.0
-DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
+VERSION = 1.1
+DISTFILES = COPYING INSTALL LICENSE README WHATSNEW \
 	Makefile.in stats wunzip.c wzip \
 	hspell.1 \
 	wolig.pl wolig.dat biza-nouns milot extrawords \
@@ -135,7 +161,9 @@ DISTFILES = COPYING INSTALL LICENSE README WHATSNEW TODO \
 	hash.h tclHash.c tclHash.h \
         binarize-desc.pl pack-desc.pl linginfo.c linginfo.h \
 	multispell hspell.3 mk_he_affix.c configure.in configure \
-	install.js.pre specfilter.c
+	misc/install.js.pre specfilter.c \
+	misc/ff2-install.js.pre misc/ff2-install.rdf.pre \
+	doc/niqqudless.odt misc/doubleaffixcompress
 
 DISTDIR = $(PACKAGE)-$(VERSION)
 
@@ -143,6 +171,7 @@ distdir:
 	rm -rf ./$(DISTDIR)
 	mkdir -m 755 $(DISTDIR)
 	cp -a --parents $(DISTFILES) $(DISTDIR)
+	#cp -a $(DISTFILES) $(DISTDIR)
 # Note that Oron Peled suggested a more eleborate version that makes hard
 # links instead of copies:
 #	for file in $(DISTFILES); do \
@@ -195,11 +224,12 @@ DICTS=milot extrawords biza-verbs biza-nouns
 # hebrew.wgz.prefixes is the prefix hints (one byte per word, compressed).
 # hebrew.wgz.sizes contains the memory sizes that reading hebrew.wgz will
 #   require (this makes it easier for hspell to preallocate the needed sizes).
-hebrew.wgz hebrew.wgz.prefixes: pmerge PrefixBits.pl $(DICTS) $(GZDICTS)
-	(gzip -dc $(GZDICTS); cat $(DICTS)) | ./pmerge -p hebrew.wgz.tmp | ./wzip | gzip -9 > hebrew.wgz
+hebrew.wgz: pmerge PrefixBits.pl $(DICTS) $(GZDICTS)
+	(gzip -dc $(GZDICTS); cat $(DICTS)) | ./pmerge -p hebrew.wgz.tmp | ./wzip | gzip -9n > hebrew.wgz
 	-rm -f hebrew.wgz.prefixes
-	gzip -9 < hebrew.wgz.tmp >hebrew.wgz.prefixes
+	gzip -9n < hebrew.wgz.tmp >hebrew.wgz.prefixes
 	-rm -f hebrew.wgz.tmp
+hebrew.wgz.prefixes: hebrew.wgz
 hebrew.wgz.sizes: hebrew.wgz find_sizes
 	gzip -dc hebrew.wgz | ./find_sizes >hebrew.wgz.sizes
 
@@ -217,8 +247,8 @@ dolinginfo: linginfo_data $(HSPELL_EXECUTABLE)
 #
 # In the following long rule, the complete list of all words with linguistic
 # details is concatanated and sent to binarize-desc.pl, which converts the
-# detail information of each word into bitmap (called dmask), produces a
-# spesifier that tell which prefixes are accepted with the word, and writes its
+# detailed information of each word into bitmap (called dmask), produces a
+# specifier that tells which prefixes are accepted with the word, and writes its
 # stem. Then the words list is sorted, packed (a-la uniq), and the output files
 # are written.
 #
@@ -240,25 +270,25 @@ dolinginfo: linginfo_data $(HSPELL_EXECUTABLE)
 # target in front of the default targets.
 
 linginfo_data: hebrew.wgz.stems
-hebrew.wgz.desc hebrew.wgz.stems hebrew.wgz.lingsizes.tmp dmask.c: binarize-desc.pl PrefixBits.pl pack-desc.pl $(DICTS) $(GZDICTS) find_sizes
-#hebrew.wgz hebrew.wgz.prefixes hebrew.wgz.desc hebrew.wgz.stems hebrew.wgz.lingsizes.tmp dmask.c: binarize-desc.pl pack-desc.pl $(DICTS) $(GZDICTS)
+hebrew.wgz.stems: binarize-desc.pl PrefixBits.pl pack-desc.pl $(DICTS) $(GZDICTS) find_sizes
 	(gzip -dc $(GZDICTS); cat $(DICTS)) | $(PERL) binarize-desc.pl | \
 		sort -u | $(PERL) pack-desc.pl -p hebrew.wgz.prefixes.tmp \
 		-d hebrew.wgz.desc.tmp -s hebrew.wgz.stems.tmp \
 		-l hebrew.wgz.lingsizes.tmp | \
-		./wzip | gzip -9 > hebrew.wgz
+		./wzip | gzip -9n > hebrew.wgz
 	gzip -dc hebrew.wgz | ./find_sizes >hebrew.wgz.sizes
 	cat hebrew.wgz.lingsizes.tmp >> hebrew.wgz.sizes
 	-rm -f hebrew.wgz.lingsizes.tmp
 	-rm -f hebrew.wgz.prefixes
-	gzip -9 < hebrew.wgz.prefixes.tmp >hebrew.wgz.prefixes
+	gzip -9n < hebrew.wgz.prefixes.tmp >hebrew.wgz.prefixes
 	-rm -f hebrew.wgz.prefixes.tmp
 	-rm -f hebrew.wgz.desc
-	gzip -9 < hebrew.wgz.desc.tmp >hebrew.wgz.desc
+	gzip -9n < hebrew.wgz.desc.tmp >hebrew.wgz.desc
 	-rm -f hebrew.wgz.desc.tmp
 	-rm -f hebrew.wgz.stems
-	gzip -9 < hebrew.wgz.stems.tmp >hebrew.wgz.stems
+	gzip -9n < hebrew.wgz.stems.tmp >hebrew.wgz.stems
 	-rm -f hebrew.wgz.stems.tmp
+hebrew.wgz.desc hebrew.wgz.lingsizes.tmp dmask.c: hebrew.wgz.stems
 ############################################################################
 
 
@@ -275,8 +305,6 @@ dout.nouns.%.gz:  %.dat wolig.pl
 dout.nouns.shemp.gz:  shemp.dat wolig.pl
 	$(PERL) -w wolig.pl -d shemp.dat | gzip -4 > $@
 
-# We need two rules here, and not just two targets for one rule, to make
-# parallel make work correctly. See bug 78 in the bugzilla for more info.
 dout.verbs.gz: woo woo.dat
 	$(PERL) -w woo -d woo.dat | sed "$(SEDCMD)" | gzip -4 > $@
 shemp.dat: dout.verbs.gz
@@ -284,27 +312,57 @@ shemp.dat: dout.verbs.gz
 ############################################################################
 # The following targets build packages of Hspell's word list in formats
 # required for other spell-checkers like Aspell and Myspell. They are not
-# necessary for building Hspell.
+# necessary for building the native Hspell spell-checker.
 ############################################################################
 
-# The "aspell" target generates the "he_affix.dat" and "he.wl" files needed
-# for using aspell 0.6 with Hspell's Hebrew word list.
-aspell: he_affix.dat he.wl
-mk_he_affix.o: prefixes.c hspell.h
-he_affix.dat he.wl: mk_he_affix wunzip hebrew.wgz hebrew.wgz.prefixes specfilter
+# The "he_affix.dat" and "he.wl" files are the two files basic files which
+# form an Aspell 0.6 dictionary. The dictionary formats of myspell and
+# hunspell, and products using them (such as firefox and openoffice) are
+# just various modifications on top of these two basic files:
+he.wl: mk_he_affix wunzip hebrew.wgz hebrew.wgz.prefixes specfilter
 	./mk_he_affix > he.wl
+he_affix.dat: he.wl
+mk_he_affix.o: prefixes.c hspell.h
+
+# The "aspell" target generates "he_affix.dat" and "he.wl".
+aspell: he_affix.dat he.wl
 
 # The "myspell" target generates the "he.dic" and "he.aff" files needed
 # for using Hspell's Hebrew word list in myspell. Myspell is the spell-
 # checking library used in both Mozilla and OpenOffice, and its format is
 # very similar to the uncompressed aspell dictionary format.
+#myspell: he.dic he.aff
+#he.dic: he_affix.dat he.wl
+#	cat he.wl | wc -l > he.dic
+#	cat he.wl >> he.dic
+#	echo SET ISO8859-8 > he.aff
+#	echo TRY éåäàòçë÷\'\"ùñæãâáøðîèöúôíóêõïì >> he.aff
+#	cat he_affix.dat >> he.aff
+#he.aff: he.dic
+
+# For some unknown reason, hunspell is 10 times faster (!) to load a
+# UTF-8 dictionary than ISO8859-8 (on one machine, 3.28 seconds vs 0.35).
+# So we use UTF-8 instead, despite this resulting file being twice the
+# size. Luckily, the memory use is not affected at all.
 myspell: he.dic he.aff
-he.dic he.aff: he_affix.dat he.wl
-	cat he.wl | wc -l > he.dic
-	cat he.wl >> he.dic
-	echo SET ISO8859-8 > he.aff
-	echo TRY éåäàòçë÷\'\"ùñæãâáøðîèöúôíóêõïì >> he.aff
-	cat he_affix.dat >> he.aff
+he.dic: he_affix.dat he.wl
+	wc -l < he.wl > he.dic
+	iconv -f iso-8859-8 -t utf-8 he.wl >> he.dic
+	echo SET UTF-8 > he.aff
+	echo TRY éåäàòçë÷\'\"ùñæãâáøðîèöúôíóêõïì | iconv -f iso-8859-8 -t utf-8 >> he.aff
+	iconv -f iso-8859-8 -t utf-8 he_affix.dat >> he.aff
+he.aff: he.dic
+
+# The "hunspell" target generates hunspell/new_he.aff, hunspell/new_he.dic.
+# Hunspell is a newer format, based on myspell but with the addition of
+# secondary affix compression which allows smaller dictionaries, memory use
+# and startup times.
+hunspell: hunspell/new_he.dic
+hunspell/new_he.dic: myspell
+	test -d hunspell || mkdir hunspell
+	(cd hunspell; ln -sf ../he.aff ../he.dic .; LC_ALL=he_IL.UTF-8 ../misc/doubleaffixcompress he)
+	echo WORDCHARS àáâãäåæçèéëìîðñòôö÷øùúíïêóõ\'\" | iconv -f iso-8859-8 -t utf-8 >> hunspell/new_he.aff
+	echo -e "BREAK 3\nBREAK ^\"\nBREAK \"$$\nBREAK ^'" >> hunspell/new_he.aff
 
 # The "mozilla" target generates a ".xpi" file, which is basically a zip
 # file containing the dictionaries in Myspell format (similar to the
@@ -314,8 +372,24 @@ spell-he.xpi: he.dic he.aff install.js README
 	rm -f README-he.txt spell-he.xpi
 	cp README README-he.txt
 	zip spell-he.xpi install.js README-he.txt he.aff he.dic
-install.js: install.js.pre
-	sed "s/%VERSION%/$(VERSION)/g; s/%DISPLAY_NAME%/Hebrew (IL) dictionary/g; s/%APP_NAME%/spell-he/g" < install.js.pre > install.js
+install.js: misc/install.js.pre
+	sed "s/%VERSION%/$(VERSION)/g; s/%DISPLAY_NAME%/Hebrew (IL) dictionary/g; s/%APP_NAME%/spell-he/g" < misc/install.js.pre > install.js
+
+# A similar target, for newer Firefox
+ff2: ff2/spell-he-$(VERSION).xpi
+ff2/spell-he-$(VERSION).xpi: he.dic he.aff ff2/install.js ff2/install.rdf README
+	mkdir -p ff2/dictionaries
+	ln README ff2/dictionaries/README-he.txt
+	ln COPYING ff2/dictionaries/license.txt
+	ln he.dic he.aff ff2/dictionaries
+	( cd ff2; zip spell-he-$(VERSION).xpi install.js install.rdf \
+		dictionaries/{README-he.txt,license.txt,he.aff,he.dic} )
+ff2/install.js: misc/ff2-install.js.pre
+	mkdir -p ff2
+	sed "s/%VERSION%/$(VERSION)/g" < misc/ff2-install.js.pre > ff2/install.js
+ff2/install.rdf: misc/ff2-install.rdf.pre
+	mkdir -p ff2
+	sed "s/%VERSION%/$(VERSION)/g" < misc/ff2-install.rdf.pre > ff2/install.rdf
 
 # The "heb-eng-xpi" target generates, like the "mozilla" target, an xpi
 # file. But instead of taking only the Hebrew word list, it merges our
@@ -327,8 +401,8 @@ hebeng:
 en-US.dic en-US.aff README-en-US.txt:
 	echo \*\*\* Please link to the english dictionary files $@
 	false
-hebeng/install.js: hebeng install.js.pre
-	sed "s/%VERSION%/$(VERSION)/g; s/%DISPLAY_NAME%/Hebrew-English combined dictionary/g; s/%APP_NAME%/spell-heb-eng/g; s/he\.dic/heb-eng.dic/; s/he\.aff/heb-eng.aff/; /var myspell_folder/s/$$/addFile(APP_NAME, \"README-en-US.txt\", myspell_folder, \"\")\;/" < install.js.pre > hebeng/install.js
+hebeng/install.js: hebeng misc/install.js.pre
+	sed "s/%VERSION%/$(VERSION)/g; s/%DISPLAY_NAME%/Hebrew-English combined dictionary/g; s/%APP_NAME%/spell-heb-eng/g; s/he\.dic/heb-eng.dic/; s/he\.aff/heb-eng.aff/; /var myspell_folder/s/$$/addFile(APP_NAME, \"README-en-US.txt\", myspell_folder, \"\")\;/" < misc/install.js.pre > hebeng/install.js
 hebeng/heb-eng.aff: he.aff en-US.aff
 	echo SET ISO8859-8 >hebeng/heb-eng.aff
 	echo TRY esianrtolcdugmphbyfvkwzESIANRTOLCDUGMPHBYFVKWZéåäàòçë÷\'\"ùñæãâáøðîèöúôíóêõïì >> hebeng/heb-eng.aff
@@ -367,9 +441,10 @@ README_he_IL.txt:
 	echo "This Hebrew dictionary in Myspell format was generated automatically from" >README_he_IL.txt
 	echo "data prepared by the Hspell project:" >>README_he_IL.txt
 	echo >>README_he_IL.txt
-	echo "http://ivrix.org.il/projects/spell-checker" >>README_he_IL.txt
+	echo "	http://ivrix.org.il/projects/spell-checker" >>README_he_IL.txt
+	echo >>README_he_IL.txt
 	echo "Hspell version $(VERSION) was used." >>README_he_IL.txt
 	echo >>README_he_IL.txt
-	echo "This dictionary is Copyright (C) 2000-2006, Nadav Har'El and Dan Kenigsberg." >>README_he_IL.txt
+	echo "This dictionary is Copyright (C) 2000-2009, Nadav Har'El and Dan Kenigsberg." >>README_he_IL.txt
 	echo "It is licensed under the GNU General Public License (GPL)." >>README_he_IL.txt
 
