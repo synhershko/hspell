@@ -1,6 +1,6 @@
 '\" t
-.\" Copyright (c) 2001-2006, Nadav Har'El and Dan Kenigsberg
-.TH hspell 1 "16 May 2006" "Hspell 1.0" "Ivrix"
+.\" Copyright (c) 2001-2009, Nadav Har'El and Dan Kenigsberg
+.TH hspell 1 "31 December 2009" "Hspell 1.1" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker
 .SH SYNOPSIS
@@ -111,7 +111,7 @@ suggests "corrections"
 to every word (regardless if they are in the dictionary or not), and shows
 the linguistic information on all those words. This can be useful
 for a reader application, which may also want to be able to understand
-mispellings and their possible meanings.
+misspellings and their possible meanings.
 
 .TP
 .B \-s
@@ -186,7 +186,7 @@ option nevertheless tells Hspell to allow this prefix.
 Load the word lists from the given base pathname, rather than from the
 compiled-in default path. This is mostly used for testing Hspell, when the
 dictionaries have been compiled in the current directory and hspell is run as
-"hspell -Dhebrew.wgz".
+"hspell \-Dhebrew.wgz".
 .TP
 .B \-d, \-B, \-m, \-T, \-C, \-S, \-P, \-p, \-w, and \-W
 These options are passed to 
@@ -222,6 +222,12 @@ also encouraged to refer to Hebrew
 dictionaries which use the niqqud-less spelling (such as Millon Ha-hove,
 Rav Milim, and the new Even Shoshan).
 
+Hspell's distribution (and Web site) also include a document,
+.BR niqqudless.odt ,
+which explains Hspell's spelling standard in detail (in Hebrew). It explains
+both the overall principles, and why specific words are spelled the way
+they are.
+
 Future releases might include an option for alternative spelling standards.
 .SH "BEHIND THE SCENES"
 The
@@ -239,7 +245,7 @@ The word list is also not based on automatic scanning
 of available Hebrew documents (such as online newspapers), because there is
 no way to guarantee that such a list will be correct (not contain
 misspellings, useless proper names, and so on), complete (certain
-inflections might not appear in the chosen samples) or consistent (especially
+inflections might not appear in the chosen samples), or consistent (especially
 when it comes to niqqud-less spelling rules).
 
 Instead, our idea was to write programs which know how to correctly inflect
@@ -249,7 +255,7 @@ inflection when these cannot be figured out automatically. Most of the effort
 that went into the Hspell project went into building these input files.
 Then, "word list
 generators" (written in Perl, and are also part of the Hspell project)
-create the complete inlected word list that will be used by the spellchecking
+create the complete inflected word list that will be used by the spellchecking
 program, hspell.
 This generation process is only done once, when building
 .BR hspell
@@ -285,9 +291,9 @@ Currently always 0.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 1.0 (May 16, 2006)
+described by this manual page is 1.1 (December 31, 2009)
 .SH "COPYRIGHT"
-Copyright (C) 2000-2006, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2009, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
 Hspell is free software, released under the GNU General Public License (GPL).
@@ -298,7 +304,7 @@ There is no warranty of any kind.
 See the LICENSE file for more information and the exact license terms.
 
 The latest version of this software can be found in
-.B http://www.ivrix.org.il/projects/spell-checker
+.B http://hspell.ivrix.org.il/
 .SH "ACKNOWLEDGMENTS"
 The hspell utility and the linguistic databases behind it (collectively called
 "the Hspell project") were created by Nadav Har'El <nyh@math.technion.ac.il>
@@ -352,9 +358,12 @@ This manual page is in English.
 .PP
 For GUI-lovers,
 .BR hspell 's
-user interface is an abomination. As more and more applications learn to
-interface with hspell, this will no longer be an issue. See
-.B http://www.ivrix.org.il/projects/spell-checker/Hspell-HOWTO.html
+user interface is an abomination. However, as more and more applications learn to
+interface with
+.BR hspell ,
+and as Hspell's data becomes available in multi-lingual spellcheckers (such as
+aspell and hunspell), this will no longer be an issue. See
+.B http://hspell.ivrix.org.il/
 for instructions on how to use Hspell in a variety of applications.
 .PP
 .BR hspell 's

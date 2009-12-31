@@ -232,7 +232,9 @@ static int uglyuglyflag = 0;
 
 int notify_split(const char *w, const char *baseword, int preflen, int prefspec)
 {
+#ifdef USE_LINGINFO
 	char *desc,*stem;
+#endif
 	if(preflen>0){
 		printf("צירוף חוקי: %.*s+%s\n", preflen, w, baseword);
 	} else if (!preflen){
@@ -339,11 +341,11 @@ main(int argc, char *argv[])
 			break;
 		case 'V':
 			printf("Hspell %d.%d%s\nWritten by Nadav Har'El and "
-			       "Dan Kenigsberg.\n\nCopyright (C) 2000-2006 "
+			       "Dan Kenigsberg.\n\nCopyright (C) 2000-2009 "
 			       "Nadav Har'El and Dan Kenigsberg.\nThis is "
 			       "free software, released under the GNU General "
 			       "Public License (GPL).\nSee "
-			       "http://ivrix.org.il/projects/spell-checker "
+			       "http://hspell.ivrix.org.il/ for "
 			       "more information.\n", HSPELL_VERSION_MAJOR,
 			       HSPELL_VERSION_MINOR, HSPELL_VERSION_EXTRA);
 			return 0;
@@ -696,7 +698,7 @@ main(int argc, char *argv[])
 					struct corlist cl;
 					int j;
 					printf("%d %s -> ",
-					       wrongwords_array[i].value,
+					       (int)wrongwords_array[i].value,
 					       wrongwords_array[i].key);
 					corlist_init(&cl);
 					hspell_trycorrect(dict,
@@ -710,7 +712,7 @@ main(int argc, char *argv[])
 					printf("\n");
 				} else if(opt_s){
 					printf("%d %s\n",
-					       wrongwords_array[i].value,
+					       (int)wrongwords_array[i].value,
 					       wrongwords_array[i].key);
 				} else {
 					printf("%s\n",wrongwords_array[i].key);

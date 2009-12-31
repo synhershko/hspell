@@ -1,15 +1,8 @@
-This is version 1.0 of Hspell, the free Hebrew spellchecker and morphology
+This is version 1.1 of Hspell, the free Hebrew spellchecker and morphology
 engine.
 
-On typical documents Hspell recognizes the majority of correct words. However,
-users must take into account that it still will not recognize *all* the correct
-words; The dictionary is still not complete, and this situation will continue to
-improve in the next releases. On the other hand, barring bugs Hspell should not
-recognize incorrect words - extreme attention has been given to the correctness
-and consistency of the dictionary.
-
 You can get Hspell from:
-	http://www.ivrix.org.il/projects/spell-checker/
+	http://hspell.ivrix.org.il/
 
 Hspell was written by Nadav Har'El and Dan Kenigsberg.
 
@@ -41,7 +34,9 @@ Users of Hspell (and all Hebrew writers, for that matter) are encouraged to
 read the Academia's official niqqud-less spelling rules (which are printed at
 the end of most modern Hebrew dictionaries), and to refer to Hebrew
 dictionaries which use the niqqud-less spelling (such as Millon Ha-hove or
-Rav Milim).
+Rav Milim). We also provide in docs/niqqudless.odt a document (in Hebrew)
+which describes in detail Hspell's spelling standard, and why certain words
+are spelled the way they are.
 
 Future releases might include an option for alternative spelling standards.
 

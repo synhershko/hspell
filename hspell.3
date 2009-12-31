@@ -1,6 +1,6 @@
 '\" t
-.\" Copyright (c) 2001-2006, Nadav Har'El and Dan Kenigsberg
-.TH hspell 3 "16 May 2006" "Hspell 1.0" "Ivrix"
+.\" Copyright (c) 2001-2009, Nadav Har'El and Dan Kenigsberg
+.TH hspell 3 "31 December 2009" "Hspell 1.1" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker (C API)
 .SH SYNOPSIS
@@ -35,7 +35,7 @@ hspell \- Hebrew spellchecker (C API)
 This manual describes the C API of the Hspell Hebrew spellchecker. Please
 refer to
 .BR hspell (1)
-for a fuller description of the Hspell project, its spelling
+for a description of the Hspell project, its spelling
 standard, and how it works.
 
 The
@@ -67,7 +67,7 @@ is a synonym for turning on no special flag, i.e., it evaluates to 0.
 
 .B hspell_init()
 returns 0 on success, or negative numbers
-on errors. Currently, the only error is -1, meaning the dictionary files
+on errors. Currently, the only error is \-1, meaning the dictionary files
 could not be read.
 
 The
@@ -187,9 +187,8 @@ to search for the Hspell library, should remember to tell AC_CHECK_LIB
 to also link with the -lz library when checking for -lhspell.
 
 .SH CAVEATS
-Before Hspell reaches maturity, the API described here
-is to be considered unstable, and may change considerably even between
-minor releases. Users are encouraged to compare the values of the integer
+While the API described here has been stable for years, it may change
+in the future. Users are encouraged to compare the values of the integer
 macros 
 .B HSPELL_VERSION_MAJOR
 and
@@ -235,7 +234,8 @@ spelling mistakes not giving useful correction suggestions. Along with
 more types of corrections,
 .B hspell_trycorrect()
 needs a better way to order the likelihood of the corrections, as an
-unordered list of 100 corrections would be just as useful as none.
+unordered list of 100 corrections would be just as useful (or rather,
+useless) as none.
 
 In some cases of errors during
 .BR hspell_init() ,
@@ -247,9 +247,9 @@ There are too many CAVEATS in this manual.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 1.0 (May 16, 2006)
+described by this manual page is 1.1 (December 31, 2009)
 .SH "COPYRIGHT"
-Copyright (C) 2000-2006, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2009, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
 Hspell is free software, released under the GNU General Public License (GPL).
@@ -260,6 +260,6 @@ There is no warranty of any kind.
 See the LICENSE file for more information and the exact license terms.
 
 The latest version of this software can be found in
-.B http://www.ivrix.org.il/projects/spell-checker
+.B http://hspell.ivrix.org.il/
 .SH "SEE ALSO"
 .BR hspell (1)

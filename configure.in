@@ -19,6 +19,13 @@ dnl available).
 AC_C_INLINE
 AC_C_CONST
 
+dnl Our hash-table code borrowed from TCL stores pointer values, but we want
+dnl to store there ints. So we need a type uintptr_t which is an integer
+dnl exactly the same size as a pointer. If we don't already have this type
+dnl (it is standard in ANSI C's stdint.h), autoconf will try to figure it
+dnl out.
+AC_TYPE_INTPTR_T
+
 dnl TODO: remove -g from CFLAGS and add -s to LDFLAGS
 
 AC_PATH_PROG([PERL], [perl])

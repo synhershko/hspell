@@ -82,6 +82,7 @@ EXTERN Tcl_HashEntry *	Tcl_NextHashEntry _ANSI_ARGS_((
 EXTERN Tcl_HashEntry *	Tcl_FirstHashEntry _ANSI_ARGS_((Tcl_HashTable *tablePtr,
 				Tcl_HashSearch * searchPtr));
 EXTERN void Tcl_InitHashTable _ANSI_ARGS_((Tcl_HashTable *tablePtr, int keyType));
+EXTERN void Tcl_DeleteHashTable _ANSI_ARGS_((Tcl_HashTable *tablePtr));
 EXTERN Tcl_HashEntry *Tcl_CreateHashEntry _ANSI_ARGS_((Tcl_HashTable *tablePtr, CONST char *key, int *newPtr));
 EXTERN Tcl_HashEntry *Tcl_FindHashEntry _ANSI_ARGS_((Tcl_HashTable *tablePtr, CONST char *key));
 

@@ -3,8 +3,6 @@
 #ifndef INCLUDED_HASH_H
 #define INCLUDED_HASH_H
 
-#include <stdlib.h>
-
 /* we use tclHash.[ch] to implement the following API:
 
    typedef ...hspell_hash;
@@ -26,6 +24,15 @@
    void hspell_hash_free_keyvalue_array(hspell_hash *h, int size,
                                         hspell_hash_keyvalue *p);
 */
+
+#include <stdlib.h>
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#endif
+
 #include "tclHash.h"
 
 typedef Tcl_HashTable hspell_hash;
@@ -50,7 +57,7 @@ static inline void hspell_hash_incr_int(hspell_hash *hashp, const char *key)
 	   address of clientData to another type in fear we'll write too
 	   much, so we need explicit assignment and cast of the values:
 	*/
-	Tcl_SetHashValue(e, ((int)Tcl_GetHashValue(e))+1);
+	Tcl_SetHashValue(e, ((intptr_t)Tcl_GetHashValue(e))+1);
 }
 
 /* hspell_hash_exists returns 0 if there is no value for this key yet, 1
@@ -65,7 +72,7 @@ static inline int hspell_hash_exists(hspell_hash *hashp, const char *key)
 
 typedef struct {
        	const char *key;
-	int value;
+	intptr_t value;
 } hspell_hash_keyvalue;
 
 /* Hspell_hash_build_keyvalue_vector builds an array of keys and values
@@ -102,7 +109,7 @@ static inline hspell_hash_keyvalue *hspell_hash_build_keyvalue_array(
 			break;
 		}
 		arrayp->key=Tcl_GetHashKey(h, e);
-		arrayp->value=(int)Tcl_GetHashValue(e);
+		arrayp->value=(intptr_t)Tcl_GetHashValue(e);
 		arrayp++;
 	}
 	if(arrayp!=arrayend){
@@ -131,19 +138,19 @@ static inline void hspell_hash_free_keyvalue_array(hspell_hash *h, int size,
    The get function returns 0 on failure, and 1 on success with the value
    put in the given pointer.
 */
-static inline int hspell_hash_get_int(hspell_hash *hashp, const char *key,
+static inline intptr_t hspell_hash_get_int(hspell_hash *hashp, const char *key,
 			              int *value)
 {
 	Tcl_HashEntry *e;
 
 	if(!(e=Tcl_FindHashEntry(hashp, key)))
 		return 0;
-	*value=(int)Tcl_GetHashValue(e);
+	*value=(intptr_t)Tcl_GetHashValue(e);
 	return 1;
 }
 
 static inline void hspell_hash_set_int(hspell_hash *hashp, const char *key,
-				       int value)
+				       intptr_t value)
 {
 	Tcl_HashEntry *e;
 	int isnew;
@@ -157,7 +164,7 @@ static inline void hspell_hash_set_int(hspell_hash *hashp, const char *key,
 */
 static inline void hspell_hash_destroy(hspell_hash *p)
 {
-	Tcl_DeleteHashTable(p, TCL_STRING_KEYS);
+	Tcl_DeleteHashTable(p);
 }
 
 #endif /* INCLUDED_HASH_H */
