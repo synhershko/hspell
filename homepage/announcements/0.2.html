@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML DIR=LTR lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i">
+<TITLE>The Ivrix Project - Spell Checker</TITLE>
+<LINK rel="stylesheet" href="../hspell.css" type="text/css" title="funky">
+</HEAD>
+<BODY>
+<DIV class="menu">
+<A HREF="http://www.ivrix.org.il/">Ivrix</A>
+<A HREF="http://www.ivrix.org.il/projects/spell-checker/">Hspell</A>
+<A HREF="../about.html">FAQ</A>
+<A HREF="../docs.html">Documents</A>
+<A HREF="../download.html">Download</A>
+</DIV>
+
+<DIV class="main">
+<H1>
+Hspell 0.2 announcement
+<BR><SPAN class="small">"Haifa Linux Club"</SPAN>
+</H1>
+<H3>The original announcement</H3>
+<PRE>
+Date: Sun, 5 Jan 2003 02:13:53 +0200
+Hebrew-Date: 2 Shevat 5763
+From: Nadav Har'El
+Subject: Announcement: Hspell release 0.2
+
+A few weeks have passed and we are proud to release version 0.2 of Hspell,
+the free Hebrew speller. We invested a lot of time and effort to enlarge
+the vocabulary of the speller, and improve its usability.
+
+The Hspell project's homepage is
+	http://ivrix.org.il/projects/spell-checker/
+
+By no coincidence, a day after this version is released, Dan will give a short
+lecture about Hspell in the esteemed premises of the Haifa Linux Club
+(http://www.haifux.org/). You are welcome to test this freshly-baked version,
+and discuss it with him.
+
+This release includes the following improvements:
+ * Many more nouns, verbs, and other words: around 2500 new base words, and
+   40,000 inflections. Emphasis has been given to adding *common* words that
+   will appear in typical, modern, documents.
+ * Several incorrect words purged or fixed.
+ * Wolig.pl (noun inflector) overhaul to better and more consistently handle
+   niqqud-less (ktiv male) spelling rules, and to be able to theoretically
+   handle at least 99.9% of the Hebrew nouns (of course, we don't have all of
+   them in the dictionary, yet :)).
+ * -n option to hspell program, which gives longer (human-written) explanations
+   on certain spelling errors - especially common niqqud-less spelling errors.
+ * Read additional accepted words from ~/.hspell_words and/or ./hspell_words
+ * Kinuim Khavurim (possesive suffixes) are recognized on the infinitive forms
+   of the verb.
+ * Added manual page, hspell(1)
+ * Improved Makefile (thanks to Oron Peled) and made other changes to the
+   distribution (thanks to Baruch Even) for more easily building binary
+   packages of hspell.
+
+ * Vocabulary: 169,266 words
+               based on 4505 nouns, 645 adjectives, 3407 verb stems, and
+               1237 other words
+</PRE>
+<H3><A HREF="0.2r.html">References</A></H3>
+</DIV>
+</BODY>
+</HTML>

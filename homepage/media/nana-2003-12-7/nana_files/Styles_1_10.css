@@ -1,0 +1,99 @@
+.Article_Headline {COLOR:#9E0000; FONT-FAMILY:Arial, David; FONT-SIZE:18px; FONT-WEIGHT:Bold; FONT-FAMILY:Arial, David; TEXT-DECORATION:none; }
+.pop_up_title {COLOR:#9E0000; FONT-FAMILY:Arial,David; FONT-SIZE:14px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.GreyBar {BACKGROUND-COLOR:#F4F4F4; }
+.Left_bar_category {COLOR:#9E0000; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; padding-right:5px}
+.Lifenet_headline {COLOR:#9E0000; FONT-FAMILY:Arial; FONT-SIZE:18px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.Lifenet_headline:hover {TEXT-DECORATION:underline; }
+.Lifenet_headline:visited {COLOR:#9E0000; }
+.Lifenet_Para_head {COLOR:000000; FONT-SIZE:14px; FONT-WEIGHT:BOLD; }
+.Lifenet_red_bold {COLOR:#9E0000; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.Lifenet_red_bold:hover {COLOR:#9E0000; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.Lifenet_red_normal {COLOR:#9E0000; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.Lifenet_red_normal:hover {COLOR:#9E0000; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.Net_Big_White {COLOR:#ffffff; FONT-FAMILY:Arial; FONT-SIZE:15px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; padding-right:5px}
+.net_default_link {COLOR:0000aa; FONT-FAMILY:Arial; FONT-FAMILY:Arial; TEXT-DECORATION:underline; }
+.net_default_link:hover {COLOR:ff0000; }
+.net_default_link:visited {COLOR:0000aa; }
+.net_red_small_headline {COLOR:#9E0000; FONT-FAMILY:Arial; FONT-SIZE:15px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; }
+.PaddingBar {padding-top:10; padding-bottom:10}
+.uzi_blue {COLOR:#0000aa; FONT-FAMILY:arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:arial; }
+.article_author {COLOR:6E6E6E; FONT-FAMILY:Arial (hebrew); FONT-SIZE:12px; FONT-WEIGHT:bold; FONT-FAMILY:Arial (hebrew); FONT-STYLE:normal; TEXT-DECORATION:none; }
+.article_author_name {COLOR:6e6e6e; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.article_author_num {COLOR:#6e6e6e; FONT-FAMILY:Arial, David; FONT-SIZE:10px; FONT-FAMILY:Arial, David; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.Article_Headline:hover {COLOR:#000000; FONT-FAMILY:Arial,David; FONT-SIZE:18px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.Article_Text {COLOR:000000; FONT-FAMILY:Arial; FONT-SIZE:14px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.Article_Title {COLOR:#000000; FONT-FAMILY:Arial, David; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial, David; TEXT-DECORATION:none; }
+.Article_Title:hover {COLOR:#000000; FONT-FAMILY:Arial,David; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.baseLink {COLOR:#00017a; FONT-FAMILY:Arial, David; FONT-SIZE:12px; FONT-WEIGHT:bold; FONT-FAMILY:Arial, David; TEXT-DECORATION:none; }
+.baseLink:hover {COLOR:#00017a; FONT-FAMILY: Arial, David; FONT-SIZE:12px; FONT-WEIGHT:bold; FONT-FAMILY: Arial, David; TEXT-DECORATION:Underline; }
+.baseLink_normal {COLOR:#000079; FONT-FAMILY:Arial,David; FONT-SIZE:14px; FONT-WEIGHT:normal; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.baseLink_normal:hover {COLOR:#000079; FONT-FAMILY:Arial,David; FONT-SIZE:14px; FONT-WEIGHT:normal; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.baseLink_normal:visited {COLOR:#000079; FONT-FAMILY:Arial,David; FONT-SIZE:14px; FONT-WEIGHT:normal; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.baseLink_small {COLOR:#000079; FONT-FAMILY:Arial,David; FONT-SIZE:11px; FONT-WEIGHT:normal; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.baseLink_small:hover {COLOR:#000079; FONT-FAMILY:Arial,David; FONT-SIZE:11px; FONT-WEIGHT:normal; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.Big_Black_Text {COLOR:#000000; FONT-FAMILY:Arial,David; FONT-SIZE:18px; FONT-WEIGHT:Bold; FONT-FAMILY:Arial,David; }
+.Black_Link_Regular {COLOR:#000000; FONT-FAMILY:Arial,David; FONT-SIZE:13px; FONT-WEIGHT:Normal; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.Black_text_small_regular {COLOR:#000000; FONT-FAMILY:Arial,David; FONT-SIZE:11px; FONT-WEIGHT:normal; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.blackText {COLOR:#000000; FONT-FAMILY:Arial, David; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial, David; }
+.blue_bold {COLOR:000079; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; TEXT-DECORATION:none; }
+.blue_normal {COLOR:000079; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; TEXT-DECORATION:none; }
+.Blue_text_bold {COLOR:#000079; FONT-FAMILY:Arial,David; FONT-SIZE:11px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:None; }
+.CommerceText {COLOR:#000000; FONT-FAMILY:Arial, David; FONT-SIZE:12px; FONT-WEIGHT:bold; FONT-FAMILY:Arial, David; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.CommerceTitle {COLOR:#9E0000; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:BOLD; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.CommerceTitle:hover {COLOR:#9E0000; FONT-FAMILY:Arial, David; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial, David; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.default_link {COLOR:#0000aa; TEXT-DECORATION:underline; }
+.default_link:hover {COLOR:#0000aa; TEXT-DECORATION:underline; }
+.default_link:visited {COLOR:#0000aa; TEXT-DECORATION:underline; }
+.Gray_Link_Bold {COLOR:#6E6E6E; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:Bold; FONT-FAMILY:Arial; TEXT-DECORATION:underline; }
+.Gray_Link_bold_small {COLOR:#6E6E6E; FONT-FAMILY:Arial; FONT-SIZE:11px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; TEXT-DECORATION:underline; }
+.gray_normal {COLOR:6E6E6E; FONT-FAMILY:Arial; FONT-SIZE:11px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; }
+.Headline {COLOR:000072; FONT-FAMILY:Arial; FONT-SIZE:14px; FONT-WEIGHT:BOLD; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.Headline_Author_Date {COLOR:black; FONT-FAMILY:Arial; FONT-SIZE:10px; FONT-FAMILY:Arial; }
+.Headline_big {COLOR:#000000; FONT-FAMILY:Arial,David; FONT-SIZE:18px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.Headline_SubTitle {COLOR:#000000; FONT-FAMILY:Arial, David; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial, David; }
+.nb1 {COLOR:#000000; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:none; FONT-FAMILY:Arial; }
+.nl1 {COLOR:#336633; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:BOLD; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.nl2 {COLOR:#000079; FONT-FAMILY:Arial; FONT-SIZE:14px; FONT-WEIGHT:BOLD; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.nl3 {COLOR:#000079; FONT-FAMILY:Arial; FONT-SIZE:11px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.nt1 {COLOR:#333333; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.nt2 {COLOR:#000000; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:BOLD; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.nt3 {COLOR:#ffffff; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:BOLD; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.nt4 {COLOR:#000000; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.path {COLOR:#000079; FONT-FAMILY:Arial,David; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.path:hover {COLOR:#000079; FONT-FAMILY:Arial,David; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.Regular_link {COLOR:#00007A; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.Regular_link:hover {COLOR:00007A; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.Regular_text {COLOR:#000000; FONT-FAMILY:Arial, David; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial, David; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.SelectBox {COLOR:black; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:BOLD; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.Services {COLOR:#000079; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:BOLD; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.Services:hover {COLOR:#000079; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.Small_black_text {COLOR:000000; FONT-FAMILY:Arial; FONT-SIZE:11px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; }
+.Small_blue_link {COLOR:#000079; FONT-FAMILY:Arial; FONT-SIZE:11px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.Small_blue_link:hover {COLOR:#000079; FONT-FAMILY:Arial; FONT-SIZE:11px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.small_headline {COLOR:#000079; FONT-FAMILY:Arial; FONT-SIZE:14px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; TEXT-DECORATION:none; }
+.small_headline:hover {TEXT-DECORATION:underline; }
+.small_headline:visited {COLOR:#000079; }
+.small_headline_black {COLOR:#000000; FONT-FAMILY:Arial; FONT-SIZE:14px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; }
+.smallLink {COLOR:00007A; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.smallLink_noLine {COLOR:#00007a; FONT-FAMILY:arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:arial; TEXT-DECORATION:none; }
+.smallLink_noLine:hover {TEXT-DECORATION:underline; }
+.smallLink_noLine:visited {COLOR:#00007a; }
+.Ticker {COLOR:000079; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.Ticker:hover {COLOR:#000079; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; TEXT-DECORATION:underline; }
+.Ticker_time {COLOR:red; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; TEXT-DECORATION:none; }
+.Title_normal_link {COLOR:#000000; FONT-FAMILY:Arial,David; FONT-SIZE:15px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.Title_normal_link:hover {COLOR:#000000; FONT-FAMILY:Arial,David; FONT-SIZE:15px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.Title_white_link {COLOR:#ffffff; FONT-FAMILY:Arial,David; FONT-SIZE:15px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.Title_white_link:hover {COLOR:#ffffff; FONT-FAMILY:Arial,David; FONT-SIZE:15px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.white_article_author {COLOR:#ffffff; FONT-FAMILY:Arial,David; FONT-SIZE:12px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.white_article_author_name {COLOR:#ffffff; FONT-FAMILY:Arial,David; FONT-SIZE:12px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:underline; }
+.White_Link_Small_bold {COLOR:#FFFFFF; FONT-FAMILY:Arial; FONT-SIZE:11px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:None; TEXT-DECORATION:None; }
+.White_Services {COLOR:#ffffff; FONT-FAMILY:Arial,David; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.White_Services:hover {COLOR:#ffffff; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; TEXT-DECORATION:underline; }
+.White_text_big_bold {COLOR:#ffffff; FONT-FAMILY:Arial,David; FONT-SIZE:16px; FONT-WEIGHT:bold; FONT-FAMILY:Arial,David; TEXT-DECORATION:none; }
+.White_text_small_regular {COLOR:#FFFFFF; FONT-FAMILY:Arial; FONT-SIZE:12px; FONT-WEIGHT:normal; FONT-FAMILY:Arial; }
+.whiteLink {COLOR:#FFFFFF; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.whiteLink:hover {COLOR:#ffffff; FONT-FAMILY:Arial, David; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial, David; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.whiteLink_small {COLOR:#FFFFFF; FONT-FAMILY:Arial, David; FONT-SIZE:11px; FONT-WEIGHT:normal; FONT-FAMILY:Arial, David; FONT-STYLE:normal; TEXT-DECORATION:none; }
+.whiteLink_small:hover {COLOR:#FFFFFF; FONT-FAMILY:Arial, David; FONT-SIZE:11px; FONT-WEIGHT:normal; FONT-FAMILY:Arial, David; FONT-STYLE:normal; TEXT-DECORATION:underline; }
+.WhiteText {COLOR:#FFFFFF; FONT-FAMILY:Arial; FONT-SIZE:13px; FONT-WEIGHT:bold; FONT-FAMILY:Arial; FONT-STYLE:None; TEXT-DECORATION:None; }

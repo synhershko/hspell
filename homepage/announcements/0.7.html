@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML DIR=LTR lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i">
+<TITLE>The Ivrix Project - Spell Checker</TITLE>
+<LINK rel="stylesheet" href="../hspell.css" type="text/css" title="funky">
+</HEAD>
+<BODY>
+<DIV class="menu">
+<A HREF="http://www.ivrix.org.il/">Ivrix</A>
+<A HREF="http://www.ivrix.org.il/projects/spell-checker/">Hspell</A>
+<A HREF="../about.html">FAQ</A>
+<A HREF="../docs.html">Documents</A>
+<A HREF="../download.html">Download</A>
+</DIV>
+
+<DIV class="main">
+<H1>
+Hspell 0.7 announcement
+<BR><SPAN class="small">"Cold Evening"</SPAN>
+</H1>
+<H3>The original announcement</H3>
+<BLOCKQUOTE><BLOCKQUOTE>
+        <U><B><I>Releasing Words On A Cold Evening</I></B></U><BR>
+        Whose words these are we truly know.<BR>
+        They are ours - let us share them all.<BR>
+        We would not agree to be stopping here<BR>
+        To watch our words fill up with faults.<BR>
+        Our little spellchecker must think it's clear<BR>
+        To be released with such a milestone here<BR>
+        Between the words and linguistic terms<BR>
+        The darkest evening of the year.<BR>
+        It gives its stdout a shake<BR>
+        To warn when there is some mistake.<BR>
+        The only other sound's the sweep<BR>
+        Of easy wind and working disks.<BR>
+        The words are lovely, fresh and free.<BR>
+        But we have promises to keep,<BR>
+        And words to hunt before we sleep,<BR>
+        And words to hunt before we sleep.<BR>
+</BLOCKQUOTE></BLOCKQUOTE>
+
+<P class="noindent">
+On this shortest day, we announce a new version of Hspell - the free Hebrew
+spell-checker.
+</P>
+
+<P class="noindent">
+As usual, you can find the new release in the project's homepage, at:
+<CENTER>
+<A HREF="http://ivrix.org.il/projects/spell-checker/">http://ivrix.org.il/projects/spell-checker/</A>
+</CENTER>
+</P>
+
+<P class="noindent">
+This release includes the following improvements:
+</P>
+
+<UL>
+ <LI> Some incorrect words purged or fixed, and many more words added: over
+   1,000 base words added.
+ <LI> Portability improvements (thanks to Baruch Even).
+ <LI> New run-time option -H causes hspell to accept He Ha-she'ela in the text.
+ <LI> The "-n" option (for spelling hints, an explanation of certain kinds of
+   errors) that was lost in version 0.6, is now back. The "likelyerrors"
+   feature is still missing in this version.
+ <LI> A new, and somewhat tentative, Documented C API (libhspell.a library,
+   spell.h header, hspell.3 manual). These are not available in the normal
+   RPM - compile the sources yourself if you want them.
+ <LI> A full morphological analyzer (explaining all the possible ways to read
+   a given word, how each reading was derived and its syntactic properties)
+   is now available when Hspell is run with the "-l" option.
+   Because the data files needed for this feature currently take up as much
+   as 4 times the space needed only for spell-checking, this feature is not
+   compiled by default, unless compilation is done with "make linginfo".
+   Also, the normal RPM does not include this feature, but the "fat" RPM does
+   include it.
+</UL>
+
+<P>
+Hspell's Vocabulary is now 406,629 words (when including kinuyim on verbs)
+based on 8042 nouns, 1783 adjectives, 5113 verb stems, and 1880 other words.
+</P>
+
+<P>
+In recent months, Hspell has been increasingly used with various free-software
+applications. We would like to thank Mitz Pettel, Meni Livne, Yaacov Zamir,
+Mooffie and Alan Yaniger for their integration work and their suggestions.
+You might want to check out:
+</P>
+
+<UL>
+ <LI> <A HREF="http://www.ivrix.org.il/projects/spell-checker/Hspell-HOWTO.html">http://www.ivrix.org.il/projects/spell-checker/Hspell-HOWTO.html</A>
+   describes how to use Hspell with LyX, KDE, Vim, Emacs and Geresh.
+
+ <LI> <A HREF="http://www.ivrix.org.il/projects/spell-checker/docs.html">http://www.ivrix.org.il/projects/spell-checker/docs.html</A>
+   Includes screenshots of Hspell being used with KMail, Geresh, Emacs,
+   Vim, Abiword, Openoffice and Mellel (a commercial Mac OS-X word processor).
+</UL>
+
+<P class="noindent">Share and enjoy,</P>
+<P>Nadav Har'El and Dan Kenigsberg.</P>
+
+
+<H3><A HREF="0.7r.html">References</A></H3>
+</DIV>
+</BODY>
+</HTML>

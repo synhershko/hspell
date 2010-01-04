@@ -1,0 +1,325 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML DIR=LTR lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i">
+<TITLE>The Ivrix Project - Spell Checker</TITLE>
+<LINK rel="stylesheet" href="hspell.css" type="text/css" title="funky">
+</HEAD>
+<BODY>
+<DIV class="menu">
+<!--<A HREF="http://www.ivrix.org.il/">Ivrix</A>-->
+<a href="http://sourceforge.net/projects/hspell"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=255293&type=9" width="80" height="15" border="0" alt="SourceForge.net" /></a>
+<A HREF="/">Hspell</A>
+<A class="this" HREF="about.html">FAQ</A>
+<A HREF="docs.html">Documents</A>
+<A HREF="download.html">Download</A>
+</DIV>
+
+<DIV class="main">
+<H1>
+Frequently Asked Questions
+</H1>
+
+<H3>What is Hspell?</H3>
+<P>
+The Hspell project is a free Hebrew linguistic project.
+</P>
+<P>
+Its primary goal is to create a free Hebrew spell-checker.
+We have already achieved that goal, and you are invited to
+<A HREF="download.html">Download</A> the latest version of the spell-checker.
+It is free software, licensed under the GNU General Public License (GPL).
+</P>
+<P>
+In
+addition to a spell-checker, the project also produced a Hebrew
+morphological analyzer, which for every valid Hebrew word lists all of its
+possible <I>readings</I> (combinations of prefix and inflected base word).
+</P>
+<P>
+The secondary goal of the project is to make the algorithms and dictionaries, created
+initially for the spell-checker, freely available. These could be used
+in more sophisticated
+research or applications that require Hebrew word lists or a Hebrew morphology
+engine.
+</P>
+<P>
+Such potential application areas might include search engines,
+speech synthesis, and much much more. The availability of a free basis will
+hopefully encourage free development on top of it, to the benefit of the
+general Hebrew-speaking population.
+</P>
+
+<H3>Who wrote Hspell, and why?</H3>
+<P>
+Hspell was written by <A HREF="http://nadav.harel.org.il/">Nadav Har'El</A>
+and <A HREF="http://www.cs.technion.ac.il/~danken/">Dan Kenigsberg</A>.
+</P>
+<P>
+Both authors are avid supporters of free software. In January 2000, they 
+realized that while support for Hebrew is growing in the big free software
+projects (such as Web browsers and word processors), there are a few
+Hebrew-specific programs that are not likely to miraculously appear.
+One of these important missing pieces was a Hebrew spell-checker.
+</P>
+<P>
+After an initial (and not very useful) proof-of-concept was produced,
+Hspell development remained dormant until development resumed at full
+steam in October 2002, and the first public release was made in December
+of that year.
+</P>
+
+<H3>To use Hspell, do I need to download it from this site?</H3>
+<P>
+Probably not.
+Noadays, most users of Hspell will never need to download it from this site.
+Some will even enjoy Hebrew spell-checking without realizing that they are using
+Hspell.
+</P>
+<P>
+Today, all common multi-lingual spell-checking frameworks &mdash; <B>aspell</B>,
+<B>myspell</B> and <B>hunspell</B> &mdash; have a Hebrew dictionary (built from
+Hspell's data). Some major applications, like <B>OpenOffice</B> and
+<B>Firefox</B>, include one of these frameworks, and allow users to easily
+download the dictionary for any language, including Hebrew, as a plugin.
+</P>
+<P>In some operating systems, such as some distributions of Linux and
+Mac OS X v10.6, spell-checking across the whole system depends on one of
+these multi-lingual spell-checkers, so installing the Hebrew dictionary
+(which is often an addon package of the distribution) gives all or many
+applications Hebrew spell-checking support.
+</P>
+<P>Finally, some Web applications (<I>"software as a service"</I>), such
+as Google's <B>Gmail</B> mail service, use Hspell to provide Hebrew
+spell-checking to their users.
+</P>
+
+<H3>And if I still want to download the source?</H3>
+<P>
+There remain many good reasons to download Hspell from this site.
+Your operating system might not include Hspell, or includes an old version.
+You might want to look at the source code, or modify it. You might like to
+use Hspell's spell-checking utility or library, both more efficient and
+accurate than their multi-lingual conterparts. You might like to use one
+of Hspell's advanced features such as morphological analysis. Or you might
+like to use Hspell's data for something we've never envisioned.
+</P>
+<P>
+You can <A HREF="download.html">download here</A> the source of the
+latest version of Hspell. In the same page you can also find precompiled
+binary packages of Hspell for a limited selection of platforms. All source
+packages, and some binary packages, are signed with our GPG keys, and
+for your protection it is recommended that you take advantage of that fact.
+</P>
+<P>
+Note that Hspell was written on, and for, Unix-like platforms such as
+Linux, BSD and Solaris. While it can be used, in theory, on any operating
+system with the tools it needs (e.g., Perl is needed during compilation), please don't ask us to
+help you tweak it for proprietary operating systems such as Microsoft Windows,
+unless you are willing to pay for our time.
+You can also do it on your own, or use one of the several commercial Hebrew
+spell-checkers that are available for Windows.
+</P>
+<H3>Can I try Hspell without installing anything?</H3>
+<P>
+If you want to try Hspell's spell-checking and morphological-analysis features
+without downloading or installing anything, try
+<A HREF="http://wassist.cs.technion.ac.il/~danken/cgi-bin/hspell.cgi">Hspell's
+online demonstration</A>. In the Web form, can type Hebrew and see
+your errors, suggested corrections, and (if you want) morphological analysis of
+the correct words. 
+</P>
+<H3>What is Hspell's spelling standard?</H3>
+<P>
+Hspell was designed to be 100% and strictly compliant with the official
+niqqud-less spelling rules ("Ha-ktiv Khasar Ha-niqqud", colloquially known as
+"Ktiv Male"). These rules are published by the Academy of the Hebrew Language and are <A HREF="http://hebrew-academy.huji.ac.il/decision4.html">available online</A>, and as an appendix in most modern Hebrew dictionaries. All recently
+published Hebrew dictionaries, including מילון ההווה, רב-מילים, and the
+new (2004) edition of אבן שושן, use niqqud-less spelling.
+</P>
+<P>
+Our strict compliance with these rules is both an
+advantage and a disadvantage, depending on your viewpoint. It's an advantage
+because it encourages a <B>correct</B> and consistent spelling style throughout
+your writing. It is a disadvantage, because a few of the Academia's official
+spelling decisions are relatively unknown to the general public, and sometimes
+even disputed by popular publishers.
+</P>
+<P>
+Users of Hspell (and all Hebrew writers, for that matter) are encouraged to 
+read the Academia's official niqqud-less spelling rules, get to know them,
+and start using them.
+</P>
+<P>
+Future releases might include an option for alternative spelling standards.
+</P>
+<H3>But Hspell tells me to write
+"<SPAN LANG="he">&#1488&#1497&#1502&#1488</SPAN>" instead of
+"<SPAN LANG="he">&#1488&#1502&#1488</SPAN>", and
+"<SPAN LANG="he">&#1488&#1508&#1504&#1492</SPAN>" instead of
+"<SPAN LANG="he">&#1488&#1493&#1508&#1504&#1492</SPAN>", and even
+"<SPAN LANG="he">&#1488&#1502&#1514&#1497</SPAN>" instead of
+"<SPAN LANG="he">&#1488&#1502&#1497&#1514&#1497</SPAN>"!</H3>
+<P>
+Please see the previous answer. We weren't kidding when we said that
+Hspell is in 100% accordance to the Academia's niqqud-less spelling standard.
+</P>
+<P>
+If you are curious why Hspell spells a particular word the way that it
+does, please refer to our document <A HREF="niqqudless.pdf">סוגיות בכתיב
+חסר הניקוד</A>. This 50-page document explains Hspell's spelling standard in
+detail, and discusses spelling decisions that we had to take while developing
+hspell &mdash; especially those which were more controversial.
+</P>
+<P>
+If you really want Hspell to accept mis-spelled variants, you can add them
+to your personal dictionary.
+</P>
+<H3>How does Hspell work?</H3>
+<P>
+The "<TT>hspell</TT>" program itself is a relatively-simple (but efficient) program
+that looks up words in a large list of words. But the real
+"brain" behind it is this word list (dictionary) provided by the Hspell
+project.
+</P>
+<P>
+In order for it to be completely free of other people's copyright restrictions,
+the Hspell project is a clean-room implementation, not based on other
+companies' word lists, on other companies' spell checkers, or on copying of
+printed dictionaries. The word list is also not based on automatic scanning
+of available Hebrew documents (such as online newspapers), because there is
+no way to guarantee that such a list will be correct (not contain
+misspellings, useless proper names, slang, and so on), complete (certain
+inflections might not appear in the chosen samples) or consistent (especially
+when it comes to niqqud-less spelling rules).
+</P>
+<P>
+Instead, our idea was to write programs which know how to correctly inflect
+Hebrew nouns and conjugate Hebrew verbs. The input to these programs is a
+list of noun stems and verb roots, plus hints needed for the correct
+inflection when these cannot be figured out automatically. These input files
+are obviously an important part of the Hspell project. The <I>word list
+generators</I> (written in Perl, and are also part of the Hspell project) then
+create the complete word-list for use by the spellchecking program, <TT>hspell</TT>.
+The generated lists are useful for much more than spellchecking, by the
+way, and is one of the reasons the Hspell project is so exciting.
+</P>
+<P>
+Although we wrote all of Hspell's code ourselves, we are truly indebted to
+the old-style "open source" pioneers &mdash; people who wrote books instead of
+hiding their knowledge in proprietary software. For the correct noun
+inflections, Dr. Shaul Barkali's "The Complete Noun Book" has been a great
+help. <A HREF="http://www.cs.technion.ac.il/~ornan/">Prof. Uzzi Ornan</A>'s booklet "Verb Conjugation in Flow Charts" has been
+instrumental in the implementation of verb conjugation, and Barkali's
+"The Complete Verb Book" was used too.
+During our work we have extensively used a number of Hebrew dictionaries,
+including Even Shoshan, Millon Ha-hove and Rav-Milim, to ensure the correctness
+of certain words. Various Hebrew newspapers and books, both printed and online,
+were used for inspiration and for finding words we still do not recognize.
+We wish to thank Cilla Tuviana and
+<A HREF="http://www.math.technion.ac.il/~rl">Dr. Zvi Har'El</A> for their
+assistance with some grammatical questions.
+</P>
+<H3>How do I use the "hspell" program?</H3>
+<P>
+When you install Hspell, the "<TT>hspell</TT>" program is installed on your
+system. Like the traditional Unix <TT>spell(1)</TT>, <TT>hspell</TT> outputs
+the sorted list  of incorrect words, and does not (yet) have a more friendly
+interface for making these corrections for you. Unlike <TT>spell(1)</TT>,
+however, hspell can suggest  possible corrections  for some spelling errors -
+such suggestions are enabled with the <TT>-c</TT> (correct) and <TT>-n</TT>
+(notes) options.
+</P>
+<P>
+<TT>hspell</TT> comes with a good manual page, so please run "<TT>man hspell</TT>" (or look <A HREF="hspell.1.html">here</A>)
+to learn more on what file encoding <TT>hspell</TT> expects, and how to use
+it more effectively.
+</P>
+<P>
+If (like most people) you prefer graphical user interfaces, your favorite editor word-processor
+or mail application might already be able to use Hspell to do spellchecking!
+See <I>"To use Hspell, do I need to download..."</I> above, or check out
+<A HREF="Hspell-HOWTO.html">HOWTO use Hspell with...</A> for (somewhat archaic)
+instructions.
+</P>
+<H3>What is on Hspell's horizon?</H3>
+<P>
+Between October 2002 and August 2003, Hspell development proceeded
+at full steam, with major releases coming out once every 1-3 months.
+as Hspell and its vocabulary matured, releases became sparser,
+at first twice a year, and then every 1-3 years.
+</P>
+<P>
+The bulk of the work on the 0.* release series has been on enlarging
+the project's dictionaries. When release 0.1 came out, it was estimated that
+in typical documents about 10% of the valid Hebrew words would be mistakenly
+marked as errors. By release 0.4, the estimated percentage is down to only 1%.
+By release 1.0, Hspell's vocabulary is considered mature, and while words
+are still being added (and more rarely, corrected), this is hppaning at
+a much slower pace, which can explain the spare release schedule.
+</P>
+<P>
+Towards the end of the 0.* series, and the beginning of the 1.*, we
+also worked, and will continue to work, on making Hspell more useful for
+the average user, and easier to embed
+in other applications. This entails improving performance, supporting
+well-defined and documented APIs, better supporting the needs of different
+users (such different encodings, personal dictionaries, and alternative
+spelling standards), and making features unique to Hspell (such as the
+"spelling hints") stronger.
+</P>
+<P>
+Towards the end of the 1.* series, Hspell should also be able to affix-
+compress its word list. This will not affect the size of the word list
+on disk (which is already optimally compressed to a tiny fraction of its
+original size), but will lower Hspell's memory use and startup times (perhaps
+even to the point where it could be used on embedded devices).
+</P>
+<P>
+The 2.* series (if we dare look far-enough into the future) will give
+Hspell more sophisticated linguistic capabilities, beyond those of
+naive spell-checkers. What these might be we can only speculate at this
+stage.
+</P>
+<H3>How can I help?</H3>
+<P>
+One ongoing task that takes up a significant amount of our time
+is to find legal Hebrew words that Hspell still doesn't recognize, and
+add them to the dictionary. As Hspell matures, it becomes harder and harder
+for us to find quality missing words (especially verbs), and help from the
+users is appreciated. You can help
+by sending us verified lists of missing words. To make sure your list is
+useful, please try to:
+</P>
+<OL>
+<LI>Check in your favorite dictionary that the word is indeed spelled correctly.
+<LI>Check that the spelling you proposed is correct according to the Academia's
+niqqud-less spelling rules (see above for details, and especially
+<A HREF="niqqudless.pdf">our document</A>).
+<LI>Check in <A HREF="http://wassist.cs.technion.ac.il/~danken/cgi-bin/hspell.cgi">this online Hspell interface</A> that the word in question hasn't been added since the last released version (the online interface is updated more often
+than versions are released).
+</OL>
+<P>
+Such word lists, please send to <I>nyh</I>@<I>math.techni<!-- hello -->on.ac.il</I>
+</P>
+<H3>I think I found a bug in Hspell...</H3>
+<P>
+If you think you found a bug in Hspell, or want to request the addition of
+a certain feature, please mail them to
+<I>nyh</I>@<I>math.techni<!-- hello -->on.ac.il</I>.
+<!--you can use our Bugzilla <A HREF="/bugzilla/">bug tracking
+system</A>. This system makes it easy for any user to report bugs or missing
+features, and to track the progress in solving these bugs.-->
+</P>
+<H3>Where can I get more information about Hspell?</H3>
+<P>
+If you're still thirsty for information, you might want to take a look at
+some more <A HREF="docs.html">Hspell documentation</A>, including more
+in-depth explanation on the linguistic technology behind Hspell.
+</P>
+</DIV>
+</BODY>
+</HTML>
+</DIV>
+</BODY>
+</HTML>

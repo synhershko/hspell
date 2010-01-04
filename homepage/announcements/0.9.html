@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML DIR=LTR lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i">
+<TITLE>The Ivrix Project - Spell Checker</TITLE>
+<LINK rel="stylesheet" href="../hspell.css" type="text/css" title="funky">
+</HEAD>
+<BODY>
+<DIV class="menu">
+<A HREF="http://www.ivrix.org.il/">Ivrix</A>
+<A HREF="http://www.ivrix.org.il/projects/spell-checker/">Hspell</A>
+<A HREF="../about.html">FAQ</A>
+<A HREF="../docs.html">Documents</A>
+<A HREF="../download.html">Download</A>
+</DIV>
+
+<DIV class="main">
+<H1>
+Hspell 1.0 announcement
+<BR><SPAN class="small">"Boring"</SPAN>
+</H1>
+<H3>The original announcement</H3>
+
+<P class="noindent">
+After eight Hspell releases with interesting announcements or release dates,
+we've unfortunately run out of wacky ideas. So this announcement will be
+totally boring and informative.
+</P>
+
+<P class="noindent">
+We are proud to announce version 0.9 of Hspell, the free Hebrew spell-checker.
+</P>
+
+<P class="noindent">
+As usual, you can find the new release in the project's homepage, at:<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<A HREF="http://ivrix.org.il/projects/spell-checker/">http://ivrix.org.il/projects/spell-checker/</A>
+</P>
+
+<P class="noindent">
+As Hspell is nearing its official "1.0" release, its coverage (vocabulary)
+is becoming more and more complete. In this release, about 2,500 base words
+were added - more than were added in any one of the previous releases.
+</P>
+
+<P>
+While working on this release we also continued our effort to to bring
+Hspell-based Hebrew spell-checking to common multi-lingual spell-checkers.
+Hspell's dictionaries (full word list and valid prefix information) were
+exported to formats used by other spell-checking frameworks. Such Hspell-
+based Hebrew dictionaries are now available on the official sites of Aspell,
+Mozilla and OpenOffice (see our website for links, and the WHATSNEW file for
+build instructions).
+</P>
+
+
+<P class="noindent">
+Other notable improvements in this release:
+</P>
+
+<UL>
+<LI>
+<P class="noindent">
+C API improvements: New hspell_set_dictionary_path() function to tell
+Hspell where its dictionaries were installed. Fixed bug on UTF8 locales
+and removed spurious printouts.
+</P>
+</LI>
+<LI>
+<P class="noindent">
+"Hspell -a" (ispell-like pipe API) improvements: words can now be added to
+personal dictionary. This means that the "Add word" in KDE, LyX, and other
+Hspell-using applications will finally work.
+</P>
+</LI>
+<LI>
+<P class="noindent">
+Fixed errors in the morphological analyzer ("-l" option, when built
+with --enable-linginfo). Also, now if the "-l" and "-c" options are given
+together to hspell, morphological analysis is given also for correction
+suggestions, and those are given even for words which are already correct.
+</P>
+</LI>
+</UL>
+
+<P class="noindent">
+We also fixed many other bugs. Check out http://ivrix.org.il/bugzilla/ for
+more details.
+</P>
+
+<P class="noindent">
+P.S.<BR>
+Come to think of it, this announcement was interesting after all -
+it was Hspell's first totally boring announcement with a totally
+insignificant date!
+</P>
+
+
+</DIV>
+</BODY>
+</HTML>

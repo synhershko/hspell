@@ -1,0 +1,6 @@
+Redirect permanent /projects/spell-checker http://hspell.ivrix.org.il
+
+#RewriteEngine On
+#RewriteCond %{HTTP_HOST} !="hspell.ivrix.org.il" [NC]
+#RewriteCond %{HTTP_HOST} !=""
+#RewriteRule ^/(.*) http://hspell.ivrix.org.il/$1 [L,R=301]

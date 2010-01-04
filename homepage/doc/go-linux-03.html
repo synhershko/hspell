@@ -1,0 +1,846 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML DIR=LTR lang="he">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i">
+<TITLE>The Hspell Project (page 0)</TITLE>
+<LINK rel="stylesheet" href="lecture.css" type="text/css" title="lecture">
+</HEAD>
+<BODY DIR=RTL>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<P>
+<CENTER>
+<B><FONT SIZE=+3>
+Hspell -
+<BR>
+בודק איות עברי חופשי
+<BR>
+<SPAN LANG="he" DIR=LTR>
+&nbsp;
+<BR>
+<FONT SIZE=+2><TT>ivrix.org.il/projects/spell-checker/</TT></FONT>
+</SPAN>
+<BR>
+&nbsp;
+</FONT></B>
+</CENTER>
+<P>
+<CENTER>
+<FONT SIZE=+3>
+נדב הראל
+<BR>
+דן קניגסברג
+</FONT>
+</CENTER>
+
+</FONT>
+</CENTER>
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>מיזם Hspell</H1>
+<P>הצורך:
+<UL>
+<LI>
+מפותחת תמיכה עברית לתכנות חופשיות מרכזיות, כמו מעבדי תמלילים.
+</LI>
+<LI>
+אין בודק איות <U>עברי</U> <U>חופשי</U>.
+</LI>
+</UL>
+<P>הפתרון:
+<UL>
+<LI>
+מיזם Hspell הותחל בינואר 2000, אבל נזנח עד אוקטובר 2002.
+</LI>
+<LI>
+גרסה 0.1 יצאה בדצמבר 2002, גרסה 0.4 במרץ 2003.
+</LI>
+</UL>
+<P>עקרונות הפיתוח:
+<UL>
+<LI>
+פיתוח מוסרי: אין העתקת רשימות מילים.
+</LI>
+<LI>
+שאיפות מעשיות בשלב ראשון: בדיקת איות לכתיב חסר-ניקוד.
+</LI>
+<LI>
+אפשרות לשימושים מתקדמים יותר בעתיד הקרוב והרחוק.
+</LI>
+</UL>
+
+
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>מבנה הפתרון</H1>
+<P>הגישה שלנו: יצירת <B>רשימות מילים</B>:
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD></TD>
+<TD>איסוף מילות בסיס</TD>
+</TR>
+<TD><U>שלב קומפילציה</U>:</TD>
+<TD>הטיה חצי-אוטומטית של מילים אלו</TD>
+</TR>
+<TR>
+<TD><U>בדיקת איות</U>:</TD>
+<TD>בדיקת כל מילה ברשימת המילים החוקיות</TD>
+</TR>
+</TABLE>
+</CENTER>
+<P>
+כל התכנות נכתבו בשפת <B>Perl</B>.
+<P>
+יתרונות/חסרונות יחסית לגזירה-לאחור:
+</P>
+<CENTER>
+<TABLE BORDER=4 CELLPADDING=3>
+<TR><TD>יתרונות:</TD><TD><P>אפשרות שילוב בבודקי איות מבוססי-רשימות קיימים <P>הפרדה לשלבים פשוטים יותר ובלתי תלויים<P>קוד יותר פשוט וקריא</TD></TR>
+<TR><TD>חסרונות:</TD><TD><P>צריכת זיכרון (ללא affix compression)</TD></TR>
+</TABLE>
+</CENTER>
+
+
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>תקן האיות</H1>
+<UL>
+<LI>Hspell מטפל כרגע במלל ללא ניקוד.
+<LI>אך מהו "כתיב מלא" נכון?
+<P>
+<LI>נבחר תקן: <B>הכתיב חסר הניקוד</B> של האקדמיה ללשון העברית. (1949-1993)
+<LI>התקן במלואו מופיע כנספח ברוב המילונים.
+</UL>
+<P>מספר דוגמאות:
+<UL>
+<LI>הוספת וי"ו לציון קיבוץ: ח<B><FONT COLOR="#11aaff">ו</FONT></B>לצה.
+<LI>הוספת וי"ו לציון חולם, קמץ קטן וחטף-קמץ: ח<B><FONT COLOR="#11aaff">ו</FONT></B>דש, ח<B><FONT COLOR="#11aaff">ו</FONT></B>דשי, ח<B><FONT COLOR="#11aaff">ו</FONT></B>דשים.
+<LI>אך לא בקמץ קטן או חטף-קמץ מתקיים: חכמה, תכנית, צהריים.
+<LI>הוספת יו"ד לציון חיריק שאין אחריו שווא נח: ס<B><FONT COLOR="#11aaff">י</FONT></B>פור, שנ<B><FONT COLOR="#11aaff">י</FONT></B>יה, אבל שמחה, עברית.
+<LI>הוספת יו"ד תלויה בצורה היסודית: ז<B><FONT COLOR="#11aaff">י</FONT></B>כרון-ז<B><FONT COLOR="#11aaff">י</FONT></B>כרונות, לב-לבי.
+<LI>הוספת יו"ד לציון צירה מתקיים במשקל ת<B><FONT COLOR="#11aaff">י</FONT></B>בה, ז<B><FONT COLOR="#11aaff">י</FONT></B>עה, ק<B><FONT COLOR="#11aaff">י</FONT></B>בה
+<LI>הכפלת וי"ו עיצורית: ע<B><FONT COLOR="#11aaff">וו</FONT></B>ל,  ה<B><FONT COLOR="#11aaff">וו</FONT></B>עד, עכש<B><FONT COLOR="#11aaff">וו</FONT></B>י, אבל: ועד, קו, מצוות
+<LI>הכפלת יו"ד עיצורית: בנ<B><FONT COLOR="#11aaff">יי</FONT></B>ן, ה<B><FONT COLOR="#11aaff">יי</FONT></B>תה, על<B><FONT COLOR="#11aaff">יי</FONT></B> אבל ילד, הילד, בעיה, מצוין, בנאי, בית.
+</UL>
+
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>רשימת המילים ובנייתה</H1>
+<P>מה יש ברשימת המילים?
+<UL>
+<LI><B>שמות עצם</B>. הטיה אוטומטית ליחיד, רבים, נפרד, נסמך, כינויים.
+<BR>דוגמה: <B>כלב</B>:<BR>
+<CENTER>
+<TABLE WIDTH=80% CELLPADDING=3 CELLSPACING=10 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+כלב
+כלב-
+כלבי
+כלבנו
+כלבך
+כלבך
+כלבכם
+כלבכן
+כלבו
+כלבה
+כלבן
+כלבם
+</TD>
+<TD BGCOLOR="#f5f590">
+כלבים
+כלבי-
+כלביי
+כלבינו
+כלביך
+כלבייך
+כלביכם
+כלביכן
+כלביו
+כלביה
+כלביהן
+כלביהם
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+<LI><B>תארים</B>. הטיה אוטומטית ליחיד, רבים, נסמך, זכר, נקבה.<BR>
+דוגמה: <B>ירוק</B>:
+<CENTER>
+<TABLE WIDTH=80% CELLPADDING=3 CELLSPACING=10 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+ירוק
+ירוק-
+ירוקים
+ירוקי-
+</TD>
+<TD BGCOLOR="#f5f590">
+ירוקה
+ירוקת-
+ירוקות
+ירוקות-
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</UL>
+
+
+
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>רשימת המילים ובנייתה (המשך)</H1>
+<UL>
+<LI><B>פעלים</B>. הטיה אוטומטית לבניינים אפשריים, זמנים, שמות פעולה, וכו'
+<BR>דוגמה: <B>שמר</B>, בניין קל (רשימה מקוצרת):<BR>
+<CENTER>
+<TABLE WIDTH=80% CELLPADDING=3 CELLSPACING=10 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+לשמור<BR>
+שמירה
+</TD>
+<TD BGCOLOR="#f5f590">
+שמרתי<BR>
+שמרת<BR>
+שמרת<BR>
+שמר<BR>
+שמרה<BR>
+שמרנו<BR>
+שמרתם<BR>
+שמרתן<BR>
+שמרו
+</TD>
+<TD BGCOLOR="#f5f590">
+שומר<BR>
+שומרת<BR>
+שומרים<BR>
+שומרות<BR>
+שמור<BR>
+שמורה<BR>
+שמורת-<BR>
+שמורים<BR>
+שמורי-<BR>
+שמורות
+</TD>
+<TD BGCOLOR="#f5f590">
+אשמור<BR>
+תשמור<BR>
+תשמרי<BR>
+ישמור<BR>
+תשמור<BR>
+נשמור<BR>
+תשמרו<BR>
+תשמורנה<BR>
+ישמרו
+</TD>
+<TD BGCOLOR="#f5f590">
+שמור<BR>
+שמרי<BR>
+שמרו<BR>
+שמורנה<BR>
+</TD>
+<TD BGCOLOR="#f5f590">
+לשמרני וכו'<BR>
+שמרתיו וכו'
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</UL>
+
+
+
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>רשימת המילים ובנייתה (המשך)</H1>
+<UL>
+<LI><B>מילים נוספות</B>,ללא הטיה אוטומטית:
+<UL>
+<LI>מילות ונטיותיהם (של, שלי, ...)
+<LI>תוארי הפועל (היכן, שלשום, הרבה, ...)
+<LI>שמות גוף (אני, אלה, מיהו, ...)
+<LI>מידות ומשקלות
+<LI>מקצועות, תחביבים, אמונות, סגנונות (ביולוגיה, כדורגל, קומוניזם, ...)
+<LI>שמות עבריים
+<LI>מספרים (שניים, שניהם, שני, ...)
+<LI>חודשים
+<LI>שמות ערים ומקומות
+<LI>חומרים, תבלינים, ומזונות (מימן, נפט, חומוס, סושי, ...)
+<LI>ראשי תיבות וקיצורים (שב"כ, ק"מ, פרופ', ...)
+</UL>
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>רשימת המילים ובנייתה (המשך)</H1>
+<TABLE CELLPADDING=5>
+<TR><TD>גרסה 0.4 כללה נטיות של:</TD><TD></TD><TD></TD></TR>
+<TR><TD></TD><TD ALIGN=LEFT>6,238</TD><TD>שמות עצם</TD></TR>
+<TR><TD></TD><TD ALIGN=LEFT>1,174</TD><TD>תארים</TD></TR>
+<TR><TD></TD><TD ALIGN=LEFT>4,584</TD><TD>בנייני פעלים</TD></TR>
+<TR><TD>וכן</TD><TD></TD></TR>
+<TR><TD></TD><TD ALIGN=LEFT>1,291</TD><TD>מילים נוספות</TD></TR>
+<TR><TD>ובסך הכול:</TD><TD></TD></TR>
+<TR><TD></TD><TD ALIGN=LEFT><B>250,027</B></TD><TD><B>נטיות ומילים</B></TD></TR>
+</TABLE>
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>מנשק בדיקת האיות: התכנית <TT>hspell</TT></H1>
+<UL>
+<LI>מחפש ברשימות המילים כל מילה במסמך הנבדק.
+<LI>
+מאפשר הוספת אותיות השימוש <B>מש"ה וכל"ב</B>.<BR>
+<LI>הפלט: רשימת המילים הלא מזוהות במסמך.
+<LI>אפשרות גם להצעות לתיקון שגיאות.
+<LI>אפשרות להסבר ארוך של מספר שגיאות כתיב נפוצות.
+<LI>ניתן לשילוב במעבד התמלילים LyX.
+</UL>
+<P>שיפורים מתוכננים לעתיד הקרוב:
+<UL>
+<LI>גרסת C מהירה יותר וחסכונית יותר בזיכרון.
+<LI>טיפול עדין יותר באותיות השימוש.
+<LI>affix compression לחיסכון בזיכרון ושילוב ב-OpenOffice.
+</UL>
+
+
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>הטיית שמות עצם</H1>
+<UL>
+<LI>התכנית <TT LANG="en"><B>wolig.pl</B></TT> מקבלת רשימת שמות-עצם ומטה
+כל אחד בצורה אוטומטית, בעזרת רמזים שנתן המשתמש.
+<P><LI>
+ב"לוח השמות השלם" של ד"ר שאול ברקלי מופיעים כ- 350 צורות נטייה לשמות עצם
+מנוקדים.
+<BR>
+למזלנו, רוב הצורות מתבררות כזהות ללא ניקוד. למשל:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=20 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+כלב -
+כלבי
+</TD>
+<TD BGCOLOR="#f5f590">
+דגל -
+דגלי
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<LI>שני אלו מוטים באותה צורה סטנדרטית ע"י שורת הקלט:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=5 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+כלב ע
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+והפלט הוא:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=5 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+כלב
+כלב-
+כלבי
+כלבנו
+כלבך
+כלבך
+כלבכם
+כלבכן
+כלבו
+כלבה
+כלבן
+כלבם
+כלבים
+<BR>
+כלבי-
+כלביי
+כלבינו
+כלביך
+כלבייך
+כלביכם
+כלביכן
+כלביו
+כלביה
+כלביהן
+כלביהם
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+</UL>
+
+
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>הטיית שמות עצם (המשך)</H1>
+<UL>
+<LI>ברור שחייבים רמזים לנטיות הנכונות, למשל לגבי צורת הריבוי. השוו:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=13 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+קוף - קופים
+</TD>
+<TD BGCOLOR="#f5f590">
+עוף - עופות
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+או:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=13 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+שירות - שירותים
+</TD>
+<TD BGCOLOR="#f5f590">
+חירות - חירויות
+</TD>
+</TABLE>
+</CENTER>
+
+<LI>לשם כך בונה המילון (קובץ הקלט) חייב לספק רמזים:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=20 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+עוף ע,ות
+</TD>
+<TD BGCOLOR="#f5e0f5">
+שירות ע,ים
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+לקבלת למשל:
+<CENTER>
+<TABLE WIDTH=90% CELLPADDING=3 CELLSPACING=5 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+עוף
+עוף-
+עופי
+עופנו
+עופך
+עופך
+עופכם
+עופכן
+עופו
+עופה
+עופן
+עופם
+<B>עופות</B>
+עופות-
+עופותיי
+עופותינו
+עופותיך
+עופותייך
+עופותיכם
+עופותיכן
+עופותיו
+עופותיה
+עופותיהן
+עופותיהם
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+</UL>
+
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>הטיית שמות עצם (המשך)</H1>
+<UL>
+<LI>צורות ריבוי נוספות:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=20 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+משנה ע,יות
+</TD>
+<TD BGCOLOR="#f5e0f5">
+קצבה ע,אות
+</TD>
+<TD BGCOLOR="#f5e0f5">
+גרב ע,יים
+</TD>
+<TD BGCOLOR="#f5e0f5">
+עשן ע,יחיד
+</TD>
+<TD BGCOLOR="#f5e0f5">
+בת ע,רבים=בנות
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<LI>ישנם שמות-עצם עם כמה צורות ריבוי חוקיות:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=17 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+חודש ע,ים,יים
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+שעה ע,ות,יים
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+קבר ע,ות,ים
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+איש ע,ים,רבים=אנשים
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+שפה ע,ות,יים,רבים=שפתות
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</UL>
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>הטיית שמות עצם (המשך)</H1>
+<UL>
+<LI>התכנית <TT LANG="en">wolig</TT> מנסה לנחש את הריבוי הנכון בעזרת סיומת
+צורת היחיד:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=17 BORDER=0>
+<TR><TD><B><U>יחיד</U></B></TD><TD><B><U>רבים</U></B></TD></TR>
+<TR><TD BGCOLOR="#f5f590">מלך</TD> <TD BGCOLOR="#f5f590">מלכ<FONT COLOR="#ff0000"><B>ים</B></FONT></TD></TR>
+<TR><TD BGCOLOR="#f5f590">מלכ<FONT COLOR="#0000ff"><B>ה</B></FONT></TD> <TD BGCOLOR="#f5f590">מלכ<FONT COLOR="#ff0000"><B>ות</B></FONT></TD></TR>
+<TR><TD BGCOLOR="#f5f590">כותר<FONT COLOR="#0000ff"><B>ת</B></FONT></TD> <TD BGCOLOR="#f5f590">כותר<FONT COLOR="#ff0000"><B>ות</B></FONT></TD></TR>
+<TR><TD BGCOLOR="#f5f590">כמ<FONT COLOR="#0000ff"><B>ות</B></FONT></TD> <TD BGCOLOR="#f5f590">כמו<FONT COLOR="#ff0000"><B>יות</B></FONT></TD></TR>
+<TR><TD BGCOLOR="#f5f590">אחר<FONT COLOR="#0000ff"><B>יות</B></FONT></TD> <TD BGCOLOR="#f5f590"><I>-אין-</TD></TR>
+</TABLE>
+</CENTER>
+<LI>בזכות ברירות מחדל אלו, כ- 90% משמות העצם אינם דורשים רמזי-נטייה כלל.
+</UL>
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>הטיית שמות עצם (המשך)</H1>
+<UL>
+<LI>עדיין, ל- 10% הנותרים דרושים רמזים, ולצערנו לא רק את אלו שראינו עד כה.
+<BR>
+למשל, רמז <B>שמור_ת</B>:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=15 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+כותרת - כותרות
+</TD>
+<TD BGCOLOR="#f5e0f5">
+כותרת ע
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5f590">
+מכונית - מכוניות
+</TD>
+<TD BGCOLOR="#f5e0f5">
+מכונית ע
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5f590">
+חנית - חניתות
+</TD>
+<TD BGCOLOR="#f5e0f5">
+חנית ע,שמור_ת
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<LI>ורמז <B>סגול_ה</B>:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=15 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+<B>כלבה</B>, כלבת-, כלבתי, כלבות
+</TD>
+<TD BGCOLOR="#f5e0f5">
+כלבה ע
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5f590">
+<B>יונה</B>, יונת-, יונתי, יונים
+</TD>
+<TD BGCOLOR="#f5e0f5">
+יונה ע,ים
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5f590">
+<B>רובה</B>, רובה-, רובי, רובים
+</TD>
+<TD BGCOLOR="#f5e0f5">
+רובה ע,ים,סגול_ה
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</UL>
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>הטיית שמות עצם (המשך)</H1>
+<UL>
+<LI>למזלנו, בכתיב חסר הניקוד לא מעניין אותנו כשתנועה כמו סגול, פתח או צירה
+משתנה בין ההטיות השונות, וגם לא איזו תנועה. למשל:
+
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=12 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+כלב - כלבים, כלבי
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5f590">
+ספר - ספרים
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5f590">
+מטוס - מטוסים
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<LI>גם במקרה חיריק, בדרך כלל חוקי הכתיב חסר הניקוד לא ידרשו יו"ד:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=12 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+ספר - ספרי
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5f590">
+עז - עזים
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+<LI>יוצא דופן המקרה בו בצורת היחיד יש חיריק, אך בשאר ההטיות הוא איננו:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=10 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">
+עיפרון, עפרוני, עפרונות
+</TD>
+<TD BGCOLOR="#f5e0f5">
+עיפרון ע,ות,אבד_י
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</UL>
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>הטיית שמות עצם (המשך)</H1>
+<UL>
+<LI>במלעליים עם חולם חסר (כמו <B>צומת</B>) התנועה משתנה בנטייה והיכן שהופכת
+לשווא לא נוספת וי"ו בכתיב מלא. השוו:<BR> (ירוק - אות ראשונה מנוקדת בשווא)
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=15 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5f590">מלך</TD>
+<TD BGCOLOR="#d5f590">מלכים</TD>
+<TD BGCOLOR="#f5f590">מלכי-</TD>
+<TD BGCOLOR="#d5f590">מלכיי/ינו/יך/ייך</TD>
+<TD BGCOLOR="#f5f590">מלכיכם/ן</TD>
+<TD BGCOLOR="#d5f590">מלכיו/ה</TD>
+<TD BGCOLOR="#f5f590">מלכיהם/ן</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5f590">צומת</TD>
+<TD BGCOLOR="#d5f590">צמתים</TD>
+<TD BGCOLOR="#f5f590">צומתי-</TD>
+<TD BGCOLOR="#d5f590">צמתיי/ינו/יך/ייך</TD>
+<TD BGCOLOR="#f5f590">צומתיכם/ן</TD>
+<TD BGCOLOR="#d5f590">צמתיו/ה</TD>
+<TD BGCOLOR="#f5f590">צומתיהם/ן</TD>
+</TR>
+</TABLE>
+</CENTER>
+<LI>מקרה זה יצוין ע"י הרמז <B>אבד_ו</B>:
+<CENTER>
+<TABLE CELLPADDING=3 CELLSPACING=10 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5e0f5">
+צומת ע,ים,אבד_ו
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+<LI>רמזים נוספים לנטיות:
+<CENTER>
+<TABLE CELLPADDING=2 CELLSPACING=15 BORDER=0>
+<TR><TD BGCOLOR="#f5f590">אח, אח<FONT COLOR="#ff0000"><B>י</B></FONT>-, אח<FONT COLOR="#ff0000"><B>י</B></FONT>ו</TD>
+<TD BGCOLOR="#f5e0f5">אח ע,מיוחד_אח</TD></TR>
+
+<TR><TD BGCOLOR="#f5f590">שן, ש<FONT COLOR="#ff0000"><B>י</B></FONT>ניים, ש<FONT COLOR="#ff0000"><B>י</B></FONT>ניי</TD>
+<TD BGCOLOR="#f5e0f5">אח ע,מיוחד_שן</TD><TD>(יוצא-דופן של האקדמיה)</TD></TR>
+</TABLE>
+</CENTER>
+</UL>
+
+</DIV>
+</DIV>
+</CENTER>
+<CENTER>
+<DIV class="slide">
+<DIV ALIGN=RIGHT>
+<H1>הטיית שמות עצם (המשך)</H1>
+<UL>
+<LI>רמזים נוספים לנטיות:
+<CENTER>
+<TABLE CELLPADDING=2 CELLSPACING=13 BORDER=0>
+<TR><TD BGCOLOR="#f5f590">מגורים, מגורי-, מגוריי, ...</TD>
+<TD BGCOLOR="#f5e0f5">מגור ע,אין_יחיד</TD></TR>
+
+<TR><TD BGCOLOR="#f5f590">אחור, אחוריים, אחורי-, אחוריי, ...</TD>
+<TD BGCOLOR="#f5e0f5">מגור ע,אין_נטיות_יחיד</TD></TR>
+
+<TR><TD BGCOLOR="#f5f590">סתיו, סתווי, סתווים, ...</TD>
+<TD BGCOLOR="#f5e0f5">סתו ע,נפרד=סתיו,נסמך=סתיו</TD></TR>
+
+<TR><TD BGCOLOR="#f5f590">גברת, גברות, גבירותיי, ...</TD>
+<TD BGCOLOR="#f5e0f5">גברת ע,רבים=גברות,נסמכים=גבירות</TD></TR>
+</TABLE>
+</CENTER>
+<LI>טיפול אוטומטי בכללי הכתיב חסר הניקוד, תוך שימוש פנימי באותיות עזר:
+<CENTER>
+<TABLE CELLPADDING=2 CELLSPACING=13 BORDER=0>
+<TR>
+<TD BGCOLOR="#f5e0f5">קריה ע</TD>
+<TD>קרyה</TD>
+<TD BGCOLOR="#f5f590">קריה</TD>
+<TD>קרyת-</TD>
+<TD BGCOLOR="#f5f590">קריית-</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5e0f5">עירייה ע</TD>
+<TD>עיריyה</TD>
+<TD BGCOLOR="#f5f590">עירייה</TD>
+<TD>עיריyות</TD>
+<TD BGCOLOR="#f5f590">עיריות</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5e0f5">קו ע</TD>
+<TD>קw</TD>
+<TD BGCOLOR="#f5f590">קו</TD>
+<TD>קwים</TD>
+<TD BGCOLOR="#f5f590">קווים</TD>
+</TR>
+<TR>
+<TD BGCOLOR="#f5e0f5">שוwק ע,אבד_ו</TD>
+<TD>שוwק</TD>
+<TD BGCOLOR="#f5f590">שוק</TD>
+<TD>שwקים</TD>
+<TD BGCOLOR="#f5f590">שווקים</TD><TD>שוwקיכם</TD><TD BGCOLOR="#f5f590">שוקיכם</TD>
+</TR>
+</TABLE>
+</CENTER>
+</UL>
+</DIV>
+</DIV>
+</CENTER>
+</BODY>
+</HTML>

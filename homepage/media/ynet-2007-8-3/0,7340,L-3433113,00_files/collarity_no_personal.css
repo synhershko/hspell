@@ -1,0 +1,22 @@
+.cwsCompassModePersonalSelected,
+.cwsCompassModePersonalNotSelected {
+  display: none;
+}
+
+div.cwsCompassContainer .cwsCompassModeCommunitySelected,
+div.cwsCompassContainer .cwsCompassModeCommunityNotSelected {
+  top: 11px;
+}
+
+div.cwsCompassContainer .cwsCompassModeCommunitySelectedHover,
+div.cwsCompassContainer .cwsCompassModeCommunityNotSelectedHover {
+  top: 11px;
+}
+
+.cwsCompassModeGlobalSelected, .cwsCompassModeGlobalNotSelected {
+  top: 28px;
+}
+
+.cwsCompassModeGlobalNotSelectedHover, .cwsCompassModeGlobalSelectedHover {
+  top: 28px;
+}

@@ -1,0 +1,2 @@
+#rsync -avP . ivrix.org.il:/home/www/ivrix/projects/spell-checker/
+rsync -avP --delete -e ssh . nyh,hspell@web.sourceforge.net:htdocs/

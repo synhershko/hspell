@@ -1,0 +1,601 @@
+<!-- Creator     : groff version 1.18.1.4 -->
+<!-- CreationDate: Sun Dec 27 23:48:11 2009 -->
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta name="Content-Style" content="text/css">
+<title>hspell</title>
+</head>
+<body>
+
+<h1 align=center>hspell</h1>
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SPELLING STANDARD">SPELLING STANDARD</a><br>
+<a href="#BEHIND THE SCENES">BEHIND THE SCENES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#ACKNOWLEDGMENTS">ACKNOWLEDGMENTS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+<a name="NAME"></a>
+<h2>NAME</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>hspell &minus; Hebrew spellchecker</p>
+</td>
+</table>
+<a name="SYNOPSIS"></a>
+<h2>SYNOPSIS</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p><b>hspell</b> [ <b>&minus;acDhHilnsvV</b> ]
+<b>[</b><i>file...</i><b>]</b></p>
+</td>
+</table>
+<a name="DESCRIPTION"></a>
+<h2>DESCRIPTION</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p><b>hspell</b> tries to find incorrectly spelled Hebrew
+words in its input files.</p>
+<!-- INDENTATION -->
+<p>Like the traditional Unix spell(1), <b>hspell</b> outputs
+the sorted list of incorrect words, and does not (yet) have
+a more friendly interface for making corrections for you.
+However, unlike spell(1), <b>hspell</b> can suggest possible
+corrections for some spelling errors - such suggestions are
+enabled with the <b>&minus;c</b> (correct) and
+<b>&minus;n</b> (notes) options.</p>
+<!-- INDENTATION -->
+<p><b>Hspell</b> currently expects ISO-8859-8-encoded input
+files. Non-Hebrew characters in the input files are ignored,
+allowing the easy spellchecking of Hebrew-English texts, as
+well as HTML or TeX files. If files using a different
+encoding (e.g., UTF8) are to be checked, they must be
+converted first to ISO-8859-8 (e.g., see iconv(1),
+recode(1)).</p>
+<!-- INDENTATION -->
+<p>The output will also be in ISO-8859-8 encoding, in
+so-called &quot;logical order&quot;, so it is normally
+useful to pipe it to bidiv(1) before viewing, as in:</p>
+</td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="20%"></td>
+<td width="79%">
+<p><b>hspell -c filename | bidiv | less</b></p></td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>If no input file is given, <b>hspell</b> reads from its
+standard input.</p>
+</td>
+</table>
+<a name="OPTIONS"></a>
+<h2>OPTIONS</h2>
+<!-- TABS -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="4" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;v</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>If the <b>&minus;v</b> option is given, <b>hspell</b>
+prints emacs-oriented version information and exits.</p>
+</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;vv</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>Repetition of the <b>&minus;v</b> option causes
+<b>hspell</b> to also show some information on which
+optional features were enabled at compile time.</p>
+</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;V</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>With the <b>&minus;V</b> option, <b>hspell</b> prints
+true and human-oriented version information and exits.</p>
+</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;c</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>If the <b>&minus;c</b> option is given, <b>hspell</b>
+will suggest corrections for misspelled words, whenever it
+can find such corrections. The correction mechanism in this
+release is especially good at finding corrections for
+incorrect niqqud-less spellings, with missing or extra
+&rsquo;immot-qri&rsquo;a.</p>
+</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;n</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>The <b>&minus;n</b> option will give some longer
+&quot;notes&quot; about certain spelling errors, explaining
+why these are indeed errors (or in what cases using this
+word is in fact correct). It is recommend to combine the two
+options, <b>&minus;cn</b> for maximal correction help from
+<b>hspell</b>.</p>
+</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;l</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>The <b>&minus;l</b> (linguistic information) option will
+explain for each <i>correct</i> word why it was recognized
+(show the basic noun, verb, etc., that this inflection
+relates to, and its tense, gender, associated Kinnuy, or
+other relevant information)</p>
+</td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>If Hspell was built without morphological analysis
+support, this option will only show the correct splits of
+the given word into prefix + word, as the full information
+incurs a 4-fold increase in the installation size.</p>
+<!-- INDENTATION -->
+<p>Giving the <b>&minus;c</b> option in addition to
+<b>&minus;l</b> results in special behavior. In that case
+<b>hspell</b> suggests &quot;corrections&quot; to every word
+(regardless if they are in the dictionary or not), and shows
+the linguistic information on all those words. This can be
+useful for a reader application, which may also want to be
+able to understand misspellings and their possible
+meanings.</p>
+</td>
+</table>
+<!-- TABS -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="4" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;s</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>Normally, the words deemed spelling mistakes are shown
+in alphabetical order. The <b>&minus;s</b> option orders
+them by <i>severity</i>, i.e., the errors that most
+frequently appear in the document are shown first. This
+option is most useful for people helping to build
+<b>hspell</b>&rsquo;s word list, and are looking for common
+correct words that <b>hspell</b> does not know yet.</p>
+</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;a</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>With the <b>&minus;a</b> option, <b>hspell</b> tries to
+emulate (as little as possible of) <b>ispell&rsquo;s</b>
+pipe interface. This allows <b>Lyx, Emacs, Geresh</b> and
+<b>KDE</b> to use <b>hspell</b> as an external
+spell-checker.</p>
+</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+<p><b>&minus;i</b></p>
+</td>
+<td width="5%"></td>
+<td width="77%">
+
+<p>This option only has any effect when used together with
+the <b>&minus;a</b> option. Normally, <b>hspell &minus;a</b>
+only checks the spelling of Hebrew words. If the given file
+also contains non-Hebrew words (such as English words),
+these are simply ignored. Adding the <b>&minus;i</b> option
+tells <b>hspell</b> to pass the non-Hebrew words to
+<b>ispell</b>(1), and return its answer as an answer from
+<b>hspell</b>. This allows conveniently spell-checking mixed
+Hebrew-English documents.</p>
+</td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>Running <b>hspell</b> with the program name
+<b>hspell-i</b> also enables the <b>-i</b> option. This is a
+useful trick when an application expects just the name of a
+spell-checking program, and adds only the
+&quot;&minus;a&quot; option (without giving the user an
+option to also add &quot;&minus;i&quot;). The
+<b>multispell</b> script supplied with <b>hspell</b> serves
+a similar purpose, with more control over encodings and
+which spell-checker to run for non-Hebrew words.</p>
+</td>
+</table>
+<!-- TABS -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="4" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="2%">
+
+<p><b>&minus;H</b></p>
+</td>
+<td width="7%"></td>
+<td width="77%">
+
+<p>By default, Hspell does not allow the He Ha-sh&rsquo;ela
+prefix. This is because this prefix is not normally used in
+modern Hebrew, and generates many false-negatives (errors,
+like He followed by a possessed noun, are thought to be
+correct). The <b>&minus;H</b> option nevertheless tells
+Hspell to allow this prefix.</p>
+</td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p><b>&minus;D base</b></p></td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="21%"></td>
+<td width="77%">
+<p>Load the word lists from the given base pathname, rather
+than from the compiled-in default path. This is mostly used
+for testing Hspell, when the dictionaries have been compiled
+in the current directory and hspell is run as &quot;hspell
+&minus;Dhebrew.wgz&quot;.</p>
+</td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p><b>&minus;d, &minus;B, &minus;m, &minus;T, &minus;C,
+&minus;S, &minus;P, &minus;p, &minus;w, and
+&minus;W</b></p></td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="21%"></td>
+<td width="77%">
+<p>These options are passed to <b>hspell</b> by <b>lyx</b>
+or other applications, and are cordially ignored.</p>
+</td>
+</table>
+<a name="SPELLING STANDARD"></a>
+<h2>SPELLING STANDARD</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>Hspell was designed to be 100% and strictly compliant
+with the official niqqud-less spelling rules (&quot;Ha-ktiv
+Khasar Ha-niqqud&quot;, colloquially known as &quot;Ktiv
+Male&quot;) published by the Academy of the Hebrew
+Language.</p>
+<!-- INDENTATION -->
+<p>This is both an advantage and a disadvantage, depending
+on your viewpoint. It&rsquo;s an advantage because it
+encourages a <b>correct</b> and consistent spelling style
+throughout your writing. It is a disadvantage, because a few
+of the Academia&rsquo;s official spelling decisions are
+relatively unknown to the general public.</p>
+<!-- INDENTATION -->
+<p>Users of Hspell (and all Hebrew writers, for that matter)
+are encouraged to read the Academia&rsquo;s official
+niqqud-less spelling rules (which are printed at the end of
+most modern Hebrew dictionaries, and an abridged version is
+available in
+http://hebrew-academy.huji.ac.il/decision4.html). Users are
+also encouraged to refer to Hebrew dictionaries which use
+the niqqud-less spelling (such as Millon Ha-hove, Rav Milim,
+and the new Even Shoshan).</p>
+<!-- INDENTATION -->
+<p>Hspell&rsquo;s distribution (and Web site) also include a
+document, <b>niqqudless.odt</b>, which explains
+Hspell&rsquo;s spelling standard in detail (in Hebrew). It
+explains both the overall principles, and why specific words
+are spelled the way they are.</p>
+<!-- INDENTATION -->
+<p>Future releases might include an option for alternative
+spelling standards.</p>
+</td>
+</table>
+<a name="BEHIND THE SCENES"></a>
+<h2>BEHIND THE SCENES</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>The <b>hspell</b> program itself is mostly a simple (but
+efficient) program that checks input words against a long
+list of valid words. The real &quot;brains&quot; behind it
+are the word lists (dictionary) provided by the Hspell
+project.</p>
+<!-- INDENTATION -->
+<p>In order for this dictionary to be completely free of
+other people&rsquo;s copyright restrictions, the Hspell
+project is a clean-room implementation, not based on
+pre-existing word lists or spell checkers, or on copying of
+printed dictionaries.</p>
+<!-- INDENTATION -->
+<p>The word list is also not based on automatic scanning of
+available Hebrew documents (such as online newspapers),
+because there is no way to guarantee that such a list will
+be correct (not contain misspellings, useless proper names,
+and so on), complete (certain inflections might not appear
+in the chosen samples), or consistent (especially when it
+comes to niqqud-less spelling rules).</p>
+<!-- INDENTATION -->
+<p>Instead, our idea was to write programs which know how to
+correctly inflect Hebrew nouns and conjugate Hebrew verbs.
+The input to these programs is a list of noun stems and verb
+roots, plus hints needed for the correct inflection when
+these cannot be figured out automatically. Most of the
+effort that went into the Hspell project went into building
+these input files. Then, &quot;word list generators&quot;
+(written in Perl, and are also part of the Hspell project)
+create the complete inflected word list that will be used by
+the spellchecking program, hspell. This generation process
+is only done once, when building <b>hspell</b> from
+source.</p>
+<!-- INDENTATION -->
+<p>These lists, before and after inflection, may be useful
+for much more than spellchecking. Morphological analysis
+(which <b>hspell</b> provides with the <b>&minus;l</b>
+option) is one example. For more ideas, see Hspell
+project&rsquo;s Web site, at
+<b>http://ivrix.org.il/projects/spell&minus;checker</b>.</p>
+</td>
+</table>
+<a name="FILES"></a>
+<h2>FILES</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>~/.hspell_words, ./hspell_words</p></td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="21%"></td>
+<td width="77%">
+<p>These files, if they exist, should contain a list of
+Hebrew words that <b>hspell</b> will also accept as correct
+words.</p>
+<!-- INDENTATION -->
+<p>Note that only these words <i>exactly</i> will be added -
+they are not inflected, and prefixes are not automatically
+allowed.</p>
+</td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>/usr/local/share/hspell/*</p></td>
+</table>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="21%"></td>
+<td width="77%">
+<p>The standard Hebrew word lists used by <b>hspell</b>.</p>
+</td>
+</table>
+<a name="EXIT STATUS"></a>
+<h2>EXIT STATUS</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>Currently always 0.</p>
+</td>
+</table>
+<a name="VERSION"></a>
+<h2>VERSION</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>The version of <b>hspell</b> described by this manual
+page is 1.1 (December 31, 2009)</p>
+</td>
+</table>
+<a name="COPYRIGHT"></a>
+<h2>COPYRIGHT</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>Copyright (C) 2000-2009, Nadav Har&rsquo;El
+&lt;nyh@math.technion.ac.il&gt; and Dan Kenigsberg
+&lt;danken@cs.technion.ac.il&gt;.</p>
+<!-- INDENTATION -->
+<p>Hspell is free software, released under the GNU General
+Public License (GPL). Note that not only the programs in the
+distribution, but also the dictionary files and the
+generated word lists, are licensed under the GPL. There is
+no warranty of any kind.</p>
+<!-- INDENTATION -->
+<p>See the LICENSE file for more information and the exact
+license terms.</p>
+<!-- INDENTATION -->
+<p>The latest version of this software can be found in
+<b>http://hspell.ivrix.org.il/</b></p>
+</td>
+</table>
+<a name="ACKNOWLEDGMENTS"></a>
+<h2>ACKNOWLEDGMENTS</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>The hspell utility and the linguistic databases behind it
+(collectively called &quot;the Hspell project&quot;) were
+created by Nadav Har&rsquo;El
+&lt;nyh@math.technion.ac.il&gt; and by Dan Kenigsberg
+&lt;danken@cs.technion.ac.il&gt;.</p>
+<!-- INDENTATION -->
+<p>Although we wrote all of Hspell&rsquo;s code ourselves,
+we are truly indebted to the old-style &quot;open
+source&quot; pioneers - people who wrote books instead of
+hiding their knowledge in proprietary software. For the
+correct noun inflections, Dr. Shaul Barkali&rsquo;s
+&quot;The Complete Noun Book&quot; has been a great help.
+Prof. Uzzi Ornan&rsquo;s booklet &quot;Verb Conjugation in
+Flow Charts&quot; has been instrumental in the
+implementation of verb conjugation, and Barkali&rsquo;s
+&quot;The Complete Verb Book&quot; was used too.</p>
+<!-- INDENTATION -->
+<p>During our work we have extensively used a number of
+Hebrew dictionaries, including Even Shoshan, Millon Ha-hove
+and Rav-Milim, to ensure the correctness of certain words.
+Various Hebrew newspapers and books, both printed and
+online, were used for inspiration and for finding words we
+still do not recognize.</p>
+<!-- INDENTATION -->
+<p>We wish to thank Cilla Tuviana and Dr. Zvi Har&rsquo;El
+for their assistance with some grammatical questions.</p>
+<!-- INDENTATION -->
+<p>Several other people helped us in various releases, with
+suggestions, fixes or patches - they are listed in the
+WHATSNEW file in the distribution.</p>
+</td>
+</table>
+<a name="SEE ALSO"></a>
+<h2>SEE ALSO</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p><b>hspell</b>(3), <b>spell</b>(1), <b>ispell</b>(1),
+<b>bidiv</b>(1), <b>iconv</b>(1), <b>recode</b>(1)</p>
+</td>
+</table>
+<a name="BUGS"></a>
+<h2>BUGS</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>This manual page is in English.</p>
+<!-- INDENTATION -->
+<p>For GUI-lovers, <b>hspell</b>&rsquo;s user interface is
+an abomination. However, as more and more applications learn
+to interface with <b>hspell</b>, and as Hspell&rsquo;s data
+becomes available in multi-lingual spellcheckers (such as
+aspell and hunspell), this will no longer be an issue. See
+<b>http://hspell.ivrix.org.il/</b> for instructions on how
+to use Hspell in a variety of applications.</p>
+<!-- INDENTATION -->
+<p><b>hspell</b>&rsquo;s being limited to the ISO-8859-8
+encoding, and not recognizing UTF-8 or even CP1255
+(including niqqud), is almost an anachronism today.</p>
+</td>
+</table>
+<hr>
+</body>
+</html>

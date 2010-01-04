@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML DIR=LTR lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i">
+<TITLE>The Ivrix Project - Spell Checker</TITLE>
+<LINK rel="stylesheet" href="../hspell.css" type="text/css" title="funky">
+</HEAD>
+<BODY>
+<DIV class="menu">
+<A HREF="http://www.ivrix.org.il/">Ivrix</A>
+<A HREF="http://www.ivrix.org.il/projects/spell-checker/">Hspell</A>
+<A HREF="../about.html">FAQ</A>
+<A HREF="../docs.html">Documents</A>
+<A HREF="../download.html">Download</A>
+</DIV>
+
+<DIV class="main">
+<H1>
+Hspell 0.3 announcement
+<BR><SPAN class="small">"Groundhog Day"</SPAN>
+</H1>
+<H3>The original announcement</H3>
+<P>Earlier today, in the small town of Punxsutawney, PA, a cute little groundhog
+woke up and got out of its hole. The first thing it saw was the URL:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;
+http://ivrix.org.il/projects/spell-checker/
+<P class="noindent">In which it knew it could find a new release of the free Hebrew spell-checker, Hspell - release 0.3.</P>
+<P class="noindent">The second thing it saw was its own shadow, which means, according to legend,
+that we will not have another Hspell release for another six weeks.
+Well, more-or-less six weeks... It's just a woodchuck after all, and not one
+of the Hspell developers!
+</P>
+<P class="noindent">
+Here's what it found in the new release:
+</P>
+<UL>
+<LI><P class="noindent">
+  Some incorrect words purged or fixed, and many more words added: over
+   1,000 base words and 20,000 inflections. In this release, emphasis has
+   been put on adding Hebrew nouns and adjectives.</P>
+<LI><P class="noindent">
+  Fixed Makefile behavior in certain case. In particular "make" should work
+   regardless of LC_* environment variables. However, as hspell currently
+   works on iso8859-8 encoded files, users with a utf8 locale must run the
+   "hspell" perl program as "LC_ALL=C hspell" (otherwise, they will see
+   error messages from Perl).</P>
+<LI><P class="noindent">
+  Added ispell-like "-a" option, for interfacing with LyX.
+   If you want to use hspell under LyX you should use Hebrew-enabled LyX
+   (version 1.1.6fix4 is known to work). Add the following line to your
+   .lyx/lyxrc file:<BR>
+        \spell_command hspell<BR>
+   Notice that this prevents using English ispell/aspell from within LyX. 
+   If you know of a better configuration, please tell us.
+   Notice that if a Hebrew misspelled word is found, it is shown reversed on
+   LyX's spellchecker (and so are its corrections). This is about to be
+   corrected in future releases of LyX. Also, LyX breaks Hebrew acronyms
+   wrongly, and causes hspell to reject them.</P>
+   <P class="noindent">
+   Read http://www.math.tau.ac.il/~dekelts/lyx/instructions2.html for
+   Hebrew LyX general instructions.</P>
+<LI><P class="noindent">
+  No longer incorrectly recognize שלווום (should be שלוום, "that to their
+   hook").</P>
+<LI><P class="noindent">
+  The wolig.pl automatic inflector can handle country names, and many more
+   country names and nationalities have been added. Note that since I did
+   not find a source for "official" country-name spellings in Hebrew, our
+   list might contain errors. Please tell us if you know a dictionary or other
+   authoritative document which contains the official Hebrew spellings of
+   country names.</P>
+<LI><P class="noindent">
+  Vocabulary: 189,347 words
+               based on 5238 nouns, 927 adjectives, 3568 verb stems, and
+               1203 other words</P>
+</UL>
+<P class="noindent">
+They say "mishnichnas adar marbim besimcha". We didn't have too many reasons
+to be happy in the last few days, but I do hope that at least some of you
+will enjoy a fresh Hspell in the beginning of the new month. At least a little.
+And if you don't, or find bugs, blame the groundhog (or better yet, tell us.)
+<P>
+<PRE>
+-- 
+Nadav Har'El                        |        Sunday, Feb 2 2003, 1 Adar I 5763
+</PRE>
+<H3><A HREF="0.3r.html">References</A></H3>
+</DIV>
+</BODY>
+</HTML>

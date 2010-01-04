@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML DIR=LTR lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i">
+<TITLE>The Ivrix Project - Spell Checker</TITLE>
+<LINK rel="stylesheet" href="../hspell.css" type="text/css" title="funky">
+</HEAD>
+<BODY>
+<DIV class="menu">
+<A HREF="http://www.ivrix.org.il/">Ivrix</A>
+<A HREF="http://www.ivrix.org.il/projects/spell-checker/">Hspell</A>
+<A HREF="../about.html">FAQ</A>
+<A HREF="../docs.html">Documents</A>
+<A HREF="../download.html">Download</A>
+</DIV>
+
+<DIV class="main">
+<H1>
+Hspell 0.6 announcement
+<BR><SPAN class="small">"The Revolution"</SPAN>
+</H1>
+<H3>The original announcement</H3>
+<P class="noindent">
+<I>
+&nbsp;&nbsp;&nbsp;You say you want a revolution,<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We all want to change the world.<BR>
+&nbsp;&nbsp;&nbsp;You tell me that it's evolution,<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We all want to change the world!<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;You say you've got a real solution,<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We'd all love to see the plan.<BR>
+&nbsp;&nbsp;&nbsp;You ask me for a contribution,<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We are doing what we can.<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;Don't you know it's gonna be Alright?<BR>
+<BR>
+</I>
+</P>
+
+<P class="noindent">
+After a three months of unrest, the Hspell 0.6 revolution has begun!
+</P>
+<P class="noindent">
+The two revolutionaries Nadav Har'El and Dan Kenigsberg created a website
+describing the New Word Order:
+</P>
+<CENTER>
+<A HREF="http://www.ivrix.org.il/projects/spell-checker/">http://www.ivrix.org.il/projects/spell-checker/</A>
+</CENTER>
+<P class="noindent">
+Vive la revolution!
+</P>
+<P class="noindent">
+Still wondering what Hspell 0.6 is all about?
+</P>
+
+<P>
+ In this release, the Hspell front-end (the hspell program) was rewritten.
+ The new front-end has many improvements over the old one, but also a few
+ setbacks - features that are (temporarily) unavailable because they weren't
+ yet ported to the new version.
+</P>
+
+<P class="noindent">
+The improvements:
+</P>
+
+<UL>
+<LI><P class="noindent">
+A huge performance improvement - hspell now starts up, and runs, at least
+   20 times faster than it used to and takes less than one fifth the memory.
+</P>
+<LI><P class="noindent">
+ The new front-end is written in C, so Hspell can now run on systems which
+   do not have Perl. Perl is still needed for building Hspell from source.
+</P>
+<LI><P class="noindent">
+ The list of allowed prefixes was improved (joined work with Shlomo Yona)
+   and hspell now finally knows which prefixes are valid for most words,
+   reducing the risk of accepting misspellings as correct and reducing the
+   number of silly (and wrong) correction suggestions.
+</P>
+<P class="noindent">
+   Note that unlike earlier versions, words listed in the user's personal
+   dictionary (~/.hspell_words or ./hspell_words) are no longer automatically
+   accepted with prefixes. Also, these words are never used as suggested
+   corrections.
+</P>
+<LI><P class="noindent">
+ "hspell -a" was made more compatible with the standard "ispell -a" (thanks
+   to Mooffie). Hspell is now known to be used with LyX, KDE, Geresh and Emacs.
+</UL>
+   
+<P class="noindent">
+The setbacks:
+</P>
+
+<UL>
+<LI><P class="noindent">
+ The "-v" option, that used to explain how valid words were derived, is
+   no longer available in this version. It is replaced by a "-l" option,
+   which in this release is weaker (it can only show a division of valid
+   words into prefix particle + word).
+</P>
+<LI><P class="noindent">
+  The "-n" option, that used to give hints on how to spell correctly, is
+   not available.
+</P>
+<LI><P class="noindent">
+  The "likelyerrors" feature (or recognizing certain words as theoretically
+   correct but still very likely to be mistakes) is not available.
+</P>
+<LI><P class="noindent">
+  TeX-like repeated single quote ('') is not treated as double quotes (").
+</P>
+<LI><P class="noindent">
+  Long options (GNU's "minus-minus" options) are not supported in this
+   version.
+</P>
+</UL>
+
+<P class="noindent">
+Some other changes:
+</P>
+
+<UL>
+<LI><P class="noindent">
+  Included in the distribution is a new utility "multispell" by Mooffie,
+   which can spell-check mixed Hebrew-English text by interfacing with two
+   spell-checkers (hspell and ispell) simultaneously. Multispell is better
+   than hspell's built-in slave mode (hspell -a -i) when the calling program
+   can't deal with wrong word order in the results (e.g., Emacs has this
+   issue.)
+</P>
+<LI><P class="noindent">
+  Some incorrect words purged or fixed, and more words added: over 600
+   base words added.
+</P>
+</UL>
+
+
+ Vocabulary: 394,833 words (when including kinuyim on verbs)
+               based on 7462 nouns, 1533 adjectives, 5060 verb stems, and
+               1819 other words
+
+
+<H3><A HREF="0.6r.html">References</A></H3>
+</DIV>
+</BODY>
+</HTML>

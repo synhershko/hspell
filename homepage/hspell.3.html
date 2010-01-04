@@ -1,0 +1,347 @@
+<!-- Creator     : groff version 1.18.1.4 -->
+<!-- CreationDate: Sun Dec 27 23:48:11 2009 -->
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta name="Content-Style" content="text/css">
+<title>hspell</title>
+</head>
+<body>
+
+<h1 align=center>hspell</h1>
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#LINKING">LINKING</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+<a name="NAME"></a>
+<h2>NAME</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>hspell &minus; Hebrew spellchecker (C API)</p>
+</td>
+</table>
+<a name="SYNOPSIS"></a>
+<h2>SYNOPSIS</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p><b>#include &lt;hspell.h&gt;</b></p>
+<!-- INDENTATION -->
+<p><b>int hspell_init(struct dict_radix **</b>dictp<b>,
+int</b> flags<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>void hspell_uninit(struct dict_radix
+*</b>dictp<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>int hspell_check_word(struct dict_radix *</b>dict<b>,
+const char *</b>word<b>, int *</b>preflen<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>void hspell_trycorrect(struct dict_radix *</b>dict<b>,
+const char *</b>word<b>, struct corlist *</b>cl<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>int corlist_init(struct corlist *</b>cl<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>int corlist_free(struct corlist *</b>cl<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>int corlist_n(struct corlist *</b>cl<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>char *corlist_str(struct corlist *</b>cl<b>, int</b>
+i<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>int hspell_is_canonic_gimatria(const char
+*</b>word<b>);</b></p>
+<!-- INDENTATION -->
+<p>typedef int hspell_word_split_callback_func(const char
+*word, const char *baseword, int preflen, int prefspec);</p>
+<!-- INDENTATION -->
+<p><b>int hspell_enum_splits(struct dict_radix *</b>dict<b>,
+const char *</b>word<b>, hspell_word_split_callback_func
+*</b>enumf<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>void hspell_set_dictionary_path(const char
+*</b>path<b>);</b></p>
+<!-- INDENTATION -->
+<p><b>const char *hspell_get_dictionary_path(void);</b></p>
+</td>
+</table>
+<a name="DESCRIPTION"></a>
+<h2>DESCRIPTION</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>This manual describes the C API of the Hspell Hebrew
+spellchecker. Please refer to <b>hspell</b>(1) for a
+description of the Hspell project, its spelling standard,
+and how it works.</p>
+<!-- INDENTATION -->
+<p>The <b>hspell_init()</b> function must be called first to
+initialize the Hspell library. It sets up some global
+structures (see CAVEATS section) and then reads the
+necessary dictionary files (whose places are fixed when the
+library is built). The <i>&rsquo;dictp&rsquo;</i> parameter
+is a pointer to a <i>struct dict_radix*</i> object, which is
+modified to point to a newly allocated dictionary. A typical
+<b>hspell_init()</b> call therefore looks like</p>
+<!-- INDENTATION -->
+<p>struct dict_radix *dict; hspell_init(&amp;dict,
+flags);</p>
+<!-- INDENTATION -->
+<p>Note that the (struct dict_radix*) type is an opaque
+pointer &minus; the library user has no access to the
+separate fields in this structure.</p>
+<!-- INDENTATION -->
+<p>The <i>&rsquo;flags&rsquo;</i> parameter can contain a
+bitwise or&rsquo;ing of several flags that modify
+Hspell&rsquo;s default behavior; Turning on
+HSPELL_OPT_HE_SHEELA allows Hspell to recognize the
+interrogative He prefix (he ha-she&rsquo;ela).
+HSPELL_OPT_DEFAULT is a synonym for turning on no special
+flag, i.e., it evaluates to 0.</p>
+<!-- INDENTATION -->
+<p><b>hspell_init()</b> returns 0 on success, or negative
+numbers on errors. Currently, the only error is &minus;1,
+meaning the dictionary files could not be read.</p>
+<!-- INDENTATION -->
+<p>The <b>hspell_uninit()</b> function undoes the effects of
+<b>hspell_init()</b>, freeing any memory that was allocated
+during initialization.</p>
+<!-- INDENTATION -->
+<p>The <b>hspell_check_word()</b> function checks whether a
+certain word is a correct Hebrew word (possibly with prefix
+particles attached in a syntacticly-correct manner). 1 is
+returned if the word is correct, or 0 if it is
+incorrect.</p>
+<!-- INDENTATION -->
+<p>The <i>&rsquo;word&rsquo;</i> parameter should be a
+single Hebrew word, in the iso8859-8 encoding, possibly
+containing the ASCII quote or double-quote characters
+(signifying the geresh and gershayim used in Hebrew for
+abbreviations, acronyms, and a few foreign sounds). If the
+calling programs works with other encodings, it must convert
+the word to iso8859-8 first. In particular cp1255 (the
+MS-Windows Hebrew encoding) extensions to iso8859-8 like
+niqqud characters, geresh or gershayim, are currently not
+recognized and must be removed from the word prior to
+calling <b>hspell_check_word()</b>.</p>
+<!-- INDENTATION -->
+<p>Into the <i>&rsquo;preflen&rsquo;</i> parameter, the
+function writes back the number of characters it recognized
+as a prefix particle &minus; the rest of the
+&rsquo;word&rsquo; is a stand-alone word. Because Hebrew
+words typically can be read in several different ways, this
+feature (of getting just one prefix from one possible
+reading) is usually not very useful, and it is likely to be
+removed in a future version.</p>
+<!-- INDENTATION -->
+<p>The <b>hspell_enum_splits()</b> function provides a way
+to get all possible splitting of the given
+<i>&rsquo;word&rsquo;</i> into an optional prefix particle
+and a stand-alone word. For each possible (and legal, as
+some words cannot accept certain prefixes) split, a
+user-defined callback function is called. This callback
+function is given the whole word, the length of the prefix,
+the stand-alone word, and a bitfield which describes what
+types of words this prefix can get. Note that in some cases,
+a word beginning with the letter waw gets this waw doubled
+before a prefix, so sometimes
+strlen(word)!=strlen(baseword)+preflen.</p>
+<!-- INDENTATION -->
+<p>The <b>hspell_trycorrect()</b> tries to find a list of
+possible corrections for an incorrect word. Because in
+Hebrew the word density is high (a random string of letters,
+especially if short, has a high probability of being a
+correct word), this function attempts to try corrections
+based on the assumption of a spelling error (replacement of
+letters that sound alike, missing or spurious immot
+qri&rsquo;a), not typo (slipped finger on the keyboard,
+etc.) - see also CAVEATS.</p>
+<!-- INDENTATION -->
+<p><b>hspell_trycorrect()</b> returns the correction list
+into a structure of type <i>struct corlist</i>. This
+structure must be first allocated with a call to
+<b>corlist_init()</b> and subsequently freed with
+<b>corlist_free()</b>. The <b>corlist_n()</b> macro returns
+the number of words held in an allocated corlist, and
+<b>corlist_str()</b> returns the i&rsquo;th word.
+Accordingly, here is an example usage of
+<b>hspell_trycorrect()</b>:</p>
+<!-- INDENTATION -->
+<p>struct corlist cl; printf (&quot;Found misspelled word
+%s. Possible corrections:\n&quot;, w); corlist_init
+(&amp;cl); hspell_trycorrect (dict, w, &amp;cl); for (i=0;
+i&lt;corlist_n(&amp;cl); i++) { printf (&quot;%s\n&quot;,
+corlist_str(&amp;cl, i)); }</p>
+<!-- INDENTATION -->
+<p>The <b>hspell_is_canonic_gimatria()</b> function checks
+whether the given word is a <i>canonic</i> gimatria - i.e.,
+the proper way to write in gimatria the number it
+represents. The caller might want to accept canonic gimatria
+as proper Hebrew words, even if <b>hspell_check_word()</b>
+previously reported such word to be a non-existent word.
+<b>hspell_is_canonic_gimatria()</b> returns the number
+represented as gimatria in &rsquo;word&rsquo; if it is
+indeed proper gimatria (in canonic form), or 0
+otherwise.</p>
+<!-- INDENTATION -->
+<p><b>hspell_init()</b> normally reads the dictionary files
+from a path compiled into the library. This makes sense when
+the library&rsquo;s code and the dictionaries are
+distributed together, but in some scenarios the library user
+might want to use the Hspell dictionaries that are already
+present on the system in an arbitrary path. The function
+<b>hspell_set_dictionary_path()</b> can be used to set this
+path, and should be used before calling
+<b>hspell_init()</b>. The given path is that of the word
+list, and other input files have that path with an appended
+prefix. <b>hspell_get_dictionary_path()</b> can be used to
+find the current path. On many installations, this defaults
+to &quot;/usr/local/share/hspell/hebrew.wgz&quot;.</p>
+</td>
+</table>
+<a name="LINKING"></a>
+<h2>LINKING</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>On most systems, the Hspell library is compiled to use
+the Zlib library for reading the compressed dictionaries.
+Therefore, a program linking with the Hspell library must
+also be linked with the Zlib library (usually, by adding
+&quot;-lz&quot; to the compilation line).</p>
+<!-- INDENTATION -->
+<p>Programs that use <i>autoconf</i> to search for the
+Hspell library, should remember to tell AC_CHECK_LIB to also
+link with the -lz library when checking for -lhspell.</p>
+</td>
+</table>
+<a name="CAVEATS"></a>
+<h2>CAVEATS</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>While the API described here has been stable for years,
+it may change in the future. Users are encouraged to compare
+the values of the integer macros <b>HSPELL_VERSION_MAJOR</b>
+and <b>HSPELL_VERSION_MINOR</b> to those expected by the
+writer of the program. A third macro,
+<b>HSPELL_VERSION_EXTRA</b> contains a string which can
+describe subrelease modifications (e.g., beta versions).</p>
+<!-- INDENTATION -->
+<p>The current Hspell C API is very low-level, in the sense
+that it leaves the user to implement many features that some
+users take for granted that a spell-checker should provide.
+For example it doesn&rsquo;t provide any facilities for a
+user-defined personal dictionary. It also has separate
+functions for checking valid Hebrew words and valid
+gimatria, and no function to do both. It is assumed that the
+caller - a bigger spell-checking library or word processor
+(for example), will already have these facilities. If not,
+you may wish to look at the sources of <b>hspell</b>(1) for
+an example implementation.</p>
+<!-- INDENTATION -->
+<p>Currently there is no concept of separate Hspell
+&quot;contexts&quot; in an application. Some of the context
+is now global for the entire application: currently, a
+single list of legal prefix-particles is kept, and the
+dictionary read by <b>hspell_init()</b> is always read from
+the global default place. This may be solved in a later
+version, e.g., by switching to an API like:</p>
+<!-- INDENTATION -->
+<p>context = hspell_new_context();
+hspell_set_dictionary_path(context,
+&quot;/some/path/hebrew.wgz&quot;); hspell_init(context,
+flags); ... hspell_check_word(context, word, preflenp);</p>
+<!-- INDENTATION -->
+<p>Note that despite the global context mentioned above,
+after initialization all functions described here are
+<i>thread-safe</i>, because they only read the dictionary
+data, not write to it.</p>
+<!-- INDENTATION -->
+<p><b>hspell_trycorrect()</b> is not as powerful as it could
+have been, with typos or certain kinds of spelling mistakes
+not giving useful correction suggestions. Along with more
+types of corrections, <b>hspell_trycorrect()</b> needs a
+better way to order the likelihood of the corrections, as an
+unordered list of 100 corrections would be just as useful
+(or rather, useless) as none.</p>
+<!-- INDENTATION -->
+<p>In some cases of errors during <b>hspell_init()</b>,
+warning messages are printed to the standard errors. This is
+a bad thing for a library to do.</p>
+<!-- INDENTATION -->
+<p>There are too many CAVEATS in this manual.</p>
+</td>
+</table>
+<a name="VERSION"></a>
+<h2>VERSION</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>The version of <b>hspell</b> described by this manual
+page is 1.1 (December 31, 2009)</p>
+</td>
+</table>
+<a name="COPYRIGHT"></a>
+<h2>COPYRIGHT</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p>Copyright (C) 2000-2009, Nadav Har&rsquo;El
+&lt;nyh@math.technion.ac.il&gt; and Dan Kenigsberg
+&lt;danken@cs.technion.ac.il&gt;.</p>
+<!-- INDENTATION -->
+<p>Hspell is free software, released under the GNU General
+Public License (GPL). Note that not only the programs in the
+distribution, but also the dictionary files and the
+generated word lists, are licensed under the GPL. There is
+no warranty of any kind.</p>
+<!-- INDENTATION -->
+<p>See the LICENSE file for more information and the exact
+license terms.</p>
+<!-- INDENTATION -->
+<p>The latest version of this software can be found in
+<b>http://hspell.ivrix.org.il/</b></p>
+</td>
+</table>
+<a name="SEE ALSO"></a>
+<h2>SEE ALSO</h2>
+<!-- INDENTATION -->
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td>
+<td width="89%">
+<p><b>hspell</b>(1)</p>
+</td>
+</table>
+<hr>
+</body>
+</html>

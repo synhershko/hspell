@@ -1,0 +1,107 @@
+div.cwsTooltip {
+  left: -10px;
+}
+
+div.cwsCompassContainer .cwsCompassHeader {
+  right: 0;
+}
+
+div.cwsCompassContainer .cwsCompassMode {
+  width: 29px;
+}
+
+div.cwsCompassContainer .cwsCompassPosContainer {
+  background-image: url("images/modes_bg.gif");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+div.cwsCompassContainer .cwsCompassModePersonalSelected {
+  background-image: url("images/personal_s.gif" );
+}
+
+div.cwsCompassContainer .cwsCompassModePersonalNotSelected {
+  background-image: url("images/personal_e.gif");
+}
+
+div.cwsCompassContainer .cwsCompassModeCommunitySelected {
+  background-image: url("images/community_s.gif");
+}
+
+div.cwsCompassContainer .cwsCompassModeCommunityNotSelected {
+  background-image: url("images/community_e.gif");
+}
+
+div.cwsCompassContainer .cwsCompassModeGlobalSelected {
+  background-image: url("images/global_s.gif");
+}
+
+div.cwsCompassContainer .cwsCompassModeGlobalNotSelected {
+  background-image: url( "images/global_e.gif" );
+}
+
+div.cwsCompassContainer .cwsCompassModePersonalSelectedHover,
+div.cwsCompassContainer .cwsCompassModePersonalNotSelectedHover {
+  left: 0;
+  width: 59px;
+  background-image: url("images/personal_f2.gif");
+  background-repeat: no-repeat;
+}
+
+div.cwsCompassContainer .cwsCompassModeCommunitySelectedHover,
+div.cwsCompassContainer .cwsCompassModeCommunityNotSelectedHover {
+  left: 0;
+  width: 62px;
+  background-image: url("images/community_f2.gif");
+}
+
+div.cwsCompassContainer .cwsCompassModeGlobalNotSelectedHover,
+div.cwsCompassContainer .cwsCompassModeGlobalSelectedHover {
+  left: 0;
+  width: 62px;
+  background-image: url("images/global_f2.gif");
+}
+
+div.cwsCompassContainer .cwsCompassTerm,
+div.cwsCompassContainer .cwsCompassTerm:link,
+div.cwsCompassContainer .cwsCompassTerm:visited
+div.cwsCompassContainer .cwsCompassTerm:hover {
+  font-size: 12px;
+}
+
+div.cwsCompassContainer .cwsCompassTermPrimary,
+div.cwsCompassContainer .cwsCompassTermPrimary:link,
+div.cwsCompassContainer .cwsCompassTermPrimary:visited
+div.cwsCompassContainer .cwsCompassTermPrimary:hover {
+  font-weight: bold;
+}
+
+div.cwsCompassContainer .cwsCompassSRElement {
+  background-image: none;
+  padding-left: 0;
+}
+
+div.cwsCompassContainer .cwsCompassSRTitle,
+div.cwsCompassContainer .cwsCompassSRTitle:hover {
+  color: #004a80;
+  font: normal 12px Arial, Helvetica, sans-serif;
+
+}
+
+div.cwsCompassContainer .cwsCompassSRTitle:hover {
+  background-image: url("images/results_selected_pix.gif");
+  background-repeat: repeat-x;
+  background-position: top;
+}
+
+div.cwsCompassContainer .cwsCompassAdHeader{
+  text-align: left;
+}
+
+div.cwsCompassContainer .cwsCompassNoResultsMessage {
+  font-size: 13px;
+}
+
+div.cwsCompassContainer .cwsCompassSRNoResultsMessage {
+  font-size: 13px;
+}

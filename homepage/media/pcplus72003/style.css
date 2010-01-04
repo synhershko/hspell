@@ -1,0 +1,158 @@
+.bigfeat-text {
+	font-family : Arial;
+    font-size : 12px;
+    text-decoration : none;
+	color: black;
+}
+.nowonline {
+    font-family : Arial;
+    font-size : 12px;
+    font-weight : bold;
+    color : #FF8000;
+	text-decoration : none;
+}
+.bigfeat-link {
+    font-family : Arial;
+    font-size : 12px;
+    text-decoration : none;
+    color : Gray;
+	font-weight : bold;
+}
+.bigfeat-link:hover {
+    font-family : Arial;
+    font-size : 12px;
+    text-decoration : none;
+    color : #FF8000;
+}
+.feat-e-bigt {
+    font-family : Arial;
+    font-size : 14px;
+    text-decoration : none;
+    font-weight : bold;
+    color : White;
+}
+.feat-d-bigt {
+    font-family : Arial;
+    font-size : 14px;
+    font-weight : bold;
+    color : White;
+}
+.feat-e-text {
+    font-family : Arial;
+    font-size : 12px;
+    text-decoration : none;
+    color : White;
+}
+.feat-d-text {
+    font-family : Arial;
+    font-size : 12px;
+    color : White;
+}
+.feat-d-box {
+    text-align: justify;
+    padding: 4px;
+    background-color : #646464;
+}
+.feat-e-box {
+    text-align: justify;
+    padding: 4px;
+    background-color : #f08a00;
+}
+.regtext {
+    font-family : Arial;
+    font-size : 12px;
+}
+.form {
+    font-family : Arial;
+    font-size : 12px;
+}
+.regtext-hl {
+    font-family : Arial;
+    font-size : 12px;
+    font-weight : bold;
+    color : #FF8000;
+}
+.falink {
+    font-family : Arial;
+    font-size : 12px;
+    color : Gray;
+    font-weight : bold;
+}
+.arlink {
+    font-family : Arial;
+    font-size : 12px;
+    font-weight : bold;
+    color : #525c78;
+}
+.arlink:hover {
+    font-family : Arial;
+    font-size : 12px;
+    font-weight : bold;
+    color : gray;
+}
+.reglink {
+    font-family : Arial;
+    font-size : 12px;
+    color : #FF8000;
+}
+.reglink:hover {
+    font-family : Arial;
+    font-size : 12px;
+    color : Gray;
+}
+.quote {
+    font-family : Arial;
+    font-size : 15px;
+    font-weight : bold;
+}
+.article-hl {
+    font-family : Arial;
+    font-size : 18px;
+}
+.article-tm {
+    font-family : Arial;
+    font-size : 16px;
+}
+.article-au {
+    font-family : Arial;
+    font-size : 16px;
+    color : Gray;
+}
+.article-text {
+    font-family : Arial;
+    font-size : 14px;
+}
+.hltext {
+    font-family : Arial;
+    font-size : 12px;
+    font-weight : bold;
+}
+.lighttext {
+    font-family : Arial;
+    font-size : 12px;
+    color : Gray;
+}
+.mador {
+    background-color: WhiteSmoke;
+    width: 100%;
+    border-top: 1px dashed Gray;
+    padding-right: 3px;
+}
+.rightbox {
+    border-left: 1px dashed Gray;
+    border-bottom: 1px dashed Gray;
+    border-top: 1px dashed Gray;
+    direction : rtl;
+    text-align : right;
+    vertical-align : top;
+    width : 180;
+}
+.leftbox {
+    border-right: 1px dashed Gray;
+    border-bottom: 1px dashed Gray;
+    border-top: 1px dashed Gray;
+    direction : rtl;
+    text-align : right;
+    vertical-align : top;
+    width : 150;
+}

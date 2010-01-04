@@ -1,0 +1,205 @@
+BODY {
+        color: #000;
+        /*background: #f1ddc5 url("megila-bg.jpg");*/
+        background: #000040;
+        /*background: #d0d0f0;*/
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-right: 0;
+	/* needed on Opera. weird! */
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+	font-family: sans-serif;
+}
+P {
+        /*text-indent: 1em;*/
+        /*text-align: justify;*/
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        /*line-height: 1.05;*/ /* a little (but only a little) more space */
+}
+.noindent {
+	text-indent: 0;
+}
+.slide {
+    /* background: #bde; */
+	background: #ffe;
+        border: 1px solid black;
+	padding-top: 0;
+	padding-left: 0.7em;
+	padding-right: 0.7em;
+	padding-bottom: 0.7em;
+        margin-left: 1.5em;
+        margin-right: 1.5em;
+        /*margin-bottom: 1.5em;*/
+        margin-bottom: 0.5em;
+        /*margin-top: 1.5em;*/
+        margin-top: 1.0em;
+	width: 730px;
+	/*width: 900px;*/
+	/* TODO: height is useful only on my laptop, not on the web! */
+	height: 480px;
+}
+.menu {
+	background: #ddc;
+        border: 1px solid black;
+        padding: 0 0 0;
+	/*
+        margin-left: 2em;
+        margin-right: 2em;
+        margin-top: 2em;
+        margin-bottom: 0.2em;
+	*/
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	font-size: 130%;
+	font-family: sans-serif;
+	font-weight: bold;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+
+/* NOTE: every "a" here should really be a[href], i.e., only a tags with
+   a href parameter - but it appears that IE does not support this
+   feature... So I'll just use plain a, for the poor saps using IE...
+*/
+a {
+	/* TODO: what do color-blind do? do they force text-decoration on
+	   in their user style? */
+	text-decoration: none;
+	font-weight: bold;
+}
+a:link { color: #00a; }
+a:visited { color: #00a; }
+a:active { color: #00a; }
+a:hover { color: #00f; text-decoration: underline;}
+
+.menu a {
+	border-right: solid black 1px;
+        padding-left: 1em;
+	padding-right: 1em;
+	text-decoration: none;
+}
+.menu a.this:link { color: #a00; sensitive: none; }
+.menu a.this:visited { color: #a00; }
+.menu a.this:active { color: #a00; }
+.menu a.this:hover { color: #a000; text-decoration: none; }
+
+.menu a:link { color: #00a; }
+.menu a:visited { color: #00a; }
+.menu a:active { color: #00a; }
+.menu a:hover { color: #00f; text-decoration: underline; }
+div.title {
+	background: #eed;
+        border: 1px solid black;
+        padding: 0 0 0;
+        margin-left: 2em;
+        margin-right: 2em;
+        margin-top: 2em;
+        /*margin-bottom: 2px;*/
+}
+/*div.title + div.main { border-top: none; }*/
+/*.title H2 {
+	font-size: 130%;
+	font-family: sans-serif;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 1px;
+	margin-bottom: 1px;
+}*/
+/* TODO: originally I had here (and in other places) .main > H2, but it
+   appears that in IE 6 that doesn't work (it does work in Mozilla, Konqueror
+   and Opera). So I removed the ">", for the poor saps who use IE...
+*/
+.slide H2 {
+	font-size: 120%;
+	font-family: sans-serif;
+	font-weight: bold;
+	text-align: center;
+
+	background: #eed;
+        border: 1px solid black;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 0px;
+	padding-right: 0px;
+        margin-left: 1em;
+        margin-right: 1em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+	/* alternative look */
+	/*border-left: 1px dotted black;
+	border-right: 1px dotted black;*/
+	border-left: none;
+	border-right: none;
+        margin-left: 0em;
+        margin-right: 0em;
+}
+.slide H1 {
+	font-size: 165%;
+	font-family: sans-serif;
+	font-weight: bold;
+	text-align: center;
+
+	background: #dee;
+        border: 1px solid black;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 0px;
+	padding-right: 0px;
+        margin-left: 1em;
+        margin-right: 1em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+	/* alternative look */
+	/*border-left: 1px dotted black;
+	border-right: 1px dotted black;*/
+	border-left: none;
+	border-right: none;
+        margin-left: 0em;
+        margin-right: 0em;
+}
+.slide H1 .small {
+	font-size: 60%;
+}
+.slide H3 {
+	font-size: 110%;
+	font-family: sans-serif;
+	font-weight: bold;
+	text-align: left;
+
+	background: #eed;
+        border: 1px solid black;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 0px;
+	padding-right: 0px;
+        margin-left: 1em;
+        margin-right: 1em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+	/* alternative look */
+	/*border-left: 1px dotted black;
+	border-right: 1px dotted black;*/
+	border-left: none;
+	border-right: none;
+        margin-left: 0em;
+        margin-right: 0em;
+}
+.slide H3 .small {
+	font-size: 70%;
+}
+.slide P + H2 { margin-top: 1em; }
+.slide P + H3 { margin-top: 1em; }
+.slide UL + H2 { margin-top: 1em; }
+/*.main > H1 + H3 { margin-top: 0; }*/
+.slide H3 + P { text-indent: 0; }
+.slide H1 + P { text-indent: 0; }
+.slide H2 + P { text-indent: 0; }
+
+.spaced LI + LI { margin-top: 0.3em; }

@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML DIR=LTR lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i">
+<TITLE>The Ivrix Project - Spell Checker - Older News</TITLE>
+<LINK rel="stylesheet" href="hspell.css" type="text/css" title="funky">
+</HEAD>
+<BODY>
+<DIV class="menu">
+<!--<A HREF="http://www.ivrix.org.il/">Ivrix</A>-->
+<a href="http://sourceforge.net/projects/hspell"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=255293&type=8" width="80" height="15" border="0" alt="Get hspell at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
+<A HREF="/">Hspell</A>
+<A HREF="about.html">FAQ</A>
+<A HREF="docs.html">Documents</A>
+<A HREF="download.html">Download</A>
+</DIV>
+
+<DIV class="main">
+<H1>
+The Hspell Project
+<BR>
+<SPAN CLASS=small>Older News</SPAN><BR>
+</H1>
+
+<H3>December 12, 2004<BR>
+<SPAN class="small">Hspell enables Hebrew spell-checking in multi-lingual spell-checkers</SPAN>
+</H3>
+<P>
+For several months now, the multi-lingual spell-checker
+<A HREF="http://aspell.sourceforge.net/">Aspell</A> includes a
+<A HREF="ftp://ftp.gnu.org/gnu/aspell/dict/he/">Hebrew dictionary</A>,
+created automatically from Hspell's data. Recently, we also converted
+Hspell's word list and valid prefix information to the similar
+<A HREF="http://lingucomponent.openoffice.org/">MySpell</A> format, used
+by the multi-lingual spell-checkers of
+<A HREF="http://www.mozilla.org">Mozilla</A> and
+<A HREF="http://www.openoffice.org">OpenOffice</A>.
+</P>
+<P>
+OpenOffice's dictionary page now lists our <A
+	  HREF="http://lingucomponent.openoffice.org/spell_dic.html">Hebrew
+	  dictionary</A>, and it can also be automatically installed by the
+<A HREF="http://ftp.services.openoffice.org/pub/OpenOffice.org/contrib/dictionaries/dicooo/DicOOo.sxw">DicOOo</A> dictionary-installation macro. This allows, for the first time,
+Hebrew spell-checking on ordinary versions of OpenOffice, on all
+platforms (not limited to Linux).
+</P>
+<P>
+To install the Hspell-based Hebrew spell-checker on Mozilla, check out
+<A HREF="http://dictionaries.mozdev.org/installation.html">Mozilla's instructions</A>.
+</P>
+<P>
+We started the effort to bring Hspell-based Hebrew spell-checking to
+common multi-lingual spell-checkers in April. The success of this
+effort validates
+our architectural decision of having Hspell <I>generate</I> full word lists,
+of the kind that most multi-lingual spell-checkers accept without needing
+any Hebrew-specific code to be added to them.
+</P>
+
+<H3>July 4, 2004<BR>
+<SPAN class="small">Hspell enables Hebrew spell-checking in OpenOffice</SPAN>
+</H3>
+<P>
+Alan Yaniger of TkOS recently
+<A HREF="http://www.openoffice.org.il/">released</A> an add-on package
+for the ordinary (English) version of OpenOffice, based on Hspell.
+This package allows OpenOffice to spell-check Hebrew in addition to English (you don't need to choose,
+each word in a mixed document is checked using the dictionary of the
+appropriate language). Alan's package uses, however, antiquated dictionaries
+from Hspell 0.6, which are included, uncompressed (!), in the package.
+</P>
+<P>
+We created an easier to install
+<A HREF="http://ivrix.org.il/redhat/fc1/ooo-hspell-0.8-1.i386.rpm">RPM version</A>
+of this package. This RPM is designed for Fedora Core 1, and assumes that
+the OpenOffice RPM is already installed on your system. It includes the
+most recent (release 0.8) dictionaries.
+</P>
+
+<H3>June 28, 2004<BR>
+<SPAN class="small">Hspell bug tracker announced</SPAN>
+</H3>
+<P>
+The Hspell project now has a Bugzilla
+<A HREF="/bugzilla/">bug tracking system</A>. Users can use this system to
+let the developers know of new bugs and missing features, and to track the
+progress in solving old ones.
+</P>
+
+<H3>June 21, 2004<BR>
+<SPAN class="small">Hspell 0.8 released</SPAN>
+</H3>
+<P>
+<A HREF="download.html">Hspell 0.8</A> was released. This release continues
+to enlarge Hspell's vocabulary, and to improve portability and performance.
+It can also be used to build a Hebrew dictionary for the upcoming version 
+of Aspell.
+The <A HREF="WHATSNEW">What's New</A> file explains these changes in more
+detail.
+</P>
+
+
+<H3>April 12, 2004<BR>
+<SPAN class="small">Hspell gaining acceptance, Aspell uses Hspell word list</SPAN>
+</H3>
+<P>
+After seven public releases and almost a year and a half since the first
+one, Hspell has been gaining acceptance as <I>the</I> free-software
+Hebrew spell-checker. As you can see in the
+<A HREF="download.html">download page</A>, pre-built binary packages of
+Hspell are available for several Linux distributions, FreeBSD and Mac OS X.
+Several software packages make use of Hspell, including the
+<A HREF="http://openoffice.org.il">Hebrew version of OpenOffice</A> which
+includes Hspell inside. The <A HREF="docs.html">screenshots</A> section is
+continuing to grow, showing Hspell integration inside a large number of
+editors, word processors, and desktop systems.
+</P>
+<P>Also, In the last few days,
+the Hspell and Aspell authors have completed their effort to fully integrate
+Hspell's word list (and information on allowed prefixes for each word)
+into <A HREF="http://aspell.net">Aspell</A>, which is striving to become a multi-lingual spell checker.
+The <A HREF="ftp://alpha.gnu.org/gnu/aspell/dict/he">success of this effort</A> will hopefully further improve the penetration
+of Hspell and Hebrew spell-checking in desktop systems and free OS distributions.
+</P>
+
+<H3>December 22, 2003<BR>
+<SPAN class="small">Hspell 0.7 released</SPAN>
+</H3>
+<P>
+<A HREF="download.html">Hspell 0.7</A> was released. This release continues
+to enlarge Hspell's vocabulary, and for the first time has a complete
+morphological analyzer.
+See the <A HREF="WHATSNEW">What's New</A> file for more details.
+</P>
+
+<H3>October 26, 2003<BR>
+<SPAN class="small">Macintosh port announced</SPAN>
+</H3>
+<P>
+<A HREF="http://www.mitzpettel.com">Mitz Pettel</A> just <A HREF="http://forums.ort.org.il/scripts/showsm.asp?which_forum=307&mess=1859932">announced</A> a Mac OS X port of Hspell. Go <A HREF="download.html">get it</A>.
+</P>
+
+<H3>August 8, 2003<BR>
+<SPAN class="small">Hspell HOWTO</SPAN>
+</H3>
+<P>
+Mooffie and Meni Livne wrote a new <A HREF="Hspell-HOWTO.html">HOWTO</A>
+explaining how to use Hspell 0.6 to do Hebrew spell-checking in LyX, KDE,
+Emacs and Geresh. Vim instructions will follow shortly.
+</P>
+
+<H3>August 5, 2003<BR>
+<SPAN class="small">Hspell 0.6 released</SPAN>
+</H3>
+<P>
+<A HREF="download.html">Hspell 0.6</A> was released, featuring a completely
+rewritten front-end, with a huge performance improvement and smarter handling
+of prefixes. The <A HREF="WHATSNEW">What's New</A> file explains these changes
+in more detail.
+</P>
+
+<H3>July 24, 2003<BR>
+<SPAN class="small">Coverage in PCplus</SPAN>
+</H3>
+<P>
+While waiting patiently for release 0.6 to be released soon (it will be
+worth the wait!), you might want to read the article from
+the latest issue of PCplus, about
+<A HREF="http://pcplus.co.il/article.php?id=119">free software and Hebrew</A>
+that is partly about Hspell. The article is in Hebrew.
+</P>
+
+
+<H3>May 14, 2003<BR>
+<SPAN class="small">Screenshots added to the site</SPAN>
+</H3>
+<P>
+A new "Examples and screenshots" section was added to the
+<A HREF="docs.html">Documents page</A>. The first screenshot there is
+Meni Livne's beautiful demonstration of spellchecking Hebrew in the
+upcoming KDE's mail application, KMail.
+</P>
+
+<H3>May 8, 2003<BR>
+<SPAN class="small">Hspell 0.5 released</SPAN>
+</H3>
+<P>
+At close proximity to happy events like Israel's independence day and
+VE day, we released <A HREF="download.html">version 0.5</A> of Hspell,
+with an enlarged vocabulary and other improvements (see the
+<A HREF="WHATSNEW">What's New</A>).
+</P>
+<H3>April 2, 2003<BR>
+<SPAN class="small">Upcoming Hspell presentations</SPAN>
+</H3>
+<A HREF="http://www.perl.org.il/YAPC/2003/"><IMG SRC="doc/pii-round-tiny2.gif" WIDTH=90 HEIGHT=90 ALIGN=LEFT BORDER=0></A>
+<P>
+A new <A HREF="doc/short.ps.gz">article</A> about Hspell was written for the
+<A HREF="http://www.perl.org.il/YAPC/2003/">"Yet Another Perl Conference"</A>
+(May 11, Haifa, Israel) that Nadav will present in. The article presents Hspell's
+approach, explains one part (noun inflection) in a little more details, and
+also tries to convince its readers that Perl Is Good :)
+</P>
+<P>
+Nadav will also give a presentation on Hspell in the <A HREF="http://www.pc.co.il/go-linux">Go-Linux</A> conference (April 10, Tel-Aviv, Israel).
+</P>
+<DIV style="clear: both;"></DIV>
+<H3>March 22, 2003<BR>
+<SPAN class="small">Previous announcements put on site</SPAN>
+</H3>
+<P>
+For those who missed our humoristic release announcements on ivrix-discuss
+and linux-il, or those that didn't understand them on first reading, the
+announcements are now available <A HREF="announcements">here</A>.
+</P>
+<H3>March 10, 2003<BR>
+<SPAN class="small">Hspell 0.4 released</SPAN>
+</H3>
+<P>
+This new release of Hspell contains our biggest dictionary ever (a quarter
+of a million inflections!), and adds a few <A HREF="WHATSNEW">useful
+features</A>, like easier Hebrew-English spell-checking for LyX.
+<P>
+Why are you just sitting there? Go <A HREF="download.html">download it</A>!
+</P>
+<H3>March 4, 2003<BR>
+<SPAN class="small">New Hspell website announced</SPAN>
+</H3>
+<P>
+No more hard-to-navigate, plain-old-white, site. Welcome to the new site
+that pretends to to be <I>cool</I>, as well as useful, and still be accessible
+to any conceivable browser.
+</P>
+<P>
+We welcome constructive remarks and criticism on the new site. If you have
+non-constructive complaints, please send them to Dave Null.
+</P>
+</DIV>
+</BODY>
+</HTML>

@@ -1,0 +1,418 @@
+
+/*Compass*/
+.cwsCompassContainer {
+  background-color:#a2a9ae;
+  border:0px;
+  padding-bottom:1px;
+}
+
+div.cwsCompassContent {
+  background-color:white;
+  margin:1px 1px 0 1px;
+  padding:0px;
+  border-top:1px solid #a2a9ae; 
+}
+
+div.cwsCompassFooter {
+  background-image:none;
+  background-color:white;
+  height:16px;
+  padding:2px;
+  margin:0px 1px 0px 1px;
+}
+
+div.cwsCompassFooterHelp {
+  float:left;
+  text-align:left;
+  width: 80px;
+  margin-top:1px;
+}
+
+div.cwsCompassFooterHelp a,
+div.cwsCompassFooterHelp a:link,
+div.cwsCompassFooterHelp a:visited, 
+div.cwsCompassFooterHelp a:hover {  
+  background-image:url('images/help_button.gif');
+  background-repeat:no-repeat;
+  font-size:10px;
+}
+
+div.cwsCompassFooterCollarityLink {
+  float:right;
+}
+
+div.cwsCompassHeaderSeparator {
+  display:none;
+}
+
+div.cwsCompassContainer .cwsCompassHeader {
+  left: 269px;
+/*
+  Should actually be 28px but bigger value helps with an IE bug in the tabs
+  width:28px;
+*/
+  width:34px;
+  top: 0;
+  direction: ltr;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab0 {
+  height: 115px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab1 {
+  height: 115px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab2 {
+  height: 115px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab3 {
+  height: 115px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab4 {
+  height: 71px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab5 {
+  height: 88px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab6 {
+  height: 113px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab9 {
+  height: 72px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer #cwsCompassHeaderTab10 {
+  height: 115px;
+  width: 29px;
+  margin-bottom:4px;
+}
+
+div.cwsCompassContainer .cwsCompassHeaderTab {
+  margin-left: 0;
+  margin-right: 0;
+  position:relative;
+}
+
+div.cwsCompassContainer .cwsCompassHeaderTabSelected {
+  margin-left: 0;
+  margin-right: 0;
+  position:relative;
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab,
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected {
+  background-repeat: no-repeat;
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab0 {
+  background-image: url("images/off_2.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab0 {
+  background-image: url("images/on_2.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab1 {
+  background-image: url("images/off_1.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab1 {
+  background-image: url("images/on_1.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab2 {
+  background-image: url("images/off_3.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab2 {
+  background-image: url("images/on_3.gif");
+}
+
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab3 {
+  background-image: url("images/off_4.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab3 {
+  background-image: url("images/on_4.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab4 {
+  background-image: url("images/off_5.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab4 {
+  background-image: url("images/on_5.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab5 {
+  background-image: url("images/off_6.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab5 {
+  background-image: url("images/on_6.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab6 {
+  background-image: url("images/off_7.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab6 {
+  background-image: url("images/on_7.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab9 {
+  background-image: url("images/mynet-1-off.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab9 {
+  background-image: url("images/mynet-1-on.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTab .cwsCompassHeaderTab10 {
+  background-image: url("images/mynet-2-off.gif");
+}
+
+div.cwsCompassContainer div.cwsCompassHeaderTabSelected .cwsCompassHeaderTab10 {
+  background-image: url("images/mynet-2-on.gif");
+}
+
+div.cwsCompassAssociations {
+  margin: 3px 5px;
+}
+td.cwsCompassHeaderTDRL {
+  font-size:10px;
+  color:#a6a6a6;
+  margin-right: 4px;
+  background-image: url("images/sr_container_header.gif");
+  background-repeat:no-repeat;
+  background-position: -65px 0px;
+}
+
+div.cwsCompassSRContainer {
+
+}
+
+div.cwsCompassSRHeader {
+  font-size:10px;
+  color:#a6a6a6;
+  margin-right: 4px;
+  background-image: url("images/sr_container_header.gif");
+  background-repeat:no-repeat;
+}
+
+div.cwsCompassSRFooter {
+  text-align:left;
+  margin-left:4px;
+  vertical-align:top;
+  height:12px;
+}
+div.cwsCompassSRFooter a:link,
+div.cwsCompassSRFooter a:visited,
+div.cwsCompassSRFooter a:hover,
+div.cwsCompassSRFooter a {
+  font-size:10px;
+  color:#004A80;
+}
+
+div.cwsCompassSRFooter a:hover {
+  text-decoration:underline;
+}
+div.cwsCompassSRElement {
+  margin-right:5px;
+}
+div.cwsCompassAdvertisement {
+  background-color: #f5f7fa;
+  display:block;
+  border:1px solid white;
+}
+div.cwsCompassContainer div.cwsCompassAdHeader {
+  font-size:10px;
+  line-height:11px;
+  color:#a6a6a6;
+  margin-right: 4px;
+  background-position: -10px 0px;
+  background-image: url("images/sr_container_header.gif");
+  background-repeat:no-repeat;
+  text-align: right
+}
+
+div.cwsCompassContainer a.cwsCompassAdTitle, div.cwsCompassContainer a.cwsCompassAdTitle:hover {
+  color:#274f91;
+  font-weight:bold;
+}
+
+
+div.cwsCompassContainer a.cwsCompassSRTitle,
+div.cwsCompassContainer a.cwsCompassSRTitle:link,
+div.cwsCompassContainer a.cwsCompassSRTitle:visited,
+div.cwsCompassContainer a.cwsCompassSRTitle:hover {
+  font: 12px Arial, sans-serif;
+}
+div.cwsCompassContainer a.cwsCompassSRTitle,
+div.cwsCompassContainer a.cwsCompassSRTitle:visited,
+div.cwsCompassContainer a.cwsCompassSRTitle:link {
+  text-decoration:none;
+}
+div.cwsCompassContainer a.cwsCompassSRTitle:hover {
+  text-decoration:underline;
+}
+
+.cwsCompassModeIndicator {
+  display:none;
+  background-color:#acacac;
+}
+
+/*Ads*/
+div.cwsAdHeader {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-style: normal;
+  color: #9f9f9f;
+  margin-top: 3px;
+}
+
+div.cwsAdResult {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-left: 1px;
+  padding-bottom: 3px;
+  border-bottom: 1px black dotted;
+  width:110px;
+}
+
+div.cwsAdResult a.cwsAdTitle, div.cwsAdResult a.cwsAdTitle:hover{
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  text-decoration: underline;
+  color: #156598;
+}
+
+div.cwsAdResult a.cwsAdSnippet, div.cwsAdResult a.cwsAdSnippet:hover {
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  text-decoration: none;
+  color: #000000;
+}
+
+div.cwsAdResult a.cwsAdUrl {
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  text-decoration: none;
+  color: #156598;
+}
+
+/*Widget Ads*/
+div.cwsWidgetAdHeader {
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-style: normal;
+  background-image: url('images/widget-ad-separator.gif');
+  background-repeat:no-repeat;
+  color: #9f9f9f;
+}
+
+div.cwsWidgetAdResult {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-left: 1px;
+  padding-bottom: 3px;
+  width:110px;
+}
+
+a.cwsWidgetAdTitle, a.cwsWidgetAdTitle:hover{
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  text-decoration: underline;
+  font-weight: bold;
+}
+a.cwsWidgetAdTitle {
+  color: #156598;
+}
+
+a.cwsWidgetAdSnippet, a.cwsWidgetAdSnippet:hover {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  text-decoration: none;
+}
+a.cwsWidgetAdSnippet {
+	color: #000000;
+}
+
+a.cwsWidgetAdUrl {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  text-decoration: none;
+  color: #156598;
+}
+
+div.cwsCompassContainer .cwsCompassPosContainer {
+	background-image: none;
+}
+
+div.cwsCompassContainer .cwsCompassModeCommunitySelected {
+  background-image: url("images/community_s.gif");
+  top:3px;
+}
+
+div.cwsCompassContainer .cwsCompassModeCommunityNotSelected {
+  background-image: url("images/community_e.gif");
+  top:3px;
+}
+
+div.cwsCompassContainer .cwsCompassModeGlobalSelected {
+  background-image: url("images/global_s.gif");
+  top:22px;
+}
+
+div.cwsCompassContainer .cwsCompassModeGlobalNotSelected {
+  background-image: url( "images/global_e.gif" );
+  top:22px;
+}
+
+div.cwsCompassContainer .cwsCompassModeCommunitySelectedHover,
+div.cwsCompassContainer .cwsCompassModeCommunityNotSelectedHover {
+  top:3px;
+  left: 0;
+  width: 65px;
+  height:19px;
+  background-image: url("images/community_f2.gif");
+}
+
+div.cwsCompassContainer .cwsCompassModeGlobalNotSelectedHover,
+div.cwsCompassContainer .cwsCompassModeGlobalSelectedHover {
+  top:22px;
+  left: 0;
+  width: 65px;
+  height:19px;
+  background-image: url("images/global_f2.gif");
+}

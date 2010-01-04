@@ -1,0 +1,454 @@
+.dijitPopup {
+  position: absolute;
+  /*width: 270px;*/
+}
+
+#cwsTooltipWrapper {
+  position: absolute;
+	z-index: 1000001;
+	display: block;
+	/* make visible but off screen */
+	left: 50%;
+	top: -10000px;
+	overflow: visible;
+}
+
+.cwsTooltip {
+  position: relative;
+  top: 10px;
+  left: 10px;
+}
+
+.cwsTooltipContainer {
+  background: transparent;
+}
+
+.cwsCompassSRTooltip {
+  border-style: ridge;
+  border-color: #d5d5d5;
+  border-width: 1px 2px 2px 1px;
+  background: #f5f5f5;
+	color: black;
+  font: normal 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  width: 221px;
+  padding: 6px;
+  overflow: hidden;
+}
+
+.cwsCompassContainer {
+  border-color: #a5a5a5;
+  border-bottom-style: ridge;
+  border-left-style: solid;
+  border-right-style: ridge;
+  border-top-style: solid;
+  border-width: 1px 2px 2px 1px;
+  width: 270px;
+  height: auto;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  background: white;
+  z-index: 1000000;
+  margin: 0;
+  padding: 0;
+}
+
+.cwsFloatingContainer {
+	position:absolute;
+	z-index:900;
+	cursor:default;
+}
+
+.cwsFloatingContainerDrag {
+	z-index:901;
+}
+
+.cwsCompassContainer_ltr {
+  text-align: left;
+}
+
+.cwsCompassContainer_rtl {
+  text-align: right;
+}
+
+.cwsCompassContainer table, .cwsCompassContainer tr, .cwsCompassContainer td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.cwsCompassTerm, .cwsCompassTerm:link, .cwsCompassTerm:visited {
+  text-decoration: none;
+  color: black;
+  font: normal 11px/19px Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+a.cwsCompassTerm:hover {
+  text-decoration: underline;
+  color: #004a80;
+}
+
+a.cwsCompassTermPrimary, a.cwsCompassTermPrimary:link, a.cwsCompassTermPrimary:visited {
+  font-weight: bold;
+}
+
+.cwsCompassTermSep {
+  font: normal 11px/19px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: #acacac;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.cwsCompassSearchResults {
+  clear: both;
+}
+
+.cwsCompassSRElement {
+  margin: 4px 3px 7px 3px;
+  /*padding-left: 10px;*/
+  background-position: left;
+  background-repeat: no-repeat;
+}
+
+.cwsCompassContainer a.cwsCompassSRTitle {
+  text-decoration: underline;
+  color: #004a80;
+  font: normal 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  display: block;
+  width: 100%;
+}
+
+.cwsCompassContainer a.cwsCompassSRTitle:hover {
+  background-image: url("images/results_selected_pix.gif");
+  background-repeat: repeat-x;
+  background-position: top;
+}
+
+.cwsCompassAdvertisement {
+  background-color: #fbfbfb;
+  clear: both;
+}
+
+.cwsCompassAdHeader{
+  text-align: right;
+  color: #b4b4b4;
+  font: normal 9px/9px  Arial,Helvetica,sans-serif;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.cwsCompassAdResult {
+  padding: 0 4px 8px 4px;
+  margin: 3px;
+  font: normal 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.cwsCompassAdBannerResult {
+  padding: 3px;
+}
+
+a.cwsCompassAdTitle, a.cwsCompassAdTitle:hover, a.cwsCompassAdTitle:visited, a.cwsCompassAdTitle:link, a.cwsCompassAdTitle:active {
+  font: normal 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: #004a80;
+  text-decoration: underline;
+}
+
+a.cwsCompassAdSnippet, a.cwsCompassAdSnippet:hover, a.cwsCompassAdSnippet:visited, a.cwsCompassAdSnippet:link, a.cwsCompassAdSnippet:active {
+  font: normal 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: black;
+  text-decoration: none;
+}
+
+a.cwsCompassAdUrl, a.cwsCompassAdUrl:hover, a.cwsCompassAdUrl:visited, a.cwsCompassAdUrl:link, a.cwsCompassAdUrl:active {
+  font: normal 10px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: #004a80;
+  text-decoration: none;
+}
+
+.cwsCompassSRTooltipTitle {
+  color: #004a80;
+  text-decoration: underline;
+  padding-bottom: 6px;
+  overflow: hidden;
+}
+
+.cwsCompassSRTooltipSnippet {
+  overflow: hidden;
+}
+
+.cwsCompassHeaderTab {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: normal;
+  color: #7f7e7e;
+  margin-left: 4px;
+  margin-right: 4px;
+  float: left;
+  cursor: pointer;
+}
+
+.cwsCompassHeaderTabSelected {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  color: #004a80;
+  margin-left: 4px;
+  margin-right: 4px;
+  float: left;
+  cursor: pointer;
+}
+
+.cwsCompassHeaderSeparator {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: normal;
+  color: #7e7e7e;
+  float: left;
+}
+
+.cwsCompassHeaderTextBoxArea {
+  clear: both;
+}
+
+.cwsCompassHeader {
+  position: absolute;
+  top: -38px;
+}
+
+.cwsCompassContent {
+
+}
+
+.cwsCompassAssociations {
+  margin: 3px 7px 3px 7px;
+}
+
+.cwsCompassModeIndicator {
+  height: 2px;
+  line-height: 2px;
+  font-size: 2px;
+}
+
+.cwsCompassModeIndicatorPersonal {
+  background-color: #f3b565;
+}
+
+.cwsCompassModeIndicatorCommunity {
+  background-color: #a5cf8c;
+}
+
+.cwsCompassModeIndicatorGlobal {
+  background-color: #99b4cc;
+}
+
+.cwsCompassMode {
+  height: 16px;
+  width: 29px;
+  font-size: 16px; /* IE6 Hack */
+  margin-bottom: 2px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.cwsCompassModePersonalSelected, .cwsCompassModePersonalNotSelected,
+.cwsCompassModeCommunitySelected, .cwsCompassModeCommunityNotSelected,
+.cwsCompassModeGlobalSelected, .cwsCompassModeGlobalNotSelected {
+  position: absolute;
+  width: 29px;
+}
+
+.cwsCompassModePersonalSelected, .cwsCompassModePersonalNotSelected {
+  top: 2px;
+}
+
+.cwsCompassModePersonalNotSelected {
+  background-image: url( "images/personal_e.gif" );
+}
+
+.cwsCompassModePersonalSelected {
+  background-image: url( "images/personal_s.gif" );
+}
+
+.cwsCompassModePersonalSelectedHover, .cwsCompassModePersonalNotSelectedHover {
+  position: absolute;
+  left: -47px;
+  width: 76px;
+  top: 2px;
+  background-image: url("images/personal_f2.gif");
+}
+
+.cwsCompassModeCommunitySelected, .cwsCompassModeCommunityNotSelected {
+  top: 19px;
+}
+
+.cwsCompassModeCommunitySelectedHover, .cwsCompassModeCommunityNotSelectedHover {
+  position: absolute;
+  top: 19px;
+  left: -57px;
+  width: 86px;
+  background-image: url( "images/community_f2.gif" );
+}
+
+.cwsCompassModeCommunitySelected {
+  background-image: url( "images/community_s.gif" );
+}
+
+.cwsCompassModeCommunityNotSelected {
+  background-image: url( "images/community_e.gif" );
+}
+
+.cwsCompassModeGlobalSelected, .cwsCompassModeGlobalNotSelected {
+  top: 36px;
+}
+
+.cwsCompassModeGlobalSelected {
+  background-image: url( "images/global_s.gif" );
+}
+
+.cwsCompassModeGlobalNotSelected {
+  background-image: url( "images/global_e.gif" );
+}
+
+.cwsCompassModeGlobalNotSelectedHover, .cwsCompassModeGlobalSelectedHover {
+  position: absolute;
+  top: 36px;
+  left: -36px;
+  width: 65px;
+  background-image: url( "images/global_f2.gif" );
+}
+
+.cwsCompassPosContainer{
+  padding-right: 3px;
+  height: 60px;
+  padding-top: 2px;
+  padding-left: 2px;
+  /* TODO:
+  Required persona/community/global images with transparent background */
+  background-image: url("images/modes_bg.gif");
+  background-repeat: no-repeat;
+  background-position: 0;
+}
+
+.cwsCompassModeContainer {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.cwsCompassFooter {
+  background-image: url("images/bottom_compass_pix.gif");
+  height: 16px;
+}
+
+.cwsCompassFooterCollarityLink a {
+  margin-left: 4px;
+  background: url("images/powered.gif") no-repeat 3px 3px;
+  width: 110px;
+  height: 16px;
+  display: block;
+}
+
+.cwsCompassFooterCollarityLink a:hover {
+  background-image: url("images/powered_f2.gif");
+}
+
+.cwsCompassAssociationsSearchSeparator {
+  font-size: 3px;
+  line-height: 3px;
+  height: 3px;
+  width: 100%;
+  background-image: url( "images/separator.gif" );
+  background-repeat: repeat-x;
+  clear: both;
+}
+
+.cwsCompassNoResultsMessage, .cwsCompassNotRegistered, .cwsCompassSRNoResultsMessage {
+  font: normal 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: #000000;
+}
+
+.cwsCompassNotRegistered div {
+  margin-bottom: 3px;
+}
+
+.cwsCompassNotRegistered a {
+  color: #004a80;
+  font: normal 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  text-decoration: underline;
+}
+
+.cwsCompassSRNoResultsMessage {
+  margin: 7px 3px 7px 3px;
+}
+
+.cwsCompassTDLR{
+  text-align: left;
+}
+
+.cwsCompassTDRL{
+  text-align: right;
+  direction:rtl;
+}
+
+.cwsCompassFooterBranding {
+  float: right;
+  display: inline;
+}
+
+img.cwsCompassSRVideoPreview {
+  border-width: 0;
+  width: 73px;
+  height: 54px;
+  top: 1px;
+  margin-bottom: 3px;
+  text-decoration: none;
+}
+
+.cwsCompassSRVideoPreview:hover {
+  top: 0;
+}
+
+.cwsTagCloudTooltipLink {
+  float: right;
+  font: normal 9px Arial;
+  text-decoration: underline;
+  margin-right: 9px;
+}
+
+.cwsTagCloudTooltipContainer {
+  font: normal 11px Arial;
+  text-decoration: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d3d3d3;
+  background-color: #d7e5ed;
+  width: 136px;
+}
+
+.cwsTagCloudTooltipLinkText {
+  float: left;
+  margin-left: 5px;
+}
+
+.cwsCollarityLogo {
+  width: 16px;
+  height: 9px;
+  background-image: url("images/collarity_icon.gif");
+  background-repeat: no-repeat;
+  float: left;
+  margin-left: 3px;
+  margin-top: 3px;
+}
+
+.cwsPoweredByCollarity {
+  width: 103px;
+  height: 10px;
+  background-image: url("images/poweredby.gif");
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.cwsRelatedArticlesHeader .cwsCollarityLogo {
+  float: right;
+  margin-right: 17px;
+}

@@ -1,0 +1,458 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>How to use Hspell with...</title>
+<style type="text/css">
+/* configuration-file snippets for the user to copy */
+.conf-file {
+    border: 1px solid black;
+}
+
+/* Links to software ("advertisements") should not stick out of
+   the page, so we print them with no underline and in mild color. */
+a.ad {
+    color: #cc0000;
+    text-decoration: none;
+}
+
+/* Table of Contents */
+.toc-header {
+    font-weight: bold;
+    margin-top: 0;
+}
+.toc {
+    border: 1px solid black;
+    padding: 1em;
+}
+
+.filename {
+    font-family: monospace;
+}
+.email-spam {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+<h1>How to use Hspell with...</h1>
+
+<p>On this page you can find instructions on how to configure various
+editors to use Hspell. This page gets updated regularly, so check it
+out often.</p>
+
+<p><em>
+Revision History:<br />
+16-Jul-2004 Added OpenOffice, Mac, AbiWord, Mozilla instructions; Updated Emacs section.
+</em>
+</p>
+
+<div class="toc">
+<p class="toc-header">Contents</p>
+<a href="#lyx">1. LyX</a><br />
+<a href="#kde">2. KDE</a><br />
+&nbsp; &nbsp; &nbsp;<a href="#kde-old">2.1 Issues with older KDE versions</a><br />
+&nbsp; &nbsp; &nbsp;<a href="#kde-multi">2.2 Spell-checking Hebrew and English simultaneously in KDE</a><br />
+<a href="#ooo">3. OpenOffice</a><br />
+<a href="#mac">4. Mac OS X</a><br />
+<a href="#abiword">5. AbiWord</a><br />
+<a href="#moz">6. Mozilla</a><br />
+<a href="#vim">7. Vim</a><br />
+<a href="#emacs">8. GNU Emacs</a><br />
+<a href="#geresh">9. Geresh</a><br />
+<a href="#problems">10. Known problems</a><br />
+<a href="#not-supported">11. Not supported (yet)</a><br />
+</div>
+
+<h2><a name="lyx">1. LyX</a></h2>
+
+<p>If you're using a recent version of <a href="http://www.lyx.org"
+class="ad">LyX</a> which was compiled with the Qt frontend, just choose
+"hspell" in the speller configuration dialog.</p>
+
+<p>If you're using an older version, or if you wish to simultaneously
+spell-check Hebrew and English, add the following to <span
+class="filename">~/.lyx/preferences</span> (or to <span
+class="filename">~/.lyx/lyxrc</span>):</p>
+
+<pre class="conf-file">
+\spell_command hspell
+## If you wish to spell-check English words as well,
+## use the following command instead:
+#\spell_command hspell-i
+
+## If LyX was compiled with pspell support,
+## uncomment the following.
+#\use_pspell false
+</pre>
+
+<p>For Hebrew LyX general instructions, <a
+href="http://www.math.tau.ac.il/~dekelts/lyx/instructions2.html"
+class="ad">check out Dekel's web-site</a>.</p>
+
+<h3>Known problems with LyX</h3>
+
+<p>LyX breaks up words on quote characters (gershayim) before passing
+them to Hspell. This means that spell-checking in LyX will not
+understand rashei tevot (acronyms) and gimatria correctly.</p>
+
+<h2><a name="kde">2. KDE</a></h2>
+
+<p><i>Thanks to Meni Livne for contributing this section.</i></p>
+
+<p><a href="http://www.kde.org" class="ad">KDE</a> supports Hebrew spell
+checking using Hspell in KDE 3.1.2 and any later version. It allows
+spell checking Hebrew text in every KDE application that has
+spell-checking features (see note about KOffice below). To use it,
+choose "HSpell" in the Spell Checking Configuration dialog accessible
+via KControl or through the Configuration dialog of your favorite KDE
+application that has spell-checking features.</p>
+
+<p>If you are using a version of KDE prior to KDE 3.1.2 and still want
+to have Hebrew spell checking in your KDE applications without
+upgrading, see instructions in section 2.1 below.</p>
+
+<p>Note about <a href="http://koffice.kde.org" class="ad">KOffice</a>:
+Since KOffice applications use their own spell-checking library and not
+the kspell library from kdelibs like all other KDE applications, using a
+KDE version that supports Hspell with versions of KOffice prior to
+KOffice 1.3 will not suffice. If you want to have Hebrew spell checking
+in KOffice applications, upgrade to KOffice 1.3 or later. Configuration
+of spell checking in KOffice applications is the same as the rest of
+KDE.</p>
+
+<h3><a name="kde-old">2.1 Issues with older KDE versions</a></h3>
+
+<p>KDE 3.1.2 and 3.1.3:</p>
+
+<p>Hspell v0.9 and up (not yet released) can handle words with niqqud
+(it simply ignores them). KDE versions prior to KDE 3.1.4 could
+communicate with hspell only in the ISO-8859-8 encoding, which cannot
+represent niqqud (KDE substitutes "?" for any niqqud character, thus
+erroneously making hspell see several words instead of one niqquded
+word). One solution is to upgrade your KDE to a version later than
+3.1.3. Another solution that does not involve upgrading is to follow the
+instructions about KDE &lt; 3.1.2 below on how to patch your kspell
+library to recognize the CP1255 encoding, which can represent niqqud. Of
+course, if you're not using niqqud in your documents, or if you don't
+mind some harmless fikshushim when spell-checking seldom used niqquded
+words, you can ignore this problem.</p>
+
+<p>KDE &lt; 3.1.2:</p>
+
+<p>Versions of KDE prior to 3.1.2 did not support Hspell out-the-box.
+Nevertheless, it is still possible to have KDE use Hspell with these
+versions. There were basically two problems with these versions that
+prevented you from using Hspell:</p>
+
+<ol>
+<li>
+
+<p>They did not let you choose "hspell" as your speller program.</p>
+
+<p>To circumvent this deficiency, symlink "ispell", or "aspell", to   
+"hspell". Then, in the Spell Checking Configuration dialog, choose the   
+appropriate "client" program.<p>
+   
+</li>
+<li>
+
+<p>The "ISO-8859-8" encoding (in the Spell Checking Configuration
+dialog) was considered <em>visual</em> Hebrew, so Hspell would have been
+getting reversed Hebrew.</p>
+
+<p>To solve this problem, patch the kspell library (kspell is KDE's
+speller module) to recognize CP1255 through the following steps:</p>
+
+<ul>
+
+<li>Find kspell's library file. It's usually <span
+class="filename">/usr/lib/libkspell*.so*</span>. From here on we refer
+to it as "<span class="filename">LIBKSPELL.SO</span>" and assume it's in
+/usr/lib.</li>
+
+<li>Issue the following commands (as root, so be cautious!):
+<pre>   
+$ cd /usr/lib
+$ mv LIBKSPELL.SO LIBKSPELL.SO.bak
+$ sed -e 's/CP1251/CP1255/g' LIBKSPELL.SO.bak &gt; LIBKSPELL.SO
+$ chmod 755 LIBKSPELL.SO
+</pre>
+</li>
+
+<li>Select the "CP1255" encoding in the Spell Checking Configuration
+dialog.</li>
+
+</ul>
+</ol>
+
+<h3><a name="kde-multi">2.2 Spell-checking Hebrew and English
+simultaneously in KDE</a></h3>
+
+<p>The usual way you'd spell-check multilingual texts in KDE is to first 
+spell-check one language, then reconfigure KDE for the other language
+and spell-check that other language.</p>
+
+<p>However, using the "multispell" utility provided with the Hspell 
+distribution you can spell-check Hebrew and English simultaneously, 
+even without having to reconfigure KDE's spell checking settings.</p>
+
+<p>Since "multispell" is not in KDE's Spell Checking Configuration
+dialog, you'll have to resort to symlink tricks.</p>
+
+<h2><a name="ooo">3. OpenOffice</a></h2>
+
+<p>The Hebrew version of OpenOffice, available from <a
+href="http://openoffice.org.il" class="ad">openoffice.org.il</a>, has Hebrew
+spell-checking support that works out-of-the-box. This is true for both the
+MS-Windows and the Linux binaries. See the <a href="#mac">Mac
+OS X</a> section for info on OOo for the Mac.</p>
+
+<p>However, if you're using a non-Hebrew version of
+<a href="http://openoffice.org" class="ad">OpenOffice</a>, you have to
+install the Hspell module separately (this is the same module that is built-in
+to the Hebrew version). This module already includes Hspell itself together
+with its dictionary.</p>
+
+<p>The Hspell module can be installed using an RPM, a binary tarball, or a
+source tarball.</p>
+
+<ul>
+
+<li><p>An RPM for Fedora [[TODO: and what other systems?]] is available from:</p>
+
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://ivrix.org.il/redhat/fc1/ooo-hspell-0.8-1.i386.rpm">http://ivrix.org.il/redhat/fc1/ooo-hspell-0.8-1.i386.rpm</a></p>
+
+<p>The Hebrew dictionary provided with this RPM is that of Hspell 0.8.</p></li>
+
+<li><p>A binary tarball for Linux systems is available from:</p>
+
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.openoffice.org.il/hspell.tar.gz">http://www.openoffice.org.il/hspell.tar.gz</a></p>
+
+<p>Then follow the instructions outlined in README_Hspell_addon. In short,
+extract hspell_instll.tar into a temporary directory and, probably after
+becoming root, execute ./hspell_install.</p>
+
+<p>The Hebrew dictionary provided with this binary tarball is that of Hspell
+0.6 (but you can simply overwrite the relevant files with those provided with
+Hspell 0.8).</p></li>
+
+<li><p>The source tarball is available from:</p>
+
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.openoffice.org.il/hspell_src.tar.gz">http://www.openoffice.org.il/hspell_src.tar.gz</a></p>
+    </li>
+
+</ul>
+
+<p>After successfully installing the module, a new item, "Hspell
+Hebrew Spell Checker", will be added to the "Available language modules" list
+in the Tools/Options/Language-Settings/Writing-Aids dialog.</p>
+
+<p>To be able to spell-check Hebrew, it's necessary to comply with the
+following configuration (all in the Tools/Options/Language-Settings/Languages
+dialog):</p>
+
+<ol>
+<li>"Complex text layout (CTL) support" must be enabled.</li>
+<li>The CTL language (under "Default languages for documents") must be Hebrew.</li>
+</ol>
+
+<h3>Known Problems with OpenOffice</h3>
+
+<p>[[TODO]]</p>
+
+<h2><a name="mac">4. Mac OS X</a></h2>
+
+<p>Powered by Hspell, the
+<a href="http://mitzpettel.com/software/hspell.html">Hebrew Spelling Service</a>,
+by Mitz Pettel, adds a Hebrew spelling dictionary to Mac OS X's built-in
+spell checker.</p>
+
+<p>Once the Hebrew Spelling Service is installed, the Hebrew spelling
+dictionary can be selected and used in any application that has a standard
+Spelling submenu in its Edit menu, such as TextEdit, Mail or Mellel.</p>
+
+<p>Note that OpenOffice will not benefit from the Hebrew Spelling Service
+because it does not use the standard spelling interface of the Mac. For a
+build of OpenOffice for Mac OS X that does Hebrew spell checking, please
+contact <a href="http://www.yeda.co.il">Yeda</a>.</p>
+
+<h2><a name="abiword">5. AbiWord</a></h2>
+
+<p><a href="http://www.abisource.com" class="ad">AbiWord</a>, thanks to
+work done by Yaacov Zamir, now supports Hspell (on Unix-like platforms).</p>
+
+<p>Please visit Yaacov's
+<a href="http://hspell-gui.sourceforge.net/abiword.html">Hspell and AbiWord mini-howto</a>
+page for more information.</p>
+
+<h2><a name="moz">6. Mozilla</a></h2>
+
+<p>The Hebrew dictionary of Hspell is now available for use with Mozilla. Right
+now it's at the <em>BETA</em> stage. It is available at:</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://ivrix.org.il/redhat/spell-he-IL.xpi">http://ivrix.org.il/redhat/spell-he-IL.xpi</a></p>
+
+<p>This package is suitable for any platform (MS-Windows included) because it
+doesn't contain binary code. You can install this package only as
+root/administrator.</p>
+
+<p>Next time you run Mozilla and call up the spelling dialog box, you'll be
+able to select the Hebrew dictionary by choosing "he-IL" from the Language
+menu.</p>
+
+<h3>Known Problems with Mozilla</h3>
+
+<ul>
+<li>When the Hebrew dictionary is used, Mozilla reports any non-Hebrew word as
+misspelling.</li>
+<li>When a Hebrew misspelling is found, too many suggestions are generated, making the
+useful ones hard to find.</li>
+<li>[[TODO: The extension may not work on Thunderbird 0.7 because the extension
+mechanism has been changed.]]</li>
+</ul>
+
+<p>(BTW, if you're interested in spell-checking Hebrew in web-pages while you
+surf, which is completely unrelated to spell-checking Hebrew in Composer, you
+might be interested in
+<a href="http://www.typo.co.il/~mooffie/proxpeller/">Proxpeller</a>.)</p>
+
+<h2><a name="vim">7. Vim</a></h2>
+
+<p>For <a href="http://www.vim.org" class="ad">Vim</a> 6.x, use <a
+href="vimhspell.vim">this script</a>. It supports
+bilingual spell-checking and UTF-8 files. The documentation is commented
+within the file.</p>
+
+<p>If you encounter problems using the script, please contact
+&lt;mooffie <span class="email-spam">@at</span>@ typo.co.il&gt;</p>
+
+<h2><a name="emacs">8. GNU Emacs</a></h2>
+
+<p>The following instructions are known to work with <a
+href="http://www.gnu.org/software/emacs/emacs.html" class="ad">GNU
+Emacs</a> and with <a href="http://www.m17n.org/emacs-bidi/"
+class="ad">BiDi-Emacs</a>. They are known <em>not</em> to work with
+XEmacs.</p>
+
+<p>Add the following to your <span class="filename">~/.emacs</span>:</p>
+
+<pre class="conf-file">
+;; Settings by Mooffie, with additions by Ehud Karni.
+
+(setq-default ispell-program-name "hspell")
+;; If you wish to spell-check English words as well,
+;; uncomment the following:
+;(setq-default ispell-program-name "multispell")
+
+(require 'ispell)
+
+;; Tell emacs what constitutes a word.
+(add-to-list 'ispell-dictionary-alist
+             '("hebrew8"
+               "[a-zA-Z\340-\372]"
+               "[^a-zA-Z\340-\372]"
+               "['\"]" t ("-B") nil iso-8859-8))
+
+(if (fboundp 'define-key-after)
+    (define-key-after ispell-menu-map [ispell-select-hebrew8]
+      '("Select Hebrew8 Dict" . (lambda()
+                                  (interactive)
+                                  (ispell-change-dictionary "hebrew8")))
+      'american))
+
+;; If you wish to have the Hebrew dictionary selected automatically
+;; for each buffer, uncomment:
+;(ispell-change-dictionary "hebrew8")       ;; set hebrew dictionary
+;(setq ispell-dictionary "hebrew8")         ;; set it explicitly
+
+;; When flyspell is applied to large regions, the speller is not used
+;; in "-a" mode and thus we would not be able to use multispell. The
+;; default for "large regions" is 1000 bytes, so we bump it to 30000.
+(setq flyspell-large-region 30000)
+
+;; for use of hebrew menus (and flyspell menues) add to your .Xdefaults:
+;; emacs.menu.popup.font: -misc-fixed-medium-r-normal--13-120-75-75-c-80-iso8859-8
+</pre>
+
+<h3>A sample Emacs session</h3>
+
+<ol>
+<li>Launch emacs in the he_IL (ISO-8859-8) locale.</li>
+<li>Type some Hebrew into the buffer.</li>
+<li>Select the "hebrew8" dictionary: Tools | Spell Checking | Select   
+Hebrew8 Dict. (You must repeat that for every buffer you want to
+spell-check.)</li>
+<li>Spell-check the document: Tools | Spell Checking | Spell-Check
+   Buffer.</li>
+</ol>
+
+<h3>Known problems with Emacs</h3>
+
+<p>Spell-checking UTF-8 files will fail. It seems that there's a bug in 
+"ispell.el". Stay tuned.</p>
+
+<h2><a name="geresh">9. Geresh</a></h2>
+
+<p><a href="http://www.typo.co.il/~mooffie/geresh/"
+class="ad">Geresh</a>, starting with version 0.4.0, supports ispell-like
+spellers, including Hspell.</p>
+
+<p>Add the following to your <span
+class="filename">~/.geresh/gereshrc</span>:</p>
+
+<pre class="conf-file">
+--speller-cmd="hspell -a"
+--speller-encoding=iso-8859-8
+
+## If you wish to spell-check English words as well,
+## uncomment the following:
+#--speller-cmd="multispell -a"
+
+## If you wish to see hspell's spelling-hints,
+## uncomment the following (but this feature is
+## unavailable in hspell 0.6):
+#--speller-cmd="multispell -a -n"
+</pre>
+
+<h2><a name="problems">10. Known problems</a></h2>
+
+<ul>
+
+<li>While Hspell 0.8 can read words from your personal dictionary file
+(<span class="filename">~/.hspell_words</span> or <span
+class="filename">./hspell_words</span>), it doesn't implement the
+command to <em>update</em> this dictionary. As a consequence, clicking
+the "Add to personal dictionary" button (or using the equivalent
+command) in your editor will have no effect.</li>
+
+<li>Hspell has troubles with words containing niqqud. It should ignore
+such words.</li>
+
+</ul>
+
+<h2><a name="not-supported">11. Not supported (yet)</a></h2>
+
+<p>The following applications do not support Hspell. Usually that's
+because they don't support ispell's pipe mode but instead use some
+other API (like pspell).</p>
+
+<ul>
+<li>Most GNOME apps (gnome-spell -&gt; pspell)</li>
+</ul>
+
+<hr />
+
+<p>
+<small>This page is maintained by Mooffie. Please send additions and corrections to
+&lt;mooffie <span class="email-spam">@at</span>@ typo.co.il&gt;</small>
+</p>
+
+<p>
+<small>The URL of this page is
+<a href="http://ivrix.org.il/projects/spell-checker/Hspell-HOWTO.html">http://ivrix.org.il/projects/spell-checker/Hspell-HOWTO.html</a></small>
+</p>
+
+</body>
+</html>

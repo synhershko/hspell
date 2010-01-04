@@ -1,0 +1,293 @@
+BODY {
+	BACKGROUND: #fff;
+	COLOR: #000;
+	FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)";
+	FONT-SIZE: 12px;
+}
+TD {
+	COLOR: #666;
+	FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)";
+	FONT-SIZE: 12px;
+}
+.leshonit {
+	COLOR: #fff; FONT-FAMILY: "Arial",  "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px; FONT-WEIGHT: bold; TEXT-ALIGN: right
+}
+.ltext {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px; FONT-WEIGHT: bold; PADDING-RIGHT: 5px; TEXT-ALIGN: right
+}
+A:link {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+A.text12:link {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.text12:visited {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.text12:active {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.text12:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.survey:link {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.survey:visited {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.survey:active {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.survey:hover {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.topbar:link {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.topbar:visited {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.topbar:active {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.topbar:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.bigbar:link {
+	COLOR: #999; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 20px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.bigbar:visited {
+	COLOR: #999; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 20px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.bigbar:active {
+	COLOR: #999; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 20px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.bigbar:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 20px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.rightbar:link {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.rightbar:visited {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.rightbar:active {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.rightbar:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.whtbigheader:link {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.whtbigheader:visited {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.whtbigheader:active {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.whtbigheader:hover {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.blkbigheader:link {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.blkbigheader:visited {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.blkbigheader:active {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.blkbigheader:hover {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.smallheader:link {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.smallheader:visited {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.smallheader:active {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.smallheader:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.index:link {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.indexw:link {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.index:visited {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.indexw:visited {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.index:active {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.indexw:active {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.index:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.indexw:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.fullstory:link {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.fullstory:visited {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.fullstory:active {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.fullstory:hover {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.bluelink:link {
+	COLOR: #00f; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.bluelink:visited {
+	COLOR: #00f; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.bluelink:active {
+	COLOR: #00f; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.bluelink:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+A.indexlink:link {
+	COLOR: #99c; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 10px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.indexlink:visited {
+	COLOR: #99c; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 10px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.indexlink:active {
+	COLOR: #99c; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 10px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.indexlink:hover {
+	COLOR: #99c; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 10px; FONT-WEIGHT: normal; TEXT-DECORATION: underline
+}
+.text10 {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 10px
+}
+.text11 {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 11px
+}
+.text12 {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px
+}
+.text12b {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
+.text12w {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px
+}
+.text12g {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px
+}
+.text13 {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px
+}
+.text13w {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px
+}
+.text13g {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 13px
+}
+.text14 {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 14px
+}
+.text14w {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 14px
+}
+.text16 {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 16px
+}
+.text16w {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 16px
+}
+.text16g {
+	COLOR: #666; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 16px
+}
+.text18 {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px
+}
+.text18w {
+	COLOR: #fff; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px
+}
+.text18g {
+	COLOR: #999; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 18px
+}
+.text20 {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 20px
+}
+.text20b {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 20px; FONT-WEIGHT: bold
+}
+.credit {
+	COLOR: #cccccc; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px
+}
+.lottery {
+	COLOR: #666699; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px
+}
+DIV.clTop {
+	POSITION: absolute; WIDTH: 116px
+}
+DIV.clSub {
+	LEFT: 0px; POSITION: absolute; TOP: 18px; WIDTH: 116px
+}
+#divCont {
+	HEIGHT: 150px; LEFT: 0px; POSITION: relative; TOP: 0px; VISIBILITY: visible; WIDTH: 116px
+}
+A.clMain {
+	COLOR: black; FONT-SIZE: 12px; FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A.clSubb {
+	COLOR: black; FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+#divMain {
+	POSITION: absolute
+}
+A.index11:link {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 11px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.index11:visited {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 11px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.index11:active {
+	COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 11px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.index11:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 11px; FONT-WEIGHT: normal; TEXT-DECORATION: none
+}
+A.topbar14:link {
+	COLOR: #006; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 14px; FONT-WEIGHT: bold; TEXT-DECORATION: underline
+}
+A.topbar14:visited {
+	COLOR: #006; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 14px; FONT-WEIGHT: bold; TEXT-DECORATION: underline
+}
+A.topbar14:active {
+	COLOR: #006; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 14px; FONT-WEIGHT: bold; TEXT-DECORATION: underline
+}
+A.topbar14:hover {
+	COLOR: #f00; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 14px; FONT-WEIGHT: bold; TEXT-DECORATION: underline
+}
+TD.trajectory_bgcolor {
+	BACKGROUND-COLOR:#CECEDE; COLOR: #000; FONT-FAMILY: "Arial", "Arial (Hebrew)", "David (Hebrew)", "Courier New (Hebrew)"; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
