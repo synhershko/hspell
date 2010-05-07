@@ -171,7 +171,7 @@ while(<>){
 		$specifier = $PS_IMPER;
 	  } elsif(!/ .*הווה/o) {
 		$specifier = $PS_VERB;
-	  } elsif(/ .*סמיכות/) {
+	  } elsif(/ .*סמיכות/o || m:,כינוי/:o) {
 		$specifier = $PS_NONDEF;
 	  } else {
 		$specifier = $PS_ALL;
