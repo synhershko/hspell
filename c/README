@@ -1,0 +1,14 @@
+example for words taking certain prefixes:
+אחדכם 3  (Lאחדכם)
+כלב 7 (any prefix)
+האביקנו 1 (Bהאביקנו)
+
+Todo: create a test that checks that these words acept the necessary
+prefixes, and not any other.
+
+more test words:
+
+הוועד
+הווים
+הונצואלה )wrong(
+הוונצואלה

@@ -1,0 +1,109 @@
+#!/bin/sh
+# version 2
+#
+# doubleaffixcompress was downloaded from
+# http://downloads.sourceforge.net/hunspell/doubleaffixcompress on November 17,
+# 2009, lightly modified, and distributed with hspell by permission of its
+# author Nemeth Laszlo.
+#
+combine_affixes() {
+ awk '/^[SP]FX/&&NF==4&&$3=="N"{$3="Y";print$0;next}
+ {print$0}
+ '
+}
+
+calculate_maxflag() {
+ awk 'BEGIN{n=0}/^[SP]FX/{if(a[$2]!=1){n++;a[$2]=1}}END{print n}'
+}
+
+numbering_affixes() {
+LC_ALL=C awk -v mf=$3 'BEGIN{num=65000-mf-1};FILENAME~".dic"{idx=index($0,"/");if(idx>0){printf "%s", substr($0,1,idx) >"num_"FILENAME;l=length($0)-idx;for(i=1;i<=l;i++)printf "%s",(i>1 ? ",":"") fl[substr($0,idx+i,1)] >"num_"FILENAME;print"">"num_"FILENAME}else{print $0>"num_"FILENAME};next}FILENAME~".aff"{if(NR==1)print"FLAG num">"num_"FILENAME;if($1~/^([PS]FX|COMPOUNDFLAG|COMPOUNDBEGIN|COMPOUNDEND|COMPOUNDMIDDLE|FORBIDDENWORD|ONLYINCOMPOUND|COMPOUNDPERMITFLAG|COMPOUNDFORBIDFLAG|CIRCUMFIX|KEEPCASE|LEMMA_PRESENT|NEEDAFFIX|NOSUGGEST)/){if(fl[$2]==""){num++;fl[$2]=num}$2=fl[$2];print$0>"num_"FILENAME;next}else print$0>"num_"FILENAME}' $1 $2
+}
+
+renumbering_affixes() {
+LC_ALL=C awk -v mf=$3 'BEGIN{num=65000-mf-1};FILENAME~".dic"{if($0=="")next;idx=index($0,"/");if(idx>0){printf "%s", substr($0,1,idx) >"num_"FILENAME;l=split(substr($0, idx + 1), a, ",");for(i=1;i<=l;i++)printf "%s",(i>1 ? ",":"") fl[a[i]] >"num_"FILENAME;print"">"num_"FILENAME}else{print $0>"num_"FILENAME};next}FILENAME~".aff"{if($1~/^([PS]FX|COMPOUNDFLAG|COMPOUNDBEGIN|COMPOUNDEND|COMPOUNDMIDDLE|FORBIDDENWORD|ONLYINCOMPOUND|COMPOUNDPERMITFLAG|COMPOUNDFORBIDFLAG|CIRCUMFIX|KEEPCASE|LEMMA_PRESENT|NEEDAFFIX|NOSUGGEST)/){if(fl[$2]==""){num++;fl[$2]=num}$2=fl[$2];print$0>"num_"FILENAME;next}else print$0>"num_"FILENAME}' $1 $2
+}
+
+renumbering_dic() {
+awk 'function form(word,suf){if(cut[suf]>0)return substr(word, 1, length(word)-cut[suf]) sfx[suf]; return word sfx[suf]}BEGIN{FS="[/ \t]";nf=5000}FILENAME~/.dic$/{if($2!=""){if(a[$1]!="")a[$1]=a[$1]","$2;else a[$1]=$2}; next}FILENAME~/.aff$/&&/^SFX/&&NF>4{sfx[$2]=$4;cutst[$2]=$3;cut[$2]= ($3=="0") ? 0 : length($3);next}FILENAME=="-"&&NF==1{print$1 (a[$1]? "/" a[$1]: "");next}FILENAME=="-"{printf "%s/",$1; aan = split($2,aa,","); for(i=1; i<=aan; i++){flag=a[form($1,aa[i])];if(flag==""){printf"%s,",aa[i]}else{nfl=newflag[aa[i],flag];if(!nfl>0){nf++;newflag[aa[i],flag]=nf;nfl=nf};printf"%s,",nfl}};print a[$1] }END{for(i in newflag){split(i,aa,"\034");print "SFX ",newflag[i],"Y 1" > ARGV[2] "2";print "SFX ",newflag[i],cutst[aa[1]],sfx[aa[1]] "/" aa[2],"." > ARGV[2] "2"}}' $1 $2 -
+}
+
+change_aff() {
+awk -v f=1 -v fs="/"   '
+function backword(st){
+    a=""
+    al=length(st)
+    for(i=al;i>0;i--)a=a substr(st,i,1)
+    return a
+}
+NR==1&&co==1{print "COMPLEXPREFIXES"}
+/^[SP]FX/&&NR>4{n=split($4,sfx,"/");$4=backword(sfx[1]) (n>1 ? "/" sfx[2]:"")}{print $0}' |
+awk '/^SFX/{$1="PFX";print $0;next}/^PFX/{$1="SFX"}{print$0}'
+}
+
+change_dic() {
+awk -v f=1 -v fs="/"   '
+function backword(st){
+    a=""
+    al=length(st)
+    for(i=al;i>0;i--)a=a substr(st,i,1)
+    return a
+}
+BEGIN{FS="/"}NF==1{print backword($0);next}{print backword($1)"/"$2}'
+}
+
+dicflagsort() {
+awk 'BEGIN{FS="/"}NF>1{n=split($2,a,",");asort(a);printf "%s", $1 "/";
+for (i=1; i <= n; i++) if(i==1||a[i]!=a[i-1])printf "%s,", a[i]; print"";next}
+{print $0}'
+}
+
+prefix_aff="cat"
+prefix_dic="cat"
+complexprefixes=""
+case $1 in
+-p) prefix_aff="change_aff";
+prefix_dic="change_dic"; 
+complexprefixes="-v co=1";
+shift;;
+-h|--help) echo "Hunspell double affix compressor
+Usage: doubleaffixcompress [-h | [-p] dic_name] [max_new_affix_rules]
+Options:
+-h this message
+-p compression on prefixes (for languages with right-to-left
+writing system)
+Note: Input dictionary is a Hunspell dictionary using
+single affixes with default or numerical flag format.
+For word list compression use the affixcompress script
+of the Hunspell distribution to generate the input dictionary
+of this program.
+
+Examples:
+LC_ALL=C sort en_US.words >en_US
+affixcompress en_US
+doubleaffixcompress en_US
+
+For 8-bit character encoded dictionaries:
+LC_ALL=C sort en_US.words >en_US
+LC_ALL=C affixcompress en_US
+LC_ALL=C doubleaffixcompress en_US
+"; exit 1;;
+esac
+
+num="num_"
+
+TMP=`mktemp -d --tmpdir`
+maxflag="`calculate_maxflag <$1.aff`"
+echo "Original flag count: $maxflag"
+grep -q "FLAG num" $1.aff && renumbering_affixes $1.aff $1.dic $maxflag || numbering_affixes $1.aff $1.dic $maxflag
+cat $num$1.dic | dicflagsort | sed 's/,$//' | $prefix_dic >$TMP/$num$1.dic
+awk 'NR>1{print$0}' $TMP/$num$1.dic | sed 's#/.*$##' | LC_ALL=C sort | LC_ALL=C uniq >$TMP/$1.words
+affixcompress $TMP/$1.words $2
+cat $TMP/$1.words.dic | renumbering_dic $TMP/$num$1.dic $TMP/$1.words.aff | $prefix_dic | sed 's/,$//' | dicflagsort | sed 's/,$//' >new_$1.dic
+cat $TMP/$1.words.aff2 | $prefix_aff $complexprefixes >$TMP/$1.words.aff3
+grep '^SFX' $TMP/$1.words.aff | $prefix_aff >>$TMP/$1.words.aff3
+cat $num$1.aff $TMP/$1.words.aff3 | combine_affixes >new_$1.aff
+
+rm -fr $TMP
+
+echo "Output: new_$1.aff, new_$1.dic"
