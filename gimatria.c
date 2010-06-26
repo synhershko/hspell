@@ -8,7 +8,7 @@
 extern int hspell_debug;
 
 /* functions for checking valid gimatria */
-static int
+static unsigned int
 gim2int(const char *w){
 	int n=0;
 	if(hspell_debug) fprintf(stderr,"gim2int got %s ",w);
@@ -103,7 +103,7 @@ appendStr(src,dst)
         return dst;
 }
 static void
-int2gim(int n, char *buf)
+int2gim(unsigned int n, char *buf)
 {
 	static char *digits[3][9] = {
 		{"а","б","в","г","д","е","ж","з","и"},
@@ -176,12 +176,12 @@ int2gim(int n, char *buf)
  * wasn't recognized because (I think) a bug in int2gim which generate
  * something like ие"'. Frankly, I doubt we want to recognize this case
  * at all... */
-int
+unsigned int
 hspell_is_canonic_gimatria(const char *w)
 {
 	const char *p;
 	char buf[50];
-	int val;
+	unsigned int val;
 	/* make a quick look for quotes (if there are none, this is no
 	 * gimatria and we return 0 */
 	for(p=w; *p && *p!='"' && *p!='\''; p++)

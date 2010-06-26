@@ -84,7 +84,6 @@ sub outword {
   $word =~ s/(?<=[^еw])w(?=[^еw-])/ее/go;  # if vav needs to be doubled, do it
   $word =~ s/w/е/go;                       # otherwise, just one vav.
 
-
   # A consonant д (h) is always output as a д. The only reason we are
   # interested in which д is consonant is to allow the rules earlier to double
   # yud next to a consonant д (i.e.. h), but not next to a em-kria д.
