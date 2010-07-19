@@ -147,7 +147,7 @@ install: all
 ################################################
 # for creating an hspell distribution tar
 PACKAGE = hspell
-VERSION = 1.1
+VERSION = 1.2alpha
 DISTFILES = COPYING INSTALL LICENSE README WHATSNEW \
 	Makefile.in stats wunzip.c wzip \
 	hspell.1 \

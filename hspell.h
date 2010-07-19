@@ -12,8 +12,8 @@
    API this header file supports. Note that this API might change.
 */
 #define HSPELL_VERSION_MAJOR 1
-#define HSPELL_VERSION_MINOR 1
-#define HSPELL_VERSION_EXTRA ""
+#define HSPELL_VERSION_MINOR 2
+#define HSPELL_VERSION_EXTRA "alpha"
 
 
 struct dict_radix;
@@ -31,7 +31,7 @@ int hspell_check_word(struct dict_radix *dict,
 		      const char *word, int *preflen);
 void hspell_trycorrect(struct dict_radix *dict,
 		       const char *w, struct corlist *cl);
-int hspell_is_canonic_gimatria(const char *w);
+unsigned int hspell_is_canonic_gimatria(const char *w);
 
 void hspell_uninit(struct dict_radix *dict);
 

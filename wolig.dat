@@ -200,6 +200,7 @@
 # is the nismach מי-, which coexists with מימי-. This extra inflection is
 # added in the seperate file biza-nouns.
 מים ע,רבים=מימים,נפרדים=מים,אין_יחיד
+מימי ת
 # ראה ]1[, עמוד \Lnum{42}.
 # note extra vav added by academia's ktiv male:
 כותל ע,אבד_ו
@@ -326,6 +327,10 @@
 # are kamats katan (in which case the vav should be kept) or gadol (in which
 # case the vav should be dropped).
 # See also David Yalin's book, page 244.
+# According to [4], the plural inflections all have vav, and the singular
+# inflections have kamats katan which for which a vav is added in niqqud-less
+# spelling.
+# TODO: rethink
 גולגולת ע,רבים=גולגולות,נסמכים=גולגלות
 
 # This word is a horrible mess. See [1, page 52], [2] (for singular possesives)
@@ -600,6 +605,7 @@
 אחווה ע
 אדווה ע
 שלווה ע,יחיד
+עלווה ע,יחיד
 חווה ע
 חוואי ע
 חוואית ע
@@ -647,6 +653,7 @@
 רווקות ע,יחיד
 ערווה ע,רבים=עריות
 גאווה ע
+גאוותן ת,נקבה_ית
 גאוותני ת
 גאוותנות ע
 דוושה ע
@@ -705,6 +712,7 @@
 רבגוני ת
 רבגוניות ע
 גוני ת # Only in phrases חד-גוני, רב-גוני.
+גוניות ע # Only in phrases חד-גוניות, רב-גוניות.
 # CASE 332
 # in תווך the double vav needs to be undoubled for all inflections...
 # TODO: reconsider plural. [4] and [3] don't recognize any plural, [1]
@@ -726,6 +734,13 @@
 סתווי ת
 שלו ע,נפרד=שליו,נסמך=שליו # a kind of bird. This is not the adjective שלו.
 ענו ת,יחיד=עניו
+
+# The word לוי is a proper name, so the waw is *not* doubled. But we also
+# use it as a noun meaning a any person from this tribe, so the name can
+# be used with the definite article, and in plural, making the fact that
+# we don't double the waw very strange. Maybe needs to be reconsidered,
+# though both [3] and [4] spell like this too.
+לוי ע,אין_כינויים
 
 # words with consonant yud that get double yud under academia rules:
 סייג ע
@@ -853,6 +868,7 @@
 תעשיין ע
 תעשיינית ע
 יישוב ע # some people mis-pronounce "yeshuv" and write ישוב
+יישובי ת
 ייחוד ע
 ייחודי ת
 ייחודיות ע
@@ -896,6 +912,8 @@
 חיידק ע
 חיידקי ת
 חייזר ע
+חייזרית ע # colloquial
+חייזרי ת
 חייבר ע,אין_נטיות
 שיירה ע
 מאפיין ע # [3] doesn't acknowledge this is a noun. Rav-milim does.
@@ -908,6 +926,7 @@
 עייף ת
 עייפות ע,יחיד
 בלייעל ע,אין_נטיות
+מתנייע ת
 
 # words with chirik followed by "ya" sound, that get double yud under
 # academia rules:
@@ -1117,8 +1136,14 @@
 משושה ע,ים,סגול_ה
 משושה ע,ות
 משובע ע
+משובע ת,נקבה_ת
 מתומן ע
+מתומן ת,נקבה_ת
+מתושע ע
+מתושע ת,נקבה_ת
 מעושר ע
+# מעושר ת,נקבה_ת # commented out - can be too easily confused with מאושר, מועשר.
+מעוין ע
 מלוכלך ת,נקבה_ת
 מסורבל ת,נקבה_ת
 ממורמר ת,נקבה_ת
@@ -1367,6 +1392,7 @@
 גלוסקה ע,אות # archaic literary.
 
 חוליה ע # note that spelt correctly, the ל has shva, hence only one yud!
+חולייתן ע # Usually in plural, חולייתנים - meaning vertebrates.
 קושיה ע # note that spelt correctly, the ש has shva, hence only one yud!
 שוליה ע,זכר,נקבה # [3] and [4] agree that this word has shuruk, not kubuts. note that spelt correctly, the ל has shva, hence only one yud!
 סוגיה ע # voweled like דוגמה, the gimmel has shva and hence yud not doubled. NOTE: [3] says this word has kubuts, [4] says shuruk. [1] recognizes both with preference to kubuts.
@@ -1516,6 +1542,8 @@
 סיפורי ת
 עיצוב ע
 עיצובי ת # not in [3] or [4], but in some use.
+פיסול ע
+פיסולי ת
 ניחות ע # physics term. [3] says it also means שלווה.
 חיבוט ע
 זיקוק ע,ים,רבים=זיקוקין # זיקוקים, זיקוקין דינור
@@ -1746,6 +1774,7 @@
 ניהול ע
 ניהולי ת
 ריהוט ע,יחיד
+קיטום ע,יחיד
 
 כיחלון ע,יחיד
 כימשון ע,יחיד,אין_כינויים
@@ -1760,9 +1789,11 @@
 שיגיון ע,ות
 שיגיוני ת
 שיגרון ע,ות
+שיגרוני ת
 שיטפון ע,ות
 דיכאון ע,ות
 דיכאוני ת # this word is not recognized by [3]
+שיטיון ע,יחיד
 ניקיון ע,ות
 ניכיון ע,ות
 רישיון ע,ות
@@ -1794,6 +1825,7 @@
 גיזרון ע # Hebrew word for "etymology". [4] think ים, [3] doesn't have plural. [2] and [1] thinks ים, but vowel this word differently, like מכשול (the academia decidea, however, that the voweling should be like זיכרון).
 גיזרוני ת # etymological
 ביטאון ע # [3] and I think ים, but [1] thinks ות, like other things in this mishqal
+חינמון ע # Note that unlike ביטאון, in this word there is a chirik maleh.
 קיקיון ע # [1] thinks ות, like other זיכרון-like words, but [2], [3] and [4] think ים.
 קיקיוני ת
 
@@ -2698,7 +2730,7 @@
 חרפן ע # mink
 אבדן ע
 אבדני ת # suicidal, not for general loss.
-אזנית ע # According [3] and [4]. [4] calls אזנייה (with kamats katan) "nonstandard". But most people spell אוזנייה...
+אזנית ע # According [3] and [4]. [4] calls אזנייה (with kamats katan) "nonstandard". Also in list of Academia terms from 1960. But most people spell אוזנייה...
 גפרית ע,אין_נטיות
 נכרי ת,נקבה_ה,נקבה_ת # [4] acknowledges that this is the standard spelling but says that it still prefers to spell נוכרי
 נכריות ע
@@ -2809,6 +2841,7 @@
 קבוצתי ת
 חמודה ע,אין_יחיד # חמודות. [3] and [4] disagree on what this means.
 גרורה ע
+גרורתי ת
 בדותה ע # [3] and [4] prefer this form over בדותא. The Academia allows only this form (see comment before דוגמה).
 מרוצה ע,יחיד # usually used inflected - "במרוצת הזמן", "מרוצתו", etc.
 מנוסה ע
@@ -2953,6 +2986,8 @@
 נעימה ע
 חשיבה ע
 חשיבתי ת # not recognized by [3], but in [4] and is use. TODO: I'm not sure why it is necessary, though, over alternatives like מחשבתי.
+ישיבה ע
+ישיבתי ת
 שנינה ע
 יקיצה ע
 מליצה ע
@@ -3178,6 +3213,7 @@
 בטנה ע
 בקעה ע
 אמרה ע
+בטחה ע,יחיד
 סרכה ע
 מנחה ע
 אדרה ע # rare word: fish bones.
@@ -3239,7 +3275,8 @@
 פרה ע
 טחנה ע
 נחרה ע # [1] and [4] spell this with patach in nun, but [3] has shva.
-יערה ע # literary
+יערה ע,אין_כינויים # literary, and also plant
+לענה ע,אין_כינויים
 נחלה ע
 יחסה ע # linguistic term
 רעמה ע
@@ -3301,6 +3338,7 @@
 מגמתיות ע
 מסה ע
 חיה ע
+דיה ע # kind of bird
 צמה ע
 רקה ע
 הגנה ע
@@ -4229,6 +4267,7 @@
 זמום ת
 צנוף ת
 צפוד ת
+מעוט ת # As in the phrase מעוטי יכולת
 שתום ת # Only in the phrase שתום עין. In the bible meant "open" but later, following סתום, became to mean one eye is closed.
 שתוק ת # literary - silent
 שתוקי ת # Judaism - person with unknown father
@@ -4342,6 +4381,7 @@
 יחידני ת # translation of the adjective "individual"
 קליף ת
 שביר ת
+נתיק ת
 שכיר ע
 שכירה ע
 עשיר ע,אין_כינויי_יחיד
@@ -4991,6 +5031,7 @@
 דרכון ע
 ירחון ע
 קרחון ע
+קרחוני ת
 אגמון ע # rare word
 מדרון ע,ות,ים # ות only according to my preference, [3] and rav-milim, but ים only according to [1] and [2].
 מדרוני ת
@@ -5095,6 +5136,7 @@
 תפריט ע
 תצהיר ע
 תכשיט ע
+תכליל ע # Academia word for "פרטיטורה", in music.
 תכריך ע
 תכשיר ע
 תכתיב ע
@@ -5106,6 +5148,7 @@
 תחבירי ת
 תבליט ע
 טבלית ע # note: this means a pill, not a relief artwork (תבליט).
+תכסית ע,יחיד
 תבלין ע
 תבשיל ע
 תדריך ע
@@ -5113,6 +5156,7 @@
 תקדימי ת
 תשליל ע
 תזקיק ע
+תרכיב ע
 תרכיז ע
 תזרים ע
 תלכיד ע
@@ -5518,7 +5562,7 @@
 כרוז ע,ות # כרוז with kamats
 לקוח ע,ות
 לקוחה ע
-גשוש ע,ות # Probe.
+גשוש ע,ות # Probe. [3] and [4] think ות, [5] thinks ים. In the Academy's term site, the plural is almost always ות.
 פמוט ע,ות,ים # [2] considers ים (and shuruk) "modern", and [1] and [4] ok it too. [3] allows only ות.
 פשוש ע,ות,ים # [4] allows only ים (the usual usage), [3] allows only ות.
 פשושית ע
@@ -5546,6 +5590,7 @@
 סמור ע # animal
 יתוש ע
 טבור ע
+טבורי ת
 חלוק ע # pebble
 נבוט ע # wooden club, from Arabic
 חמוק ע,ים,יים,אין_יחיד # [2] and [3] recognizes the singular, [4] doesn't. [2] and [3] have the ים plural, [4] the יים.
@@ -5983,6 +6028,7 @@
 נין ע
 גיס ע
 זיף ע
+זיפי ת
 זיז ע
 זיק ע
 זים ע # singular not often used.
@@ -6155,6 +6201,7 @@
 פרעה ע,אין_יחיד # פרעות
 רחצה ע
 פרסה ע
+פרסה ע,אות # Archaic unit of length
 אשמה ע
 ארכה ע
 אסלה ע
@@ -6346,8 +6393,18 @@
 מקימה ע
 מתרגם ע
 מתרגמת ע
+ממציא ע
+ממציאה ע
 עקור ע,אין_כינויי_יחיד
 עקורה ע,אין_כינויי_יחיד
+שובה ע,סגול_ה,ים
+שובה ע
+מעפיל ע,אין_כינויי_יחיד
+מעפילה ע,אין_כינויי_יחיד
+מחבר ע
+מחברת ע
+מארגן ע
+מארגנת ע
 
 
 יובל ע,ות
@@ -6731,7 +6788,7 @@
 נוף ע
 נופי ת
 חוף ע
-חופי ע # not a common adjective, but is used and does appear in [4].
+חופי ת # not a common adjective, but is used and does appear in [4].
 אוח ע # inflections not very useful...
 תמוכה ע # see also תומכה
 אגורה ע
@@ -6947,6 +7004,7 @@
 מגננה ע
 מזבלה ע
 מכללה ע
+מטבעה ע
 מדרשה ע
 מקדמה ע
 מרקקה ע
@@ -7009,7 +7067,7 @@
 צפצפה ע # kamats in tsadi: kind of tree. see also tsere in stadi (horn)
 צפצפני ת
 להבה ע
-פאה ע
+פאה ע # TODO: there's an additional smichut - פאתי. It will anyway be recognized, as "הפאה שלי"...
 מאה ע
 עצה ע
 חמה ע,יחיד # חמתי בוערת. should not be confused with חמות!
@@ -7402,6 +7460,7 @@
 מתעמל ע
 מתעמלת ע
 מתנגד ע # inflections of this beinoni/noun in plural are more useful, but I consider the singular ones possible too.
+מתחלב ע,אין_כינויים # [4] has strange niqqud: metachlev.
 זקן ע
 זקנקן ע
 זקנה ע
@@ -7495,6 +7554,7 @@
 חפץ ע
 חלב ע,יחיד
 הלך ע
+הדף ע,יחיד
 חרם ע,ות,ים
 תוספת ע
 תודה ע
@@ -8030,6 +8090,7 @@
 נדר ע
 נזק ע,ים,רבים=נזיקין
 נזק ע,אין_יחיד,רבים=נזיקים # [3] recognizes only נזיקים while [4] only נזיקין!
+נזיקי ת # legal term
 נזר ע
 #טכס ע # old variant which is not recognized by the Academia
 טקס ע
@@ -8059,6 +8120,7 @@
 עצמות ע,יחיד # rare
 עצמיות ע # rare
 סרט ע
+תמך ע,אין_כינויים,יחיד
 גבר ע
 גברי ת
 גבריות ע
@@ -8143,6 +8205,7 @@
 הרג ע,יחיד,אין_כינויים
 הרף ע,יחיד,אין_כינויים
 הרס ע,יחיד,אין_כינויים
+רסס ע,יחיד,אין_כינויים
 עצר ע,אין_נטיות
 חרק ע
 חבל ע
@@ -8219,6 +8282,9 @@
 פרח ע
 פרחוני ת
 שמע ע,יחיד
+פתע ע,אין_נטיות
+מנע ע,אין_נטיות
+רתע ע,אין_נטיות
 פלח ע
 רקע ע
 רגע ע
@@ -8464,6 +8530,7 @@
 מפרקת ע # note that this word has patach, not chrik, in the mem.
 מכפלת ע # note patach, not chirik, in mem.
 נגזרת ע # math and economics term
+מפרצת ע # medical term
 מקטרת ע
 מרפסת ע
 מבזקת ע # see also ממלחה, מלחייה.
@@ -8495,6 +8562,7 @@
 אמתחת ע
 מקלחת ע
 מרקחת ע
+משלחת ע
 מגבעת ע
 מקלעת ע
 משמעת ע,יחיד
@@ -8540,6 +8608,7 @@
 חזרת ע,יחיד
 צהבת ע,יחיד
 אדמת ע,יחיד
+יעפת ע,יחיד
 סוכרת ע,יחיד # Note that the more popular form, סכרת, is considered non-standard.
 סוכרתי ת
 בהרת ע
@@ -8617,6 +8686,7 @@
 דיוק ע
 דיור ע
 סיום ע
+דיות ע # biology term
 קיום ע
 קיומי ת
 סיוט ע
@@ -8782,6 +8852,7 @@
 סלחנות ע
 #קטלן ת,נקבה_ית
 קטלני ת
+קטלניות ע
 תפרן ת,נקבה_ית
 סקרן ת,נקבה_ית
 סקרנות ע
@@ -9167,11 +9238,16 @@
 למדנית ע
 למדנות ע,יחיד
 למדני ת
+זולתני ת
+זולתנות ע,יחיד # The official Hebrew translation of Altruism.
 מרכזן ע
 מרכזנית ע
 טפסן ע
 טפסנית ע
 טפסנות ע,יחיד
+אלחוטן ע # An apparently less used alternative is אלחוטאי. TODO: consider allowing it.
+אלחוטנית ע
+אלחוטנות ע,יחיד
 יהלומן ע
 יהלומנית ע
 יהלומנות ע,יחיד
@@ -9417,6 +9493,9 @@
 פנימאית ע,אין_כינויים
 כלאי ע,אין_כינויים
 כלאית ע,אין_כינויים
+רעיונאי ע,אין_כינויים # The Hebrew alternative to קופירייטר
+רעיונאית ע,אין_כינויים # The Hebrew alternative to קופירייטרית
+רעיונאות ע,יחיד
 רכילאי ע
 רכילאית ע
 רכילאות ע,יחיד
@@ -9470,6 +9549,10 @@
 מחזאות ע,יחיד
 חידונאי ע
 חידונאית ע
+חשבונאי ע
+חשבונאית ע
+חשבונאות ע,יחיד
+חשבונאי ת
 בולאי ת,ם
 בולאי ת
 בולאות ע,יחיד
@@ -9484,6 +9567,8 @@
 ימאי ע
 ימאית ע
 ימאות ע
+הגאי ע,אין_כינויים
+הגאית ע,אין_כינויים
 יומנאי ע
 יומנאית ע
 צמיגאי ע
@@ -9567,6 +9652,8 @@
 מאית ע
 אלפית ע
 עשירית ע
+מיליונית ע
+מיליארדית ע
 עשירון ע
 אלפיון ע
 מדען ע
@@ -9915,8 +10002,6 @@
 מביש ת # this is mem with tsere.
 זולת ע,יחיד,זכר # inflections are not exactly a noun, but fits nicely...
 חודרני ת
-חשבונאות ע
-חשבונאי ת
 חשבונית ע
 טמבל ת,נקבה_ית # slang
 כותר ע
@@ -9977,6 +10062,7 @@
 דומה ת
 בוטה ת
 שוטה ת
+פותה ת # literary
 שונה ת
 שונות ע,יחיד
 
@@ -10177,6 +10263,8 @@
 ירדני ת,עם
 עיראקי ת,עם
 איראני ת,עם
+סודאני ת,עם
+עומאני ת,עם
 קטרי ת,עם # [4] prefers to add aleph for niqqud-less spelling: קטארי. But note that the Arabic country name does not have an aliph.
 הולנדי ת,עם
 לבנוני ת,עם
@@ -10191,8 +10279,6 @@
 # TODO: [4] also allows פלשתינאי, פלסטינאי. we also need to add פלשתינה, פלסטינה.
 פלשתי ת,עם
 לובי ת,עם
-סודאני ת,עם
-עומאני ת,עם
 סנגלי ת,עם
 סינגפורי ת,עם
 תאילנדי ת,עם
@@ -10218,6 +10304,11 @@
 טיבטי ת,עם
 בנגלדשי ת,עם
 אקוודורי ת,עם
+זנזיברי ת,עם
+בהוטני ת,עם
+בליזי ת,עם
+זאירי ת,עם
+חבשי ת,עם
 סיבירי ת,עם
 בחרייני ת,עם # yod added for ktiv maleh (according to [4]).
 לונדוני ת,עם
@@ -10227,6 +10318,9 @@
 ניז'רי ת,עם # Note: this is a different country from ניגריה! [4] makes a complete mess of the distinction.
 קווקזי ת,עם
 קמרוני ת,עם
+מוזמביקי ת,עם
+מדגסקרי ת,עם
+גרינלנדי ת,עם
 # I chose the spelling טייוון despite it not being the most accepted one. The
 # spelling טיוואן is 6 times more common (on a Google search), but is illogical
 # (why not double the yod?). טייוואן is 2 times more common but I don't think
@@ -10236,7 +10330,6 @@
 # the טיווני that we chose.
 # TODO: reconsider this decision, and perhaps choose טייוואן.
 טייווני ת,עם
-#שוויצי ת,עם # see also: שוויצרי
 # Every nationality, e.g., צרפתי, has two male plural forms. One with ים,
 # צרפתיים, used as an adjective for (usually) objects from that country,
 # and one with just מ, צרפתים, which is a noun used for people (males) from 
@@ -10272,6 +10365,11 @@
 אפריקני ת,עם,ארץ=אפריקה # alternative spelling
 ארגנטינאי ת,עם
 ארגנטיני ת,עם # alternative spelling
+ונצואלי ת,עם,ארץ=ונצואלה
+אנדורי ת,עם,ארץ=אנדורה
+אנגולי ת,עם,ארץ=אנגולה
+מאוריטני ת,עם,ארץ=מאוריטניה
+רואנדי ת,עם,ארץ=רואנדה
 ג'מייקני ת,עם,ארץ=ג'מייקה
 גנאי ת,עם,ארץ=גאנה # [4] spells the country's name גאנה, with an aleph even for vowelled spellin. Then why doesn't the adjective have an aleph as well?
 
@@ -10300,6 +10398,8 @@
 אתונאי ת,עם
 ספרטני ת,עם,ארץ=ספרטה
 ספרטניות ע
+טקסני ת,עם,ארץ=טקסס
+קליפורני ת,עם,ארץ=קליפורניה
 ליטאי ת,עם,ארץ=ליטא
 ברזילאי ת,עם,ארץ=ברזיל
 קפריסאי ת,עם,ארץ=קפריסין
@@ -10337,6 +10437,7 @@
 סיציליאני ת,עם,ארץ=סיציליה
 פיג'יאני ת,עם,ארץ=פיג'י
 בדואי ת,עם,ארץ=
+מאורי ת,עם,ארץ=
 #
 סורי ת,עם,ארץ=סוריה
 אלבני ת,עם,ארץ=אלבניה
@@ -10344,12 +10445,14 @@
 סלבי ת,עם,ארץ= # [4] writes סלאבי, even in vowelled spelling.
 אוסטרלי ת,עם,ארץ=אוסטרליה
 שווייצרי ת,עם,ארץ=שווייצריה # [4] prefers שוויצרי, and it is also much more common in Google, but see niqqudless.odt for discussion.
+שווייצי ת,עם # variant of שווייצרי
 שוודי ת,עם,ארץ=שוודיה
 נורווגי ת,עם,ארץ=נורווגיה # TODO: [4] prefers נורבגיה, and it is also slightly more common in Google.
 אתיופי ת,עם,ארץ=אתיופיה
 סעודי ת,עם,ארץ=סעודיה
 אינדונזי ת,עם,ארץ=אינדונזיה
 מלזי ת,עם,ארץ=מלזיה
+מלאי ת,עם,ארץ=
 פולינזי ת,עם,ארץ=פולינזיה # not in [4].
 סלובני ת,עם,ארץ=סלובניה
 אסטוני ת,עם,ארץ=אסטוניה
@@ -10379,6 +10482,7 @@
 מסופוטמי ת,עם,ארץ=מסופוטמיה
 פניקי ת,עם,ארץ=פניקיה
 נמיבי ת,עם,ארץ=נמיביה
+מנצ'ורי ת,עם,ארץ=מנצ'וריה
 פרוסי ת,עם,ארץ=פרוסיה
 בלרוסי ת,עם # There's also an archaic spelling ביילורוסיה. There's also those who write the country's name "בלרוסיה".
 # [4] is a bit inconsistent. It prefers אוקיינוס but allows אוקיאנוס as
@@ -10392,6 +10496,7 @@
 פנמי ת,עם,ארץ=פנמה
 גואטמלי ת,עם,ארץ=גואטמלה
 גינאי ת,עם,ארץ=גינאה
+אריתראי ת,עם,ארץ=אריתראה # [4] and Hebrew wikipedia prefer אריתריאה but I see little reason for that but the English pronuniciatio of Eritrea; For the Arabic spelling אריתריה might have made more sense. אריתראה looks more Hebrew given the adjective אריתראי.
 אוקראיני ת,עם,ארץ=אוקראינה
 בוכרי ת,עם,ארץ=בוכרה
 פיני ת,עם,ארץ=פינלנד
@@ -10430,6 +10535,8 @@
 חלמאות ע,יחיד
 פרגוואי ת,עם,ארץ=פרגוואי
 אורוגוואי ת,עם,ארץ=אורוגוואי
+קטלני ת,עם,ארץ=קטלוניה
+מונטנגרי ת,עם,ארץ=מונטנגרו
 
 מוסלמי ת,עם,ארץ=  # note added vav in ktiv male
 קתולי ת,עם,ארץ=
@@ -10443,6 +10550,8 @@
 מוהיקני ת,עם,ארץ=
 דרוזי ת,עם,ארץ=
 צ'רקסי ת,עם,ארץ=
+סלג'וקי ת,עם,ארץ=
+אבוריג'יני ת,עם,ארץ=
 סובייטי ת,עם,ארץ=  # TODO: if "סוביטים" (soviet people) is wrong, remove עם.
 בודהיסטי ת
 בודהיסט ת,נקבה_ית
@@ -10474,6 +10583,7 @@
 פוריטני ת,עם,ארץ=
 פוריטניות ע
 לותרני ת,עם,ארץ=
+לותרניזם ע,אין_נטיות
 מתודיסטי ת
 מתודיסט ת,נקבה_ית
 ישמעאלי ת,עם,ארץ=
@@ -10490,6 +10600,7 @@
 # that is עות'מאני.
 עות'מאני ת,עם,ארץ=
 חשמונאי ת,עם,ארץ=
+טמפלר ת,נקבה_ית
 טמפלרי ת,עם,ארץ= # [4] doesn't recognize the adjective, I have no idea why.
 כוזרי ת,עם,ארץ=
 כשדי ת,עם,ארץ=
@@ -10532,8 +10643,11 @@
 כהניסט ת,נקבה_ית
 כהניסטי ת
 כהניזם ע,אין_נטיות
-אסלאמי ת
-אסלאם ע,אין_נטיות
+איסלאמי ת
+איסלאם ע,אין_נטיות # the dictionaries prefer without yod
+איסלאמיסט ת,נקבה_ית
+איסלאמיסטי ת
+איסלאמיזם ע,אין_נטיות
 שיעי ת,ם # TODO: rethink ם
 סוני ת,ם # TODO: rethink ם
 ביזנטי ת
@@ -10598,6 +10712,7 @@
 # כמו "פאראדוקס" (במקום פרדוקס) או יאפאן (במקום יפן).
 
 אורגני ת
+אנאורגני ת
 אלקטרון ע
 אלקטרוני ת
 אלקטרוניקה ע,אין_נטיות
@@ -10644,6 +10759,8 @@
 מגנט ע
 מגנטי ת
 מגנטיות ע
+מגנטיזציה ע,יחיד
+פרומגנטי ת
 אליפסה ע
 אליפטי ת
 אנליזה ע
@@ -10847,8 +10964,18 @@
 דיווה ע,אין_כינויים
 פביליון ע # ביתן. The spelling פביליון is more common in Google than פוויליון and [4] prefers it. [3] lists both and refer to ביתן.
 אוונגליון ע,אין_כינויים
-אוונגלי ת,עם,ארץ=
 אוונגליזם ע,אין_נטיות
+אוונגליסט ת,נקבה_ית
+אוונגליסטי ת
+אוונגלי ת
+פרסביטריאניזם ע,אין_נטיות
+פרסביטריאני ת,עם,ארץ=
+קלוויניזם ע,אין_נטיות
+קלוויניסטי ת
+קלוויניסט ת,נקבה_ית
+קווייקרי ת
+קווייקר ת,נקבה_ית
+אפיסקופלי ת
 קונבנציונלי ת # [4] adds aleph for niqqud-less spelling: קונבנציונאלי. [4] also mentions a rarer spelling קונוונציונ)א(לי.
 פריבילגיה ע,אין_כינויים # [4] also allows פריווילגיה
 אלטרנטיבה ע
@@ -10921,6 +11048,10 @@
 רפורמה ע
 רפורמי ת,עם,ארץ=
 רפורמציה ע
+רפורמיזם ע,אין_נטיות
+רפורמיסטי ת
+רפורמיסט ת,נקבה_ית
+רפורמטור ת,נקבה_ית
 טמפרטורה ע
 מודרני ת
 מודרניזציה ע,אין_נטיות
@@ -10933,6 +11064,7 @@
 פוסטמודרניסטי ת
 מודרנה ע,אין_נטיות
 דינמי ת
+דינמיות ע
 דינמיקה ע
 דינמומטר ע,אין_כינויים
 סטטי ת
@@ -11016,6 +11148,7 @@
 בלדה ע
 בלון ע
 סקסופון ע
+סקסופוניסט ת,נקבה_ית
 פסיכולוג ת,נקבה_ית
 פסיכולוגי ת
 פסיכולוגיה ע,אין_נטיות
@@ -11087,7 +11220,7 @@
 כוראוגרף ת,נקבה_ית
 טוראדור ע
 גאוגרפי ת
-גאוגרפיה ע,אין_נטיות
+גאוגרפיה ע,אין_כינויים
 גאוגרף ת,נקבה_ית
 גאולוגי ת
 גאולוגיה ע,אין_נטיות
@@ -11100,6 +11233,14 @@
 גאופוליטיקה ע,אין_נטיות
 גאופוליטי ת
 גאופיט ע,אין_כינויים
+גאומגנטי ת
+גאומגנטיזם ע,אין_נטיות
+גאוסטציונרי ת
+גאוסינכרוני ת
+גאותרמי ת
+גאופיזיקה ע,אין_נטיות
+גאופיזיקאי ע,אין_כינויים
+גאופיזיקאית ע,אין_כינויים
 # The same problem for the theo ("תאו", "תאי") prefix: [4] consistently
 # adds a yod for the niqqud-less spelling, I don't know why. [3] and [5] don't.
 פנתאון ע
@@ -11136,6 +11277,9 @@
 נאוליתי ת
 # same issue for פלאו, [4] addes yod for niqqud-less spelling: פליאו
 פלאוליתי ת
+פלאונטולוג ת,נקבה_ית
+פלאונטולוגי ת
+פלאונטולוגיה ע,אין_נטיות
 # And again, the same problem for הומאופתיה, to which [4] adds yod for
 # niqqud-less spelling: הומיאופתיה
 הומאופתיה ע,אין_נטיות
@@ -11184,6 +11328,9 @@
 טון ע
 טוני ת
 טונלי ת
+טונליות ע
+אטונלי ת
+אטונליות ע
 דיאטה ע
 דיאטטי ת
 #דיאט ע,אין_נטיות # Often replaces "דיאטטי" in product names. This is an anglicism that should perhaps be abolished, but it is very commonly used. Even worse, the spelling דיאט is far more common than the correct דייאט (which [4] also lists).
@@ -11311,7 +11458,9 @@
 טנדר ע
 כספומט ע
 אימפריה ע
+אימפריאלי ת
 אימפריאליסטי ת # [3] doesn't have this, but it has אימפריאליזם, so the extra א is justified.
+אימפריאליסט ת,נקבה_ית
 אימפריאליזם ע,אין_נטיות
 אימפרסיוניסטי ת
 אימפרסיוניזם ע,אין_נטיות
@@ -11330,6 +11479,12 @@
 הטרוסקסואל ת,נקבה_ית
 הטרוסקסואלי ת
 הטרוסקסואליות ע,יחיד
+ביסקסואלי ת
+ביסקסואליות ע,יחיד
+ביסקסואל ת,נקבה_ית
+טרנסקסואל ת,נקבה_ית
+טרנסקסואלי ת
+טרנסקסואליות ע,יחיד
 פורנוגרפי ת
 פורנוגרפיה ע,אין_נטיות
 אפיפיור ע
@@ -11419,10 +11574,12 @@
 וטרינרי ת
 וטרינריה ע,אין_נטיות
 אנזים ע
+אנזימטי ת
 אטמוספרה ע # The spelling אטמוספירה is far, far more common on the web, but unjustified.
 אטמוספרי ת
 סטרטוספרה ע,אין_נטיות
 ביוספרה ע,אין_נטיות
+המיספרה ע,אין_כינויים
 דיסקרטי ת
 דיסקרטיות ע,יחיד
 טלסקופ ע
@@ -11437,6 +11594,8 @@
 פרימיטיבי ת
 פרימיטיביות ע
 ויטמין ע
+ניאצין ע,אין_נטיות
+תיאמין ע,אין_נטיות
 אקזוטי ת
 אקורדיון ע
 טרומבון ע
@@ -11489,6 +11648,7 @@
 שימפנז ע # see also שימפנזה.
 שימפנזה ע # [3] and [4] agree that the standard form is שימפנז. [3] considers the form "שימפנזה" baby-talk, but [3] calls it both a כינוי רווח, and the feminine form. Strangely, in Google שימפנזה is vastly more popular than שימפנז, but the more common plural is שימפנז. We'll allow this variant.
 גורילה ע
+אורנגאוטן ע
 פומה ע
 אורתופדי ת
 אורתופד ע
@@ -11526,13 +11686,6 @@
 # This decision is also more consistent with other words in which neu is
 # written ני (see below).
 # TODO: reconsider this decision.
-#נוירולוג ע
-#נוירולוגית ע
-#נוירולוגי ת
-#נוירולוגיה ע,יחיד,אין_כינויים
-#נוירון ע # biology term
-#נוירוזה ע
-#נוירוטי ת
 נירולוג ע
 נירולוגית ע
 נירולוגי ת
@@ -11572,6 +11725,8 @@
 איקליפטוס ע # Note: [3] and [4] insist on this tsere maleh, and there is an explicit Academia decision to this effect (search איקליפטוס in this file). The vast majority of Hebrew laypeople will disagree, and also pronounce a tsere chaser.
 איפוריה ע # Again, according to the Academia, and [3] and [4], this has tserei male, but everyone writes and says אופוריה.
 איפורי ת
+היריסטיקה ע # This is the Academia's spelling for "eu", but [4] prefers יוריסטיקה and the popular spelling (and pronunciation) is actually היוריסטיקה.
+היריסטי ת
 
 פרמקולוגי ת
 פרמקולוגיה ע,אין_נטיות
@@ -11585,6 +11740,7 @@
 המטולוגית ע
 המטולוגי ת
 המטולוגיה ע,אין_נטיות
+קרדיולוגיה ע,יחיד,אין_כינויים
 קרדיולוג ע
 קרדיולוגית ע
 קרדיולוגי ת
@@ -11594,7 +11750,7 @@
 פתולוג ע
 פתולוגית ע
 פתולוגי ת
-פתולוגיה ע,אין_נטיות
+פתולוגיה ע,אין_כינויים
 סוציולוג ע
 סוציולוגית ע
 סוציולוגי ת
@@ -11694,7 +11850,6 @@
 קולוניאליזם ע,אין_נטיות
 קולוניאליסטי ת
 קולוניאליסט ת,נקבה_ית
-אונקייה ע
 אנטילופה ע
 אלכוהוליסט ת,נקבה_ית
 אלכוהוליזם ע,אין_נטיות
@@ -11717,6 +11872,10 @@
 אתי ת
 אבולוציה ע
 אבולוציוני ת
+רבולוציה ע
+רבולוציוני ת
+רבולוציונר ע,אין_כינויים
+רבולוציונרית ע,אין_כינויים
 אדמירל ע
 אדמירלית ע
 אדמירלות ע,יחיד
@@ -11801,7 +11960,6 @@
 מרתוני ת
 סיזיפי ת
 פיסטוק ע # [3] spells this פסטוק, [4] פיסטוק (with the yod already appearing in ktiv menukad). I decided to agree with [4]: [3]'s spelling is sensible if this was a Hebrew word, but I believe it isn't - it comes from English Pistachio or Arabic fustuk. Moreover, even if the "i" sound came directly from Arabic (it doesn't), in order to be milra Arabic would have added a yod as well.
-פיצרייה ע
 צ'ינצ'ילה ע
 שינשילה ע # considered the "proper" form of צ'ינצ'ילה
 סמנטי ת
@@ -11942,7 +12100,6 @@
 הולוגרמה ע
 הולוגרפיה ע,אין_נטיות
 הולוגרפי ת
-הומורסקה ע
 הומניסט ת,נקבה_ית
 הומניסטי ת
 הומניזם ע,אין_נטיות
@@ -11966,6 +12123,7 @@
 הרואיות ע
 אינטרפול ע,אין_נטיות
 סלנג ע,אין_נטיות
+סלנגי ת
 ביקיני ע,אין_נטיות
 אנטיביוטיקה ע,אין_נטיות
 אנטיביוטי ת
@@ -11977,7 +12135,7 @@
 יגואר ע,אין_כינויים
 ג'מוס ע,אין_כינויים
 פלמינגו ע,אין_נטיות
-קנגורו ע,אין_נטיות
+קנגורו ע,אין_כינויים,רבים=קנגורואים
 פנדה ע
 אסקפיזם ע,אין_נטיות # [4] also recognizes a variant אסקיפיזם
 אסקפיסטי ת
@@ -12011,6 +12169,8 @@
 אלטרואיסטי ת
 דדאיזם ע,אין_נטיות
 קוביזם ע,אין_נטיות
+קוביסטי ת
+קוביסט ת,נקבה_ית
 # [3] prefers אקסיסטנציאליזם, with ס. [4] allows both, but prefers ז. I do too.
 אקזיסטנציאליזם ע,אין_נטיות
 אקזיסטנציאליסטי ת
@@ -12023,6 +12183,10 @@
 פרוידיאני ת
 אדיפלי ת # [4] adds aleph for niqqud-less spelling: אדיפאלי.
 קפקאי ת
+ניוטוני ת
+קופרניקאי ת
+גאוסי ת
+שייקספירי ת
 
 איקונוגרפיה ע,אין_נטיות
 טאואיזם ע,אין_נטיות
@@ -12087,30 +12251,125 @@
 טריו ע,אין_נטיות
 
 פליז ע,אין_נטיות
-# Chemical elements (international names)
-מנגן ע,אין_נטיות
+
+# Chemical elements (international names), except those appearing elsewhere
+# in this file.
+# מימן
 טריטיום ע,אין_נטיות
-טיטניום ע,אין_נטיות
-פלדיום ע,אין_נטיות
-מגנזיום ע,אין_נטיות
-בריום ע,אין_נטיות
-פלואור ע,אין_נטיות
-הפלרה ע,יחיד
-אורניום ע,אין_נטיות
-פלטינה ע,אין_נטיות
-אוזון ע,אין_נטיות
 הליום ע,אין_נטיות
-ארגון ע,אין_נטיות
-גרמניום ע,אין_נטיות
 ליתיום ע,אין_נטיות
 בריליום ע,אין_נטיות
-פלוטוניום ע,אין_נטיות
-סלניום ע,אין_נטיות
-קדמיום ע,אין_נטיות
-רדון ע,אין_נטיות
-רדיום ע,אין_נטיות
+# בור
+# פחמן
+# חנקן
+# חמצן
+פלואור ע,אין_נטיות
+הפלרה ע,יחיד
+# נאון
+# נתרן
+מגנזיום ע,אין_נטיות
+אלומיניום ע,אין_נטיות # or חמרן
+סיליקון ע,אין_נטיות # or צורן
+# זרחן
+# גפרית
+כלור ע,אין_נטיות
+כלורי ת # usually in the phrase נתרן כלורי.
+הכלרה ע,יחיד
+ארגון ע,אין_נטיות
+# אשלגן
+# סידן
+סקנדיום ע,אין_נטיות
+טיטניום ע,אין_נטיות
+ונדיום ע,אין_נטיות
+כרום ע,אין_נטיות
+מנגן ע,אין_נטיות
+# ברזל
+קובלט ע,אין_נטיות
+ניקל ע,אין_נטיות
+# נחושת
+# אבץ
 גליום ע,אין_נטיות
+גרמניום ע,אין_נטיות
+ארסן ע,אין_נטיות
+זרניך ע,אין_נטיות # old name for ארסן
+סלניום ע,אין_נטיות
+ברום ע,אין_נטיות
+ברומי ת
+ברומיד ע,אין_כינויים
+קריפטון ע,אין_נטיות
+רובידיום ע,אין_נטיות
+סטרונציום ע,אין_נטיות
+איטריום ע,אין_נטיות
+זירקוניום ע,אין_נטיות
+ניוביום ע,אין_נטיות
+מוליבדן ע,אין_נטיות
+טכנציום ע,אין_נטיות
+רותניום ע,אין_נטיות
+רודיום ע,אין_נטיות
+פלדיום ע,אין_נטיות
+# כסף
+קדמיום ע,אין_נטיות
+אינדיום ע,אין_נטיות
+# בדיל
+אנטימון ע,אין_נטיות
+טלור ע,אין_נטיות
+# יוד
+קסנון ע,אין_נטיות
+צזיום ע,אין_נטיות
+בריום ע,אין_נטיות
+לנתן ע,אין_נטיות
+לנתניד ע,אין_כינויים
+לנתנידי ת
+צריום ע,אין_נטיות
+פרסאודימיום ע,אין_נטיות
+נאודימיום ע,אין_נטיות
+פרומתיום ע,אין_נטיות
+סמריום ע,אין_נטיות
+אירופיום ע,אין_נטיות
+גדוליניום ע,אין_נטיות
+טרביום ע,אין_נטיות
+דיספרוסיום ע,אין_נטיות
+הולמיום ע,אין_נטיות
+ארביום ע,אין_נטיות
+תוליום ע,אין_נטיות
+איטרביום ע,אין_נטיות
+לוטציום ע,אין_נטיות
+הפניום ע,אין_נטיות
+טנטלום ע,אין_נטיות
+טונגסטן ע,אין_נטיות
+רניום ע,אין_נטיות
+אוסמיום ע,אין_נטיות
+אירידיום ע,אין_נטיות
+פלטינה ע,אין_נטיות
+# זהב
+# כספית
+תליום ע,אין_נטיות
+# עופרת
 ביסמות ע,אין_נטיות # [4] prefers ביסמות but allows ביסמוט, while [3] allows only ביסמוט. Which should we have? Looking at the English or "Latin" spelling Bismuth, the transliteration should be with ת. However, m-w.com claims this comes from the German Wismut - so perhaps a ט can also be explained... For now we'll go with the usual transliteration rule - th becomes ת.
+פולוניום ע,אין_נטיות
+אסטטין ע,אין_נטיות
+רדון ע,אין_נטיות
+פרנציום ע,אין_נטיות
+רדיום ע,אין_נטיות
+אקטיניום ע,אין_נטיות
+אקטיניד ע,אין_כינויים
+אקטינידי ת
+תוריום ע,אין_נטיות
+פרוטאקטיניום ע,אין_נטיות
+אורניום ע,אין_נטיות
+נפטוניום ע,אין_נטיות
+פלוטוניום ע,אין_נטיות
+אמריציום ע,אין_נטיות
+קיריום ע,אין_נטיות
+ברקליום ע,אין_נטיות
+קליפורניום ע,אין_נטיות
+איינשטייניום ע,אין_נטיות
+פרמיום ע,אין_נטיות
+מנדלביום ע,אין_נטיות
+נובליום ע,אין_נטיות
+לורנציום ע,אין_נטיות
+
+אוזון ע,אין_נטיות
 
 טרילוגיה ע
 טרימסטר ע
@@ -12138,10 +12397,12 @@
 # reconsider adding these forms as well.
 כולרה ע,אין_נטיות
 דפיברילטור ע
+דפיברילציה ע,יחיד
 רנטגן ע,אין_נטיות
 ספורט ע,אין_נטיות
 סקי ע,אין_נטיות
 טניס ע,אין_נטיות
+בדמינטון ע,אין_נטיות
 גולף ע,אין_נטיות
 ברידג' ע,אין_נטיות
 דמקה ע,אין_נטיות
@@ -12149,19 +12410,14 @@
 דומינו ע,אין_נטיות
 בלט ע,אין_נטיות
 איידס ע,אין_נטיות # [3] spells אידס with tsere maleh and one yod: אידס. [4] spells with shwa in yod, and yod is doubled
-לייזר ע,אין_נטיות # [3] doesn't double the yod with shwa: ליזר. [4] doubles the yod: לייזר
-גייזר ע # [3] doesn't double the yod with shwa: גיזר. [4] doubles the yod: גייזר
+לייזר ע,אין_כינויים # [3] doesn't double the yod with shwa: ליזר. [4] doubles the yod: לייזר
+גייזר ע,אין_כינויים # [3] doesn't double the yod with shwa: גיזר. [4] doubles the yod: גייזר
 אלצהיימר ע,אין_נטיות
 כימרה ע
 הומור ע,אין_נטיות
-כלור ע,אין_נטיות
-כלורי ת # usually in the phrase נתרן כלורי.
-הכלרה ע,יחיד
-ברום ע,אין_נטיות
-ברומי ת
-ברומיד ע,אין_כינויים
-ארסן ע,אין_נטיות # chemical element
-זרניך ע,אין_נטיות # old name for ארסן
+הומורסקה ע
+הומוריסטי ת
+הומוריסט ת,נקבה_ית
 אסבסט ע,אין_נטיות # [4] prefers the spelling אזבסט, but אסבסט is more popular.
 בטון ע,אין_נטיות
 אספלט ע,אין_נטיות
@@ -12180,7 +12436,7 @@
 כרומוזומלי ת
 ריבוזום ע
 לברדור ע,אין_נטיות # kind of dog
-לוגו ע,אין_נטיות
+לוגו ע,אין_כינויים,רבים=לוגואים
 לוגיסטיקה ע,אין_נטיות
 לוגיסטי ת
 לוטוס ע
@@ -12211,7 +12467,7 @@
 מוזה ע
 מוטיב ע
 מומיה ע
-מונדיאל ע,אין_נטיות
+מונדיאל ע,אין_כינויים
 מונוגמי ת # [4] says it should be spelt מונוגאמי. This especially doesn't make sense as it write מונוגמיה.
 מונוגמיה ע,אין_נטיות
 פוליגמי ת # [4] says it should be spelt פוליגאמי in niqqud-less spelling.
@@ -12257,6 +12513,7 @@
 מיגרנה ע
 מיליציה ע
 מלנומה ע,אין_נטיות
+מלנין ע,אין_נטיות
 מלריה ע,אין_נטיות
 ממוגרפיה ע,אין_כינויים
 #ממוטה ע # NOTE: [3] prefers ט, [4] prefers ת. Both accept both. I tend to agree with the ת...
@@ -12328,7 +12585,7 @@
 קילוביט ע,אין_כינויים
 
 אווירונאוטיקה ע,אין_נטיות
-קרדיולוגיה ע,יחיד,אין_כינויים
+אווירונאוטי ת
 גרפיטי ע,אין_נטיות
 ג'ז ע,אין_נטיות
 בלוז ע,אין_נטיות
@@ -12490,6 +12747,8 @@
 אנטרקוט ע,אין_נטיות # TODO: [4] lists it this way, but the spelling אנטריקוט is twice more popular on Google...
 סינטה ע,אין_נטיות
 רוקט ע,אין_נטיות
+קינואה ע,אין_נטיות
+נוגט ע,אין_נטיות
 
 # [4] and [5] list גלוקוזה, while [3] lists גלוקוז. Uncharacteristicly, [3]'s
 # spelling, גלוקוז, is far more common (10 times more) in Google search.
@@ -12501,6 +12760,7 @@
 גלוקוז ע,אין_נטיות
 פרוקטוז ע,אין_נטיות
 לקטוז ע,אין_נטיות
+לקטי ת
 דקסטרוז ע,אין_נטיות # Another word for Glucose...
 סוכרוז ע,אין_נטיות # [4] says that with niqqud, the samech has kubuts. Strange.
 
@@ -12563,7 +12823,7 @@
 סולרי ת
 סולו ע,רבים=סולואים,אין_כינויים # The plural is not recognized by [3] or [4], but commonly used by the public, and I don't see why a plural should not exit, just like the English plural "solos".
 סולפג' ע,אין_נטיות
-סולטאן ע # Note added vav in ktiv male, and aleph (from Arabic alif). TODO: Writing without aleph is actually more common, so reconsider this decision.
+סולטאן ע # Note vav not in the Arabic spelling and aleph from Arabic alif.
 סולידי ת
 סולידיות ע
 סולידריות ע
@@ -12895,6 +13155,7 @@
 רפלקסולוגיה ע,אין_נטיות
 רפלקסולוגי ת
 רפלקסולוג ת,נקבה_ית
+רפלקטיבי ת
 רפסודיה ע,אין_כינויים # Note dagesh in פ.
 רפרטואר ע
 רפרטוארי ת
@@ -12973,7 +13234,6 @@
 בלגניסט ת,נקבה_ית # slang
 ברדק ע,אין_נטיות # slang
 גונדולה ע
-גלידרייה ע # colloquial
 גמבה ע # [3] calls this name colloquial, but [4] does not. Nowadays, this name is rarely used, or is this vegetable simply not common, with פלפל אדום replacing it?
 גנאלוגיה ע,אין_נטיות
 גנאלוגי ת
@@ -13000,7 +13260,7 @@
 הילינג ע,אין_נטיות # alternative-medicine term
 היפוקמפוס ע,אין_נטיות # biology term
 היפותלמוס ע,אין_נטיות # biology term
-היפי ת # colloquial
+היפי ת,עם,ארץ= # colloquial
 המנגיומה ע,אין_כינויים # medical term
 הרפס ע,אין_נטיות
 אספירין ע,אין_נטיות
@@ -13067,8 +13327,6 @@
 טרסה ע,אין_כינויים
 יכטה ע # many people write יאכטה.
 יוגה ע,אין_נטיות
-כפייה ע # Many people spell כאפייה, but [3] and [5] agree with this spelling.
-גלבייה ע
 כיף ע,אין_נטיות # slang
 כיפי ע,אין_נטיות # slang
 כירופרקטיקה ע,אין_נטיות
@@ -13169,6 +13427,8 @@
 פשקוויל ע # [4] lists this as an alternate spelling, and prefers the spelling פסקוויל. But almost nobody uses that spelling. A more frequent variant (that [4] doesn't recognize) is פשקעוויל.
 ארמדיל ע,אין_כינויים # This is what people often call ארמדילו
 אלקטרוליזה ע,אין_כינויים
+אלקטרוליט ע,אין_כינויים
+אלקטרוליטי ת
 איגלו ע,רבים=איגלואים,אין_כינויים
 דמורליזציה ע,יחיד,אין_כינויים
 אופוסום ע
@@ -13233,6 +13493,7 @@
 אוניטרי ת # usually math term
 אוניטריות ע
 אופרטור ע # math term
+אופרנד ע,אין_כינויים # math term
 אורתוגונלי ת
 אורתונורמלי ת # math term
 איטרטור ע,אין_כינויים # computer programming term
@@ -13290,6 +13551,15 @@
 הידרולוגי ת
 הידרופוביה ע,אין_נטיות
 הידרופובי ת
+הידרופוביות ע
+הידרופילי ת
+הידרופיליות ע
+הידרואלקטרי ת
+הידרודינמיקה ע,יחיד
+הידרודינמי ת
+הידרוליזה ע,יחיד
+הידרוסטטיקה ע,אין_נטיות
+הידרוסטטי ת
 היסטולוגיה ע,אין_נטיות
 היסטולוגי ת
 היפרטרופיה ע,יחיד,אין_כינויים
@@ -13445,14 +13715,11 @@
 מלודרמטי ת
 מלודרמטיות ע
 סכמה ע
-#סכמתי ת
 סכמטי ת
 סיסטמה ע # This form isn't normally used in Hebrew.
-#סיסטמתי ת
 סיסטמטי ת
+סיסטמי ת
 #פרובלמה ע # This form isn't normally used in Hebrew.
-#פרובלמתי ת # Because פרובלמה isn't normally used, פרובלמטי should probably be preferred.
-#פרובלמתיות ע # Because פרובלמה isn't normally used, פרובלמטי should probably be preferred.
 פרובלמטי ת # should perhaps be preferred over פרובלמתי.
 פרובלמטיות ע # should perhaps be preferred over פרובלמתיות.
 פרובלמטיקה ע,אין_נטיות
@@ -13503,6 +13770,8 @@
 סלקציה ע,אין_כינויים
 קונקורדנציה ע,אין_כינויים
 רפרודוקציה ע,אין_כינויים
+קופרודוקציה ע,אין_כינויים
+פרודוקציה ע,אין_כינויים # usually in the phrase קו-פרודוקציה
 פרופורציה ע
 דיספרופורציה ע
 פונקציה ע
@@ -13563,6 +13832,7 @@
 אופטומטריה ע,אין_נטיות
 אורגיה ע
 גלקסיה ע
+רפלקסיה ע,אין_נטיות
 ביופסיה ע
 נוסטלגיה ע
 קדנציה ע
@@ -13581,6 +13851,7 @@
 אנרגיה ע
 מטלורגיה ע,אין_נטיות
 סטיפנדיה ע,אין_כינויים # מלגה
+גוורדיה ע,אין_נטיות
 # the following word have the ייה question *and* the ו vs. ב question:
 טריוויה ע
 פרובינציה ע
@@ -13588,6 +13859,23 @@
 פרובינציאליות ע
 פרוורסיה ע
 פרוורטי ת
+# The following words had 2 yods in Hspell 1.0, and also have two yods in rav
+# milim and sometimes in milon hahove. but according to our decision in
+# niqqudless.odt to always write יה in foreign words, we changed this in hspell 1.1:
+אונקיה ע
+פיצריה ע
+בטריה ע
+פנצ'ר ע,אין_כינויים
+פנצ'ריה ע
+סטייק ע,אין_כינויים
+סטייקיה ע
+גלידריה ע # colloquial
+טורטיה ע
+# TODO: consider if to apply this niqqudles.odt decision (which is in the
+# chapter of non-semitic languages) also to these Arabic words:
+כפייה ע # Many people spell כאפייה, but [3] and [5] agree with this spelling.
+גלבייה ע
+טורייה ע # note added yod for ktiv maleh. From Arabic, colloquial.
 
 מיטוכונדריון ע,רבים=מיטוכונדריה # TODO: is there a plural nismach? Maybe מיטוכונדריית? [4] doesn't have it, and we don't generate it.
 אנגלי ת,עם,ארץ=אנגליה,נקבה_ה # is this the right ktiv-male spelling?
@@ -13601,6 +13889,7 @@
 אוסטרי ת,עם,ארץ=אוסטריה
 טורקי ת,עם,ארץ=טורקיה
 תורכי ת,עם,ארץ=תורכיה  # alternative spelling: are both correct?
+בוורי ת,עם,ארץ=בווריה
 קולומביאני ת,עם,ם,ארץ=קולומביה
 
 פונקציונלי ת
@@ -13649,7 +13938,8 @@
 היפוכונדר ת,נקבה_ית
 אימפוטנט ת,נקבה_ית
 אוליגרכי ת
-אוליגרך ע,אין_יחיד,אין_כינויים # [4] considers the word "אוליגרכים" a plural of אוליגרכי. I disagree, because the latter is never use to talk about a person, but the latter always is. I consider it the plural of a word that isn't used in singular.
+אוליגרך ע,אין_כינויים
+אוליגרכית ע,אין_כינויים
 אפילפטי ת
 אנורקטי ת # this is the form found in [4]
 אנורקסי ת # NOTE: non-standard variant of אנורקטי, not recognized by [4] or any other dictionary I checked. However, I consider it more Hebrew-like, and on Google it is much more common than the אנורקטי form.
@@ -13662,6 +13952,7 @@
 סוציומטרי ת
 אופטומטריסט ת,נקבה_ית
 גלקטי ת
+אינטרגלקטי ת
 נוסטלגי ת
 אטרקטיבי ת
 אטרקטיביות ע
@@ -13686,6 +13977,7 @@
 # in the language, and *do* also have often-used Hebrew counterpart words
 # or short phrases:
 קטגוריה ע
+קטגוריזציה ע
 אינפורמציה ע
 דיסאינפורמציה ע
 אינטגרציה ע
@@ -13693,6 +13985,8 @@
 אנימטור ת,נקבה_ית
 וריאציה ע
 וריאנט ע
+אינווריאנט ע # science term. An older form is אינווריאנטה.
+אינווריאנטי ת # science term
 אופציונלי ת
 אינפורמטיבי ת
 אינטגרלי ת
@@ -13837,6 +14131,7 @@
 קונטיננטלי ת
 וולגרי ת
 רקטה ע
+רקטי ת
 פוסטר ע
 טורניר ע
 דירקטור ת,נקבה_ית
@@ -13852,8 +14147,9 @@
 ראליסט ת,נקבה_ית
 סוראליסטי ת
 סוראליזם ע,אין_נטיות
-ז'נר ע
-ז'אנר ע # [3] prefers this word also aleph . I'm not sure why...
+סוראליסט ת,נקבה_ית # Not commonly used, but in some use.
+ראליטי ע,אין_נטיות # colloquial
+ז'נר ע # Uncharacteristicly, [3] also allows the variant with aleph. I don't know why.
 קליניקה ע
 קליני ת
 קלינאי ת,ם
@@ -14023,7 +14319,6 @@
 הומוגניות ע
 הטרוגני ת
 הטרוגניות ע
-הומוריסטי ת
 אינטרפרטציה ע
 אינסטרומנט ע # foreign word, not normally used in modern writing
 אינקובציה ע
@@ -14098,6 +14393,8 @@
 ז'רגון ע
 זבנג ע,אין_נטיות # slang
 קטליזטור ע
+קטליטי ת
+קטליזה ע,אין_נטיות
 חמסין ע # colloquial, for שרב.
 חצ'קון ע # slang
 מחוצ'קן ת,נקבה_ת # slang
@@ -14108,7 +14405,6 @@
 טולרנטי ת
 טולרנטיות ע
 טוקסידו ע,אין_נטיות
-טורייה ע # note added yod for ktiv maleh. From Arabic, colloquial.
 טיפ ע,אין_כינויים # TODO: the smichut forms aren't used...
 טלגרמה ע
 טמפרמנט ע
@@ -14119,6 +14415,7 @@
 תרמודינמי ת # physics term
 תרמוס ע,אין_כינויים # Academia's translation: שמרחום.
 תרמי ת
+היפותרמיה ע,אין_נטיות
 טרמינולוגיה ע
 טרמינולוגי ת
 טרנזיטיבי ת # math term
@@ -14132,8 +14429,6 @@
 מגיה ע,אין_נטיות
 מגי ת # [4] adds aleph for niqqudless-spelling - מאגי - but strangely doesn't add aleph in מגיה.
 מג ע,אין_נטיות # In the phrase רב-מג
-אלומיניום ע,אין_נטיות
-סיליקון ע,אין_נטיות
 סיליקט ע,אין_כינויים
 מיקה ע,אין_נטיות # mica. the Hebrew name is נציץ.
 כרונולוגי ת
@@ -14201,6 +14496,7 @@
 פילנתרופי ת
 פילנתרופיה ע,אין_נטיות
 מיליטנטי ת
+מיליטנט ת,נקבה_ית
 מיליטריזם ע,אין_נטיות
 מיליטריסט ת,נקבה_ית
 מיליטריסטי ת
@@ -14249,8 +14545,6 @@
 סטטוטורי ת
 סטטיסט ת,נקבה_ית
 סטיגמה ע
-סטייק ע,אין_כינויים
-סטייקייה ע
 סטיקר ע,אין_כינויים # I hate this useless English loan word. TODO: reconsider this word
 סטנד ע,אין_כינויים # I hate this useless English loan word. TODO: reconsider this word
 סטנוגרפיה ע,אין_נטיות
@@ -14322,6 +14616,9 @@
 פבריקציה ע
 פגני ת,עם,ארץ= # note: [4] addes aleph for niqqud-less spelling: פגאני.
 פגניות ע
+אנימיזם ע,אין_נטיות
+אנימיסטי ת
+אנימיסט ת,נקבה_ית
 פדגוג ת,נקבה_ית
 פדגוגי ת
 פדגוגיה ע,אין_נטיות
@@ -14342,6 +14639,7 @@
 פורמולה ע,אין_נטיות
 פורצלן ע,אין_נטיות
 פזה ע,אין_כינויים # [4] gives niqqud-less spelling פאזה.
+פזי ת # in phrases like תלת-פזי
 פטיציה ע
 פטלי ת # [4] gives niqqud-less spelling פטאלי.
 פטליזם ע,אין_נטיות
@@ -14582,7 +14880,6 @@
 בונבון ע # not often used today
 בונבוניירה ע
 בוקס ע,אין_כינויים # colloquial.
-בטרייה ע
 ביזרי ת # [4] addes aleph for niqqud-less spelling: ביזארי
 בייביסיטר ע
 בלוף ע # slang
@@ -14693,6 +14990,7 @@
 קרם ע,אין_כינויים
 רדאר ע,אין_כינויים
 רקטום ע,אין_כינויים
+רקטלי ת
 שכטה ע,אין_כינויים # slang
 שוק ע,אין_כינויים # colloquial. Unfortunately, the plural "שוקים" can cause mis-acceptance of misspellings for שווקים or שוקיים. TODO: when we can recognize phrase, only a very limited number of phrases (like שוקים חשמליים) should be accepted with this plural.
 שוקר ע,אין_כינויים
@@ -14739,9 +15037,9 @@
 דפיציט ע,אין_כינויים
 דפרסיה ע,אין_נטיות
 דפנסיבי ת
-דפנסיבה ע,אין_נטיות
+דפנסיבה ע,יחיד,אין_כינויים
 אופנסיבי ת
-אופנסיבה ע,אין_נטיות
+אופנסיבה ע,אין_כינויים
 היולי ת
 היוליות ע
 הנגאובר ע,אין_נטיות
@@ -14788,8 +15086,6 @@
 פריים ע,אין_כינויים # colloquial
 פרפומריה ע,אין_כינויים
 ציפלון ת # slang. [4] prefers the Hebrew-like spelling צפלון, but ציפלון is more popular, and is consistent with the fact that this is a foreign word (from Russian Tsiflonok, meaning a fledgling bird)
-פנצ'ר ע,אין_כינויים
-פנצ'רייה ע
 קומנדקר ע,אין_כינויים
 קומפוט ע,אין_כינויים
 קומפנסציה ע,אין_נטיות
@@ -14870,7 +15166,7 @@
 נרקומנית ע
 נרקומניה ע,אין_נטיות
 נרקוטי ת
-נרקוזה ע,אין_נטיות
+נרקוזה ע,יחיד,אין_כינויים
 מסעדן ע
 מסעדנית ע
 מסעדנות ע,יחיד # not found in [3] or [4], I don't know why.
@@ -14979,6 +15275,7 @@
 דגיגון ע # Why is this word necessary, when דגיג is available?
 הליכון ע # Sometimes refers to walker, sometimes to treadmill. [3] doesn't have this word at all.
 חוצן ע # another name for alien, חייזר.
+חוצני ת
 חזירון ע # another name for חזרזיר
 חשופית ע
 סנדלית ע
@@ -15011,15 +15308,52 @@
 # Words I could not find in any dictionary, but look real to me:
 אקספוננציאלי ת # math term
 אקספוננט ע # math term
-ויזואליזציה ע,אין_נטיות
-מוביליזציה ע,אין_נטיות
+ויזואליזציה ע,אין_כינויים
+מוביליזציה ע,יחיד,אין_כינויים
 מעונוע ע # קרוון. A new Academia word.
 ניווני ת # degenerative
 דלורית ע # kind of plant. Why does no dictionary know this word?
-טורטייה ע
 טורטליני ע,אין_נטיות
 ספוגית ע # not in [3] or [4], but often used, for small sponge or form of birth control
 פריכית ע # not in [3] or [4], but used most often in the phrase פריכיות אורז
+
+אלפיני ת
+אלפיניסט ע,יחיד,אין_כינויים
+אלפיניסטית ע,יחיד,אין_כינויים
+אלפיניזם ע,אין_נטיות
+גלוטן ע,אין_נטיות
+צליאק ע,אין_נטיות
+אפולוגטי ת
+אפולוגטיקה ע,אין_נטיות
+גורו ע,אין_כינויים,רבים=גורואים
+ליצ'י ע,אין_נטיות
+טוקבק ע,אין_כינויים # Slang. I'm curious as to how this word got into Hebrew, seing that this word is rarely if ever used in English in the sense of comments on Internet sites. Maybe it refers to one particular implementation?
+טוקבקיסט ת,נקבה_ית
+עירניק ת,נקבה_ית # slang
+חירניק ת,נקבה_ית # military slang. todo: consider ח"ירניק instead
+קומולוס ע,אין_נטיות # kind of cloud
+סטרטוקומולוס ע,אין_נטיות # kind of cloud
+אלטוקומולוס ע,אין_נטיות # kind of cloud
+אירוויזיון ע,אין_כינויים
+בנג'י ע,אין_נטיות
+פרקטל ע,אין_כינויים
+פרקטלי ת
+סטרי ת # In phrases חד-סטרי, דו-סטרי.
+פיונית ע # biology term
+מרימבה ע
+צובל ע,אין_כינויים # kind of animal: sable
+פיליטון ע
+פטרוגליף ע
+אובליסק ע
+טייקון ע
+טייקונית ע
+אוטרקי ת
+אוטרקיה ע,אין_נטיות
+טריגר ע,אין_כינויים
+אלקטרוסטטי ת
+אלקטרוסטטיקה ע,אין_נטיות
+אנמנזה ע
+
 ##############################################################################
 # Acronyms.
 # Note: according to custom, the plural of ח"כ is ח"כים and its feminine
@@ -15043,6 +15377,7 @@
 מלכ"ר ע,אין_כינויים
 לו"ז ע,אין_כינויים
 מו"ל ע,אין_כינויים
+מו"לית ע,אין_כינויים
 מו"לות ע,אין_נטיות
 אח"ם ת,נקבה_ית
 מו"מ ע,אין_נטיות
@@ -15085,7 +15420,7 @@
 שב"ס ע,אין_נטיות
 צה"לי ת
 מג"ב ע,אין_נטיות
-רמטכ"ל ע,אין_כינויים
+רמטכ"ל ת,נקבה_ית
 מטכ"ל ע,אין_נטיות
 מטכ"לי ת
 שכפ"ץ ע
@@ -15158,6 +15493,7 @@
 סמב"ץ ת,נקבה_ית
 חפ"ש ת,נקבה_ית
 קב"ט ת,נקבה_ית
+רס"פ ת,נקבה_ית
 
 רפ"ק ע,אין_כינויים
 סנ"צ ע,אין_נטיות
