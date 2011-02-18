@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Taken from the Irish dictionary -->
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
@@ -30,5 +30,12 @@
     <em:creator>Nadav Har'El and Dan Kenigsberg</em:creator>
     <em:homepageURL>http://hspell.ivrix.org.il/</em:homepageURL>
     <em:unpack>true</em:unpack>
+    <em:localized>
+      <Description>
+        <em:locale>he-IL</em:locale>
+        <em:name>מילון איות עברי (מ־HSpell)</em:name>
+        <em:creator>נדב הראל ודן קניגסברג</em:creator>
+      </Description>
+    </em:localized>
   </Description>
 </RDF>
