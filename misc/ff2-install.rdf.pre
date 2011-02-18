@@ -9,7 +9,7 @@
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 	<em:minVersion>2.0b1</em:minVersion>
-	<em:maxVersion>3.7a1pre</em:maxVersion>
+	<em:maxVersion>4.0.*</em:maxVersion>
       </Description>
     </em:targetApplication>
     <em:targetApplication><!-- Thunderbird -->
@@ -29,5 +29,6 @@
     <em:name>Hebrew spell-checking dictionary (from HSpell)</em:name>
     <em:creator>Nadav Har'El and Dan Kenigsberg</em:creator>
     <em:homepageURL>http://hspell.ivrix.org.il/</em:homepageURL>
+    <em:unpack>true</em:unpack>
   </Description>
 </RDF>
