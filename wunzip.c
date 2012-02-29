@@ -25,8 +25,7 @@ main(int argc, char **argv)
 				exit(1);
 			}
 			/* we got a new letter c - continue the loop */
-
-		} 
+		}
 		/* word letter - add it */
 		if(slen>=sizeof(sbuf)-1){
 			fprintf(stderr,"word too long... exiting.\n");

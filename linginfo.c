@@ -113,7 +113,7 @@ static char *dmask2text(char *s, int dmask) {
 	strcat(s,c);
 
 	}
-	
+
 	return s;
 }
 
@@ -196,7 +196,7 @@ int linginfo_init(const char *dir) {
 	}
 
 	/* read dictionary into memory */
-	
+
 	/* TODO: have better quoting for filename, or use zlib directly */
 #ifdef HAVE_ZLIB
 	snprintf(s,sizeof(s),"%s",dir);
@@ -212,7 +212,7 @@ int linginfo_init(const char *dir) {
 #else
 	snprintf(s,sizeof(s),"gzip -dc '%s.stems'",dir);
 #endif
-	if(!(fpstems=popen(s,"r"))){ 
+	if(!(fpstems=popen(s,"r"))){
 		fprintf(stderr,"Hspell: can't open %s.\n",s);
 		pclose(fp);
 		return 0;
@@ -222,7 +222,7 @@ int linginfo_init(const char *dir) {
 #else
 	snprintf(s,sizeof(s),"gzip -dc '%s.desc'",dir);
 #endif
-	if(!(fpdesc=popen(s,"r"))){ 
+	if(!(fpdesc=popen(s,"r"))){
 		fprintf(stderr,"Hspell: can't open %s.\n",s);
 		pclose(fp);
 		pclose(fpstems);
@@ -276,20 +276,20 @@ int linginfo_init(const char *dir) {
 			}
 			/* we got a new letter c - continue the loop */
 
-		} 
+		}
 		/* word letter - add it */
 		if(slen>=sizeof(sbuf)-1){
 			fprintf(stderr,"Hspell: word too long... giving up.\n");
 			return 0;
 		}
 		sbuf[slen++]=c;
-	} 
+	}
 	}
 
 	pclose(fp);
 	pclose(fpstems);
 	pclose(fpdesc);
-	
+
 	if (hspell_debug) {
 		fprintf (stderr, "linginfo: finished reading %d words and stems\n",i);
 	}
@@ -303,7 +303,7 @@ int linginfo_lookup(const char *word, char **desc, char **stem)
 		if (i==(top-bottom)/2 + bottom) {
 			return 0;
 		}
-		i=(top-bottom)/2 + bottom; 
+		i=(top-bottom)/2 + bottom;
 		if (hspell_debug) fprintf(stderr,"bot=%d i=%d top=%d) %s\n",bottom,i,top, lookup[i]);
 		res = strcmp(lookup[i],word);
 		if (res>0) {top=i;}

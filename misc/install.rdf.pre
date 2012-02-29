@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Taken from the Irish dictionary -->
+<?xml version="1.0"?>
+<!-- Originally based on the Irish dictionary -->
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>he@dictionaries.addons.mozilla.org</em:id>
-    <em:version>%VERSION%</em:version>
+    <em:version>1.2.0.1</em:version>
     <em:targetApplication><!-- Firefox -->
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 	<em:minVersion>2.0b1</em:minVersion>
-	<em:maxVersion>4.0.*</em:maxVersion>
+        <em:maxVersion>13.0a1</em:maxVersion>
       </Description>
     </em:targetApplication>
     <em:targetApplication><!-- Thunderbird -->
@@ -33,8 +33,8 @@
     <em:localized>
       <Description>
         <em:locale>he-IL</em:locale>
-        <em:name>ΧΧ™ΧΧ•Χ ΧΧ™Χ•Χª ΧΆΧ‘Χ¨Χ™ (ΧΦΎHSpell)</em:name>
-        <em:creator>Χ Χ“Χ‘ Χ”Χ¨ΧΧ Χ•Χ“Χ Χ§Χ Χ™Χ’Χ΅Χ‘Χ¨Χ’</em:creator>
+        <em:name>ξιμεο ΰιεϊ ςαψι (ξ?HSpell)</em:name>
+        <em:creator>πγα δψΰμ εγο χπιβραψβ</em:creator>
       </Description>
     </em:localized>
   </Description>

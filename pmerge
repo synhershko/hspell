@@ -74,7 +74,7 @@ my @words = sort(keys %specifiers);
 my $F = new IO::File;
 $F->open($out_prefixes,"w") or croak "Couldn't write -p parameter '$out_prefixes'";
 print $F map { chr($specifiers{$_}) } @words;
-print map { $_."\n" } @words; 
+print map { $_."\n" } @words;
 
 
 exit 0;

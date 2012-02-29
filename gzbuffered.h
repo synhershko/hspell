@@ -33,7 +33,7 @@ typedef struct {
         gzFile gz;
         char buf[GZBUFFERED_SIZE]; /* buffer of preread characters */
         char *b; /* next character to read from b */
-        int n; /* number of character left to read in buffer */               
+        int n; /* number of character left to read in buffer */
 } gzbFile;
 
 static inline gzbFile *

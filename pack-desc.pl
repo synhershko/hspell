@@ -3,7 +3,7 @@
 #
 # Packs a sorted, binarized wordlist into, into one dictionary with
 # or'ed prefix hints, a description file, and a stem file.
-# Usage: cat sorted_bin | 
+# Usage: cat sorted_bin |
 #	pack-desc.pl -p prefixesout -d descout -s stemsout > wordsout
 #
 
@@ -63,7 +63,7 @@ while(<>){
 
 print STDERR "\nwriting output files...";
 if ($out_prefixes) {
-	open(PREFIXES,">$out_prefixes") 
+	open(PREFIXES,">$out_prefixes")
 		or croak "Couldn't write -p parameter '$out_prefixes'";
 }
 if ($out_desc) {

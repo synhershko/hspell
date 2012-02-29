@@ -1,10 +1,44 @@
-Release 1.2 (not yet released)
+Release 1.2 (February 28, 2012)
 
- * Fixed bug which could cause the "hspell" command to core-dump on some
-   words with a lot of apostrophes (because they were confused with gimatria).
- 
+ * Some incorrect words purged or fixed, and 600 base words added.
+
+ * Continued to improve the niqqudless.odt document, which describes Hspell's
+   spelling standard. The document is still incomplete, but is already over
+   80 pages long and may already explain spelling issues you've been
+   pondering - so take a look!
+
+ * Fixed bugs which could cause the "hspell" command to core-dump on some
+   words with a lot of apostrophes (because they were confused with gimatria),
+   and hspell_trycorrect() to core-dump on an empty word.
+
  * Fixed a bug which caused us to accept a definite article on verbs with
    objects, e.g., הכובשן.
+
+ * The "myspell" target was removed, as this format has been all but abandoned
+   in recent years. Use "make hunspell" instead.
+
+ * The "hunspell" target used to use a utility called "doubleaffixcompress"
+   to make the dictionary smaller. This utility is in fact broken, and is no
+   longer used in this release - resulting in bigger, but more correct
+   hunspell-format dictionaries.
+
+ * In previous releases, generated hunspell and aspell dictionaries incorrectly
+   accepted bare infinitive verbs, e.g., ישון. This is fixed in this release
+   for hunspell dictionaries, using the hunspell-specific NEEDAFFIX feature.
+   Unfortunately, aspell does not have this feature, so the aspell dictionary
+   still has this bug. Added a "make test" to test this bug.
+
+ * The "--enable-aspell" configure parameter was removed - use "make aspell"
+   instead. Also added a "make he.rws" target to build he.rws from he.wl.
+   See the INSTALL file for more information about building Hebrew
+   dictionaries for various multilingual spell-checkers.
+
+ * Added new "--enable-shared" configure parameter to build a shared library
+   libhspell.so, which would be used when compiling the "hspell" tool.
+
+ * Vocabulary: 464,725 words (when built with "--enable-fatverb")
+               based on 24082 base words: 12718 nouns, 3786 adjectives,
+               5244 verb stems, and 2334 other words.
 
 -----------------------------------------------------------------------------
 

@@ -16,10 +16,10 @@ echo " verb lines."
 echo -n "shemp.dat: "
 echo -n `grep " ע" shemp.dat | grep -vc "^#"`
 echo " auto-generated gerunds."
-echo -n "misc data lines:" `egrep -hcv "^[-#]|^$" extrawords` "extrawords, "
-echo -n `grep -hcv "^[-#]" milot` "milot, "
-echo -n `grep -hcv "^[-#]" biza-verbs` "bizaverbs, "
-echo `grep -hc "^[-#]" biza-nouns` "bizanouns. "
+echo -n "misc data lines:" `egrep -hcv "^[-#]|^$" extrawords.hif` "extrawords, "
+echo -n `grep -hcv "^[-#]" milot.hif` "milot, "
+echo -n `grep -hcv "^[-#]" biza-verbs.hif` "bizaverbs, "
+echo `grep -hc "^[-#]" biza-nouns.hif` "bizanouns. "
 
 echo
 
@@ -31,13 +31,13 @@ NN2=`sed "s/#.*$//" < wolig.dat | egrep ",(זכר|נקבה)" | grep "ע,"| wc -l`
 NN3=`grep -h " ע" wolig.dat shemp.dat | sed "/^#/d;s/ *#.*$//" | sort -u | egrep ",(יחיד|רבים|ות|ים|יים|אות)" |wc -l`
 echo Nouns: $NN "(of" them, $NN3 need plural hints, $NN1 need inflection hints, $NN2 explicit "gender)."
 
-VV=`zgrep -c -- ---- dout.verbs.gz`
+VV=`grep -c -- ---- verbs.hif`
 echo Verbs: $VV
 
 AA=`grep " ת" wolig.dat | grep -v "^#" | sed "s/ *#.*$//" | sort -u | wc -l`
 echo Adjectives: $AA
 
-EE=`grep -hv "^[-#]" extrawords milot biza-verbs biza-nouns |  sed "s/ *#.*$//" | tr -d - | sort -u | wc -l`
+EE=`grep -hv "^[-#]" extrawords.hif milot.hif biza-verbs.hif biza-nouns.hif |  sed "s/ *#.*$//" | tr -d - | sort -u | wc -l`
 echo Other words: $EE
 echo
 echo Total number of base words - `expr $NN + $VV + $AA + $EE`
