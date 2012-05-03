@@ -1,6 +1,6 @@
 '\" t
-.\" Copyright (c) 2001-2009, Nadav Har'El and Dan Kenigsberg
-.TH hspell 1 "31 December 2009" "Hspell 1.1" "Ivrix"
+.\" Copyright (c) 2001-2012, Nadav Har'El and Dan Kenigsberg
+.TH hspell 1 "28 February 2012" "Hspell 1.2" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker
 .SH SYNOPSIS
@@ -15,12 +15,12 @@ tries to find incorrectly spelled Hebrew words in its input files.
 .PP
 Like the traditional Unix spell(1),
 .B hspell
-outputs the sorted list of incorrect words, and does not (yet) have a more
+outputs the sorted list of incorrect words, and does not have a more
 friendly interface for making corrections for you. However, unlike
 spell(1),
 .B hspell
-can suggest possible corrections for some spelling errors - such suggestions
-are enabled with the
+can suggest possible corrections for some spelling errors. Such suggestions
+can be enabled with the
 .B \-c
 (correct) and
 .B \-n
@@ -29,9 +29,9 @@ are enabled with the
 .B
 Hspell
 currently expects ISO-8859-8-encoded input files. Non-Hebrew characters in the
-input files are ignored, allowing the easy spellchecking of Hebrew-English 
+input files are ignored, allowing the easy spellchecking of Hebrew-English
 texts, as well as HTML or TeX files.
-If files using a different encoding (e.g., UTF8) are to be checked, they must
+If files using a different encoding (e.g., UTF-8) are to be checked, they must
 be converted first to ISO-8859-8 (e.g., see iconv(1), recode(1)).
 .PP
 The output will also be in ISO-8859-8 encoding, in so-called "logical order",
@@ -68,7 +68,7 @@ option,
 .B hspell
 prints true and human-oriented version information and exits.
 .TP
-.B \-c 
+.B \-c
 If the
 .B \-c
 option is given,
@@ -78,7 +78,7 @@ corrections. The correction mechanism in this release is especially good
 at finding corrections for incorrect niqqud-less spellings, with missing
 or extra 'immot-qri'a.
 .TP
-.B \-n 
+.B \-n
 The
 .B \-n
 option will give some longer "notes" about certain spelling errors, explaining
@@ -127,12 +127,12 @@ word list, and are looking for common correct words that
 .B hspell
 does not know yet.
 .TP
-.B \-a 
-With the 
 .B \-a
-option, 
+With the
+.B \-a
+option,
 .B hspell
-tries to emulate (as little as possible of) 
+tries to emulate (as little as possible of)
 .B ispell's
 pipe interface. This allows
 .B Lyx, Emacs, Geresh
@@ -189,11 +189,12 @@ dictionaries have been compiled in the current directory and hspell is run as
 "hspell \-Dhebrew.wgz".
 .TP
 .B \-d, \-B, \-m, \-T, \-C, \-S, \-P, \-p, \-w, and \-W
-These options are passed to 
-.B hspell 
+These options are passed to
+.B hspell
 by
 .B lyx
-or other applications, and are cordially ignored.
+or other applications, thinking they are talking to ispell. These options
+are cordially ignored.
 .\".SH EXAMPLES
 .\".TP 3
 .\"1.
@@ -214,7 +215,7 @@ and consistent spelling style throughout
 your writing. It is a disadvantage, because a few of the Academia's official
 spelling decisions are relatively unknown to the general public.
 
-Users of Hspell (and all Hebrew writers, for that matter) are encouraged to 
+Users of Hspell (and all Hebrew writers, for that matter) are encouraged to
 read the Academia's official niqqud-less spelling rules (which are printed at
 the end of most modern Hebrew dictionaries, and an abridged version is
 available in http://hebrew-academy.huji.ac.il/decision4.html). Users are
@@ -228,7 +229,7 @@ which explains Hspell's spelling standard in detail (in Hebrew). It explains
 both the overall principles, and why specific words are spelled the way
 they are.
 
-Future releases might include an option for alternative spelling standards.
+A future release may include an option for alternative spelling standards.
 .SH "BEHIND THE SCENES"
 The
 .B hspell
@@ -243,10 +244,8 @@ of printed dictionaries.
 
 The word list is also not based on automatic scanning
 of available Hebrew documents (such as online newspapers), because there is
-no way to guarantee that such a list will be correct (not contain
-misspellings, useless proper names, and so on), complete (certain
-inflections might not appear in the chosen samples), or consistent (especially
-when it comes to niqqud-less spelling rules).
+no way to guarantee that such a list will be correct, complete,
+or consistent in its spelling standard.
 
 Instead, our idea was to write programs which know how to correctly inflect
 Hebrew nouns and conjugate Hebrew verbs. The input to these programs is a
@@ -264,7 +263,7 @@ from source.
 These lists, before and after inflection, may be useful for much more than
 spellchecking. Morphological analysis (which
 .B hspell
-provides with the 
+provides with the
 .B \-l
 option) is one example. For more ideas, see
 Hspell project's Web site, at
@@ -291,14 +290,15 @@ Currently always 0.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 1.1 (December 31, 2009)
+described by this manual page is 1.2.
 .SH "COPYRIGHT"
-Copyright (C) 2000-2009, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2012, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
-Hspell is free software, released under the GNU General Public License (GPL).
+Hspell is free software, released under the GNU Affero General Public License
+(AGPL) version 3.
 Note that not only the programs in the distribution, but also the dictionary
-files and the generated word lists, are licensed under the GPL.
+files and the generated word lists, are licensed under the AGPL.
 There is no warranty of any kind.
 
 See the LICENSE file for more information and the exact license terms.
@@ -327,7 +327,7 @@ We wish to thank Cilla Tuviana and Dr. Zvi Har'El for their assistance with
 some grammatical questions.
 
 Several other people helped us in various releases, with suggestions, fixes
-or patches - they are listed in the WHATSNEW file in the distribution. 
+or patches - they are listed in the WHATSNEW file in the distribution.
 
 .SH "SEE ALSO"
 .BR hspell (3),
@@ -368,4 +368,4 @@ for instructions on how to use Hspell in a variety of applications.
 .PP
 .BR hspell 's
 being limited to the ISO-8859-8 encoding, and not recognizing UTF-8
-or even CP1255 (including niqqud), is almost an anachronism today.
+or even CP1255 (including niqqud), is an anachronism today.

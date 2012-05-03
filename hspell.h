@@ -1,4 +1,4 @@
-/* Copyright (C) 2003-2009 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2012 Nadav Har'El and Dan Kenigsberg */
 
 /* This header file defines the Hspell Hebrew spellchecking API in C, as
    implemented by the libhspell.a library.
@@ -13,7 +13,7 @@
 */
 #define HSPELL_VERSION_MAJOR 1
 #define HSPELL_VERSION_MINOR 2
-#define HSPELL_VERSION_EXTRA "alpha"
+#define HSPELL_VERSION_EXTRA ""
 
 
 struct dict_radix;
@@ -70,7 +70,7 @@ typedef int hspell_word_split_callback_func(const char *word,
 
 /* find all legal splittings of word into a baseword and a prefix. call enumf
  * for every such split. */
-int hspell_enum_splits(struct dict_radix *dict, const char *word, 
+int hspell_enum_splits(struct dict_radix *dict, const char *word,
 	hspell_word_split_callback_func *enumf);
 
 #endif /* INCLUDED_HSPELL_H */

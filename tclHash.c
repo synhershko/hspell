@@ -9,12 +9,19 @@
      * copy stuff from generic/tcl.h
      * Removed key types other than string, and statistics routines.
      * commented out panic-related lines.
+     * Other changes required to compile without warnings on modern systems.
 */
 
 #define ckfree free
 #define ckalloc malloc
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#endif
 
 
 /* 
@@ -264,7 +271,7 @@ Tcl_FindHashEntry(tablePtr, key)
 	    index = hash & tablePtr->mask;
 	}
     } else {
-	hash = (unsigned int) key;
+	hash = (unsigned int) (intptr_t) key;
 	index = RANDOM_INDEX (tablePtr, hash);
     }
 
@@ -345,7 +352,7 @@ Tcl_CreateHashEntry(tablePtr, key, newPtr)
 	    index = hash & tablePtr->mask;
 	}
     } else {
-	hash = (unsigned int) key;
+	hash = (unsigned int) (intptr_t) key;
 	index = RANDOM_INDEX (tablePtr, hash);
     }
 

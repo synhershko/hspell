@@ -457,7 +457,7 @@ static int do_read_dict(FILE *fp, struct dict_radix *dict)
 				return 0;
 			}
 			/* we got a new letter c - continue the loop */
-		} 
+		}
 		/* word letter - add it */
 		if(sdepth>=sizeof(stack)/sizeof(stack[0])-1){
 			fprintf(stderr,"Hspell: word too long... giving up\n");
@@ -593,7 +593,7 @@ static int do_read_dict(FILE *fp, struct dict_radix *dict)
 	dict->nnodes_small=nnodes_small;
 	dict->nnodes_medium=nnodes_medium;
 	dict->nnodes=nnodes;
- 
+
 	return 1;
 }
 

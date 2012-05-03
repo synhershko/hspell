@@ -1,4 +1,4 @@
-/* Copyright (C) 2003-2004 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2012 Nadav Har'El and Dan Kenigsberg */
 
 #include <time.h>
 #include <stdio.h>
@@ -227,7 +227,7 @@ hspell_check_word(struct dict_radix *dict, const char *word, int *preflen)
 
 /* this functions copies, in a less than intelligent fashion, the Nadav's code
  * from hspell_check_word. TODO: use the same code for both functions. */
-int hspell_enum_splits(struct dict_radix *dict, const char *word, 
+int hspell_enum_splits(struct dict_radix *dict, const char *word,
 	hspell_word_split_callback_func *enumf)
 {
 	int preflen=0, count=0;
@@ -427,20 +427,22 @@ hspell_trycorrect(struct dict_radix *dict, const char *w, struct corlist *cl)
 	}
 	/* try to replace a non-final letter at the end of the word by its
 	 * final form and vice versa (useful check for abbreviations) */
-	strncpy(buf,w,sizeof(buf));
-	switch(w[len-1]){
-		case 'ê': buf[len-1]='ë'; break;
-		case 'í': buf[len-1]='î'; break;
-		case 'ï': buf[len-1]='ð'; break;
-		case 'õ': buf[len-1]='ö'; break;
-		case 'ó': buf[len-1]='ô'; break;
-		case 'ë': buf[len-1]='ê'; break;
-		case 'î': buf[len-1]='í'; break;
-		case 'ð': buf[len-1]='ï'; break;
-		case 'ö': buf[len-1]='õ'; break;
-		case 'ô': buf[len-1]='ó'; break;
+	if(len>0 && len<sizeof(buf)){
+		strncpy(buf,w,sizeof(buf));
+		switch(w[len-1]){
+			case 'ê': buf[len-1]='ë'; break;
+			case 'í': buf[len-1]='î'; break;
+			case 'ï': buf[len-1]='ð'; break;
+			case 'õ': buf[len-1]='ö'; break;
+			case 'ó': buf[len-1]='ô'; break;
+			case 'ë': buf[len-1]='ê'; break;
+			case 'î': buf[len-1]='í'; break;
+			case 'ð': buf[len-1]='ï'; break;
+			case 'ö': buf[len-1]='õ'; break;
+			case 'ô': buf[len-1]='ó'; break;
+		}
+		if(buf[len-1]!=w[len-1]){ TRYBUF; }
 	}
-	if(buf[len-1]!=w[len-1]){ TRYBUF; }
 	/* try to make the word into an acronym (add " before last character */
 	if(len>=2){
 		splice(buf,sizeof(buf),w,len-1,'"',w[len-1],0);

@@ -71,7 +71,7 @@ static inline int hspell_hash_exists(hspell_hash *hashp, const char *key)
 }
 
 typedef struct {
-       	const char *key;
+	const char *key;
 	intptr_t value;
 } hspell_hash_keyvalue;
 
@@ -81,7 +81,7 @@ typedef struct {
    time some key is deleted from the hash-table (or the hash table itself
    is deleted).
    This function return a pointer which the caller should free with
-   hspell_hash_free_keyvalue_array(). 
+   hspell_hash_free_keyvalue_array().
 */
 static inline hspell_hash_keyvalue *hspell_hash_build_keyvalue_array(
 	hspell_hash *h, int *size)

@@ -1,4 +1,4 @@
-/* Copyright (C) 2003-2006 Nadav Har'El and Dan Kenigsberg */
+/* Copyright (C) 2003-2012 Nadav Har'El and Dan Kenigsberg */
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -82,7 +82,7 @@ save_personal_dict(hspell_hash *personaldict,
 	else
 		snprintf(dict_filename, sizeof(dict_filename),
 			 "%s/.hspell_words", home);
-	
+
 	fp = fopen(dict_filename, "a");
 	if (!fp)
 		return 0; /* signal error */
@@ -178,13 +178,13 @@ void load_spelling_hints(hspell_hash *spellinghints) {
 
 
 /* used for sorting later: */
-static int 
+static int
 compare_key(const void *a, const void *b){
 	register hspell_hash_keyvalue *aa = (hspell_hash_keyvalue *)a;
 	register hspell_hash_keyvalue *bb = (hspell_hash_keyvalue *)b;
 	return strcmp(aa->key, bb->key);
 }
-static int 
+static int
 compare_value_reverse(const void *a, const void *b){
 	register hspell_hash_keyvalue *aa = (hspell_hash_keyvalue *)a;
 	register hspell_hash_keyvalue *bb = (hspell_hash_keyvalue *)b;
@@ -341,10 +341,10 @@ main(int argc, char *argv[])
 			break;
 		case 'V':
 			printf("Hspell %d.%d%s\nWritten by Nadav Har'El and "
-			       "Dan Kenigsberg.\n\nCopyright (C) 2000-2009 "
+			       "Dan Kenigsberg.\n\nCopyright (C) 2000-2012 "
 			       "Nadav Har'El and Dan Kenigsberg.\nThis is "
-			       "free software, released under the GNU General "
-			       "Public License (GPL).\nSee "
+			       "free software, released under the GNU Affero General "
+			       "Public License\n(AGPL) version 3. See "
 			       "http://hspell.ivrix.org.il/ for "
 			       "more information.\n", HSPELL_VERSION_MAJOR,
 			       HSPELL_VERSION_MINOR, HSPELL_VERSION_EXTRA);
@@ -386,7 +386,7 @@ main(int argc, char *argv[])
 	   progname[strlen(progname)-1] == 'i'){
 		slave=interpipe=1;
 	}
-	
+
 	if(interpipe){
 		/* for ispell -a like behavior, we want to flush every line: */
 		setlinebuf(stdout);
@@ -562,7 +562,7 @@ main(int argc, char *argv[])
 			}
 			/* we're done with this word: */
 			wordlen=0;
-		} else if(interpipe && 
+		} else if(interpipe &&
 			  offset==0 && (c=='#' || c=='!' || c=='~' || c=='@' ||
 					c=='%' || c=='-' || c=='+' || c=='&' ||
 					c=='*')){
@@ -571,7 +571,7 @@ main(int argc, char *argv[])
 			   -----------------------------
 			   ! - enter terse mode
 			   % - exit terse mode
-		
+
 			   * <word> - add to personal dict
 			   & <word> - ditto
 			   @ <word> - accept, but leave out of dict
@@ -591,7 +591,7 @@ main(int argc, char *argv[])
 				while ((rc = getc(in)) != EOF && rc != '\n')
 					;
 			}
-		
+
 			switch (c) {
 			case '!': terse_mode = 1; break;
 			case '%': terse_mode = 0; break;
@@ -730,6 +730,6 @@ main(int argc, char *argv[])
 						wrongwords_array);
 #endif
 	}
-	
+
 	return 0;
 }

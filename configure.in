@@ -46,7 +46,7 @@ AC_MSG_NOTICE([Checking features selected by user (see configure --help)...])
 
 dnl Our TARGETS variable chooses what to compile. Some things are
 dnl optionally compiled depending on --enable-* paramters to configure.
-TARGETS="hebrew.wgz.sizes hspell"
+TARGETS="hebrew.wgz.sizes hspell libhspell.a"
 AC_SUBST(TARGETS)
 
 dnl "fatverb" optional feature: (--enable-fatverb)
@@ -69,26 +69,6 @@ else
 	SEDCMD='/\+/d'
 fi
 AC_SUBST(SEDCMD)
-
-dnl "aspell" optional feature: (--enable-aspell)
-dnl Builds data files - he_affix.dat and he.wl - needed by Aspell to do
-dnl spell-checking of Hebrew.
-
-dnl NOTE: This configuration parameter is deprecated. There is no point
-dnl in using it, instead of doing normal "configure" followed by "make aspell".
-
-AC_ARG_ENABLE([aspell],
-	AC_HELP_STRING([--enable-aspell],[Build data files - he_affix.dat
-	  and he.wl - suitable for use as Aspell 0.6 dictionary for Hebrew.]),
-	[ac_opt_aspell=$enable_aspell], [ac_opt_aspell=no])
-
-if test x$ac_opt_aspell = xyes
-then
-	AC_MSG_NOTICE([Feature aspell enabled (building he_affix.dat, he.wl).])
-	TARGETS="$TARGETS aspell"
-else
-	AC_MSG_NOTICE([Feature aspell disabled (not building aspell files).])
-fi
 
 dnl "linginfo" optional feature: (--enable-linginfo)
 dnl Include a full morphological analyzer in "hspell -l". Note that this
@@ -116,6 +96,28 @@ else
 	AC_MSG_NOTICE([Feature linginfo disabled (no morphological analyzer).])
 fi
 AC_SUBST(EXTRAOBJECTS)
+
+dnl "shared" optional feature: (--enable-shared)
+dnl Build a shared library version of libhspell (in addition to the static
+dnl library), and compile the hspell executable to use this shared library.
+dnl Note that currently, this will only work properly on Linux and gcc (we
+dnl do not correctly build shared libraries on different systems).
+
+AC_ARG_ENABLE([shared],
+	AC_HELP_STRING([--enable-shared],[Build a shared-library version of
+          libhspell, in addition to the static library. Build the hspell
+          executable using this shared library.]),
+	[ac_opt_shared=$enable_shared], [ac_opt_shared=no])
+
+if test x$ac_opt_shared = xyes
+then
+	AC_MSG_NOTICE([Shared library building enabled.])
+	HSPELL_LIB="libhspell.so.0"
+else
+	AC_MSG_NOTICE([Shared library building disabled.])
+	HSPELL_LIB="libhspell.a"
+fi
+AC_SUBST(HSPELL_LIB)
 
 dnl "test" optional feature: (--enable-test)
 dnl Compile a testing binary. Currently the only thing that this does is

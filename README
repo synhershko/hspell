@@ -1,16 +1,19 @@
-This is version 1.1 of Hspell, the free Hebrew spellchecker and morphology
+This is version 1.2 of Hspell, the free Hebrew spellchecker and morphology
 engine.
 
 You can get Hspell from:
 	http://hspell.ivrix.org.il/
 
-Hspell was written by Nadav Har'El and Dan Kenigsberg.
+Hspell was written by Nadav Har'El and Dan Kenigsberg:
+	nyh    @ math.technion.ac.il
+	danken @   cs.technion.ac.il
 
-People who wish to integrate Hspell's technology into their or others' GPL
-software (e.g., word processors, editors), are encouraged to do so, and are
-welcome to contact us for help. People who wish to help us with enlarging
-the word lists, are also encouraged to contact us and will be appreciated
-(see below for instructions on how you can help).
+Hspell is free software, released under the GNU Affero General Public License
+(AGPL) version 3. Note that not only the programs in the distribution, but
+also the dictionary files and the generated word lists, are licensed under
+the AGPL.
+There is no warranty of any kind for the contents of this distribution.
+See the LICENSE file for more information and the exact license terms.
 
 The rest of this README file explains Hspell's spelling standard (niqqud-less),
 a bit about the technology behind Hspell, how to use the "hspell" program
@@ -30,7 +33,7 @@ because it encourages a *correct* and consistent spelling style throughout
 your writing. It is a disadvantage, because a few of the Academia's official
 spelling decisions are relatively unknown to the general public.
 
-Users of Hspell (and all Hebrew writers, for that matter) are encouraged to 
+Users of Hspell (and all Hebrew writers, for that matter) are encouraged to
 read the Academia's official niqqud-less spelling rules (which are printed at
 the end of most modern Hebrew dictionaries), and to refer to Hebrew
 dictionaries which use the niqqud-less spelling (such as Millon Ha-hove or
@@ -38,7 +41,7 @@ Rav Milim). We also provide in docs/niqqudless.odt a document (in Hebrew)
 which describes in detail Hspell's spelling standard, and why certain words
 are spelled the way they are.
 
-Future releases might include an option for alternative spelling standards.
+Future releases may include an option for alternative spelling standards.
 
 
 The technology behind Hspell
@@ -46,21 +49,19 @@ The technology behind Hspell
 
 The "hspell" program itself is mostly a simple (but efficient) program
 that checks input words against a long list of valid words. The real "brains"
-behind it are the word lists (dictionary) provided by the Hspell project.
+behind it are the word lists (lexicon) provided by the Hspell project.
 
 In order for it to be completely free of other people's copyright restrictions,
 the Hspell project is a clean-room implementation, not based on other
 companies' word lists, on other companies' spell checkers, or on copying of
 printed dictionaries. The word list is also not based on automatic scanning
 of available Hebrew documents (such as online newspapers), because there is
-no way to guarantee that such a list will be correct (and not contain
-misspellings, useless proper names, slang, and so on), complete (certain
-inflections might not appear in the chosen samples) or consistent (especially
-when it comes to niqqud-less spelling rules).
+no way to guarantee that such a list will be correct, complete, or consistent
+with regard to spelling rules.
 
 Instead, our idea was to write programs which know how to correctly inflect
-Hebrew nouns and conjugate Hebrew verbs. The input to these programs is a
-list of noun stems and verb roots, plus hints needed for the correct
+Hebrew nouns and conjugate Hebrew verbs. The inputs to these programs are
+lists of noun stems and of verb roots, plus hints needed for the correct
 inflection when these cannot be figured out automatically. These input files
 are obviously an important part of the Hspell project. The "word list
 generators" (written in Perl, and are also part of the Hspell project) then
@@ -69,12 +70,13 @@ The generated lists are useful for much more than spellchecking, by the
 way - see more on that below ("the future").
 
 Although we wrote all of Hspell's code ourselves, we are truly indebted to
-the old-style "open source" pioneers - people who wrote books instead of
-hiding their knowledge in proprietary software. For the correct noun
-inflections, Dr. Shaul Barkali's "The Complete Noun Book" has been a great
-help. Prof. Uzzi Ornan's booklet "Verb Conjugation in Flow Charts" has been
-instrumental in the implementation of verb conjugation, and Barkali's
-"The Complete Verb Book" was used too.
+the old-style "open source" pioneers - people who wrote books about the
+knowledge they developed, instead of hiding it in proprietary software.
+For the correct noun inflections, Dr. Shaul Barkali's "The Complete Noun Book"
+has been a great help. Prof. Uzzi Ornan's booklet "Verb Conjugation in Flow
+Charts" has been instrumental in the implementation of verb conjugation,
+and Barkali's "The Complete Verb Book" was used too.
+
 During our work we have extensively used a number of Hebrew dictionaries,
 including Even Shoshan, Millon Ha-hove and Rav-Milim, to ensure the correctness
 of certain words. Various Hebrew newspapers and books, both printed and online,
@@ -109,6 +111,7 @@ If the "-c" option is given, hspell will suggest corrections for misspelled
 words, whenever it can find such corrections. The correction mechanism in this
 release is especially good at finding corrections for incorrect niqqud-less
 spellings, with missing or extra 'immot-qri'a.
+
 The "-l" (verbose) option will explain for each correct word why it was
 recognized, if Hspell was built with the "linginfo" optional feature enabled
 (a morphological analysis is shown, i.e., fully describe all possible ways to
@@ -121,43 +124,26 @@ useful to pipe it to bidiv or rev before viewing. For example
 
 Another convenient alternative is to run hspell on a BiDi-enabled terminal.
 
+Instead of using the hspell program described above, users can also use
+Hspell's lexicon through one of the popular multi-lingual spell-checkers,
+aspell and hunspell. See the INSTALL file for more information on building
+these dictionaries.
+
 
 How *you* can help
 ------------------
 
-As mentioned above, hspell does not cover yet all modern Hebrew.
+By now, Hspell is fairly mature, and its lexicon of over 24,000 base words
+is fairly comprehensive, similar in breadth to some printed dictionaries.
+Careful attention has also been given to its accuracy, and its conformance
+with the spelling rules of the Academy of the Hebrew Language.
 
-This is where you enter the picture. If you stumble upon a commonly used word
-in modern Israeli Hebrew, you are welcome to add its stem to the appropriate
-dat file. Notice that in some cases you should add some flags to hint how the
-inflection should be done.
-Run wolig/woo to inflect it (or simply "make"), and make sure the output is
-correct. Since "open source" should not mean "low quality", you should examine
-the outcome carefully to make sure the spelling is perfect - look each and
-every word in a good dictionary and/or consult grammer books.
+Nevertheless, Hspell does not, and probably never will, cover all of modern
+Hebrew language. Also, undoubtedly, it may contain some errors as well.
+If you find such omissions or errors, please let us know.
 
-If you send us lists of tested nouns or verbs, and even proper names, you would
-do great service to this GPLed project. Be sure not to copy words out of a
-dictionary or another copyrighted word lists, but rather use you own knowledge
-of Hebrew.
-
-Also, we are very keen to know if you find a spelling error that creeped into
-hspell's word lists.
-
-
-Hspell's license
-----------------
-
-Hspell is free software, released under the GNU General Public License (GPL).
-Note that not only the programs in the distribution, but also the dictionary
-files and the generated word lists, are licensed under the GPL.
-There is no warranty of any kind for the contents of this distribution.
-
-See the LICENSE file for more information and the exact license terms.
-
-
-Contacting the authors
-----------------------
-
-Nadav Har'El:    nyh    @ math.technion.ac.il
-Dan Kenigsberg:  danken @   cs.technion.ac.il
+Before reporting such omissions or errors, please try to verify that the word
+you are proposing is indeed correctly spelled: Please refer to modern
+dictionaries. Please also look at doc/niqqudless.odt - the word you are
+proposing might actually be a known mispelling which we discuss in that
+document.

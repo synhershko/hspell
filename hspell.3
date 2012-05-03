@@ -1,6 +1,6 @@
 '\" t
-.\" Copyright (c) 2001-2009, Nadav Har'El and Dan Kenigsberg
-.TH hspell 3 "31 December 2009" "Hspell 1.1" "Ivrix"
+.\" Copyright (c) 2001-2012, Nadav Har'El and Dan Kenigsberg
+.TH hspell 3 "28 February 2012" "Hspell 1.2" "Ivrix"
 .SH NAME
 hspell \- Hebrew spellchecker (C API)
 .SH SYNOPSIS
@@ -84,7 +84,7 @@ returned if the word is correct, or 0 if it is incorrect.
 
 The
 .I 'word'
-parameter should be a single Hebrew word, in the iso8859-8 encoding, 
+parameter should be a single Hebrew word, in the iso8859-8 encoding,
 possibly containing the ASCII quote or double-quote characters (signifying
 the geresh and gershayim used in Hebrew for abbreviations,
 acronyms, and a few foreign sounds). If the calling programs works with
@@ -189,7 +189,7 @@ to also link with the -lz library when checking for -lhspell.
 .SH CAVEATS
 While the API described here has been stable for years, it may change
 in the future. Users are encouraged to compare the values of the integer
-macros 
+macros
 .B HSPELL_VERSION_MAJOR
 and
 .B HSPELL_VERSION_MINOR
@@ -247,14 +247,15 @@ There are too many CAVEATS in this manual.
 .SH "VERSION"
 The version of
 .B hspell
-described by this manual page is 1.1 (December 31, 2009)
+described by this manual page is 1.2.
 .SH "COPYRIGHT"
-Copyright (C) 2000-2009, Nadav Har'El <nyh@math.technion.ac.il>
+Copyright (C) 2000-2012, Nadav Har'El <nyh@math.technion.ac.il>
 and Dan Kenigsberg <danken@cs.technion.ac.il>.
 
-Hspell is free software, released under the GNU General Public License (GPL).
+Hspell is free software, released under the GNU Affero General Public License
+(AGPL) version 3.
 Note that not only the programs in the distribution, but also the dictionary
-files and the generated word lists, are licensed under the GPL.
+files and the generated word lists, are licensed under the AGPL.
 There is no warranty of any kind.
 
 See the LICENSE file for more information and the exact license terms.
